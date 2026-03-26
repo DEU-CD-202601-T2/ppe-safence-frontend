@@ -1,2 +1,2 @@
 # ppe-safence-frontend
-PPE Safence GUI
+PPE Safence GUI of WinForm
