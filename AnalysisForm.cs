@@ -16,5 +16,10 @@ namespace PPE_관제_시스템
         {
             InitializeComponent();
         }
+
+        private void AnalysisForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

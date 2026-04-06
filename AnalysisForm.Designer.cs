@@ -34,14 +34,14 @@
             this.pnlMenu = new System.Windows.Forms.Panel();
             this.lblAnalysisHeader = new System.Windows.Forms.Label();
             this.pnlTotalWorkers = new System.Windows.Forms.Panel();
-            this.pnlPPECompliance = new System.Windows.Forms.Panel();
-            this.pnlAccidents = new System.Windows.Forms.Panel();
-            this.pnlWarnings = new System.Windows.Forms.Panel();
-            this.pnlChart = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnlPPECompliance = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
+            this.pnlAccidents = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.pnlWarnings = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
+            this.pnlChart = new System.Windows.Forms.Panel();
             this.chtAnalysis = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.pnlTotalWorkers.SuspendLayout();
             this.pnlPPECompliance.SuspendLayout();
@@ -53,6 +53,7 @@
             // 
             // pnlMenu
             // 
+            this.pnlMenu.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pnlMenu.Location = new System.Drawing.Point(0, 1);
             this.pnlMenu.Name = "pnlMenu";
             this.pnlMenu.Size = new System.Drawing.Size(211, 671);
@@ -77,41 +78,6 @@
             this.pnlTotalWorkers.Size = new System.Drawing.Size(200, 200);
             this.pnlTotalWorkers.TabIndex = 3;
             // 
-            // pnlPPECompliance
-            // 
-            this.pnlPPECompliance.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pnlPPECompliance.Controls.Add(this.label2);
-            this.pnlPPECompliance.Location = new System.Drawing.Point(473, 68);
-            this.pnlPPECompliance.Name = "pnlPPECompliance";
-            this.pnlPPECompliance.Size = new System.Drawing.Size(200, 200);
-            this.pnlPPECompliance.TabIndex = 4;
-            // 
-            // pnlAccidents
-            // 
-            this.pnlAccidents.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pnlAccidents.Controls.Add(this.label3);
-            this.pnlAccidents.Location = new System.Drawing.Point(719, 68);
-            this.pnlAccidents.Name = "pnlAccidents";
-            this.pnlAccidents.Size = new System.Drawing.Size(200, 200);
-            this.pnlAccidents.TabIndex = 4;
-            // 
-            // pnlWarnings
-            // 
-            this.pnlWarnings.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pnlWarnings.Controls.Add(this.label4);
-            this.pnlWarnings.Location = new System.Drawing.Point(970, 68);
-            this.pnlWarnings.Name = "pnlWarnings";
-            this.pnlWarnings.Size = new System.Drawing.Size(200, 200);
-            this.pnlWarnings.TabIndex = 4;
-            // 
-            // pnlChart
-            // 
-            this.pnlChart.Controls.Add(this.chtAnalysis);
-            this.pnlChart.Location = new System.Drawing.Point(224, 276);
-            this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(946, 385);
-            this.pnlChart.TabIndex = 5;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -121,6 +87,15 @@
             this.label1.Size = new System.Drawing.Size(114, 25);
             this.label1.TabIndex = 0;
             this.label1.Text = "총 작업자 수";
+            // 
+            // pnlPPECompliance
+            // 
+            this.pnlPPECompliance.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnlPPECompliance.Controls.Add(this.label2);
+            this.pnlPPECompliance.Location = new System.Drawing.Point(473, 68);
+            this.pnlPPECompliance.Name = "pnlPPECompliance";
+            this.pnlPPECompliance.Size = new System.Drawing.Size(200, 200);
+            this.pnlPPECompliance.TabIndex = 4;
             // 
             // label2
             // 
@@ -132,6 +107,15 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "PPE 준수율(%)";
             // 
+            // pnlAccidents
+            // 
+            this.pnlAccidents.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnlAccidents.Controls.Add(this.label3);
+            this.pnlAccidents.Location = new System.Drawing.Point(719, 68);
+            this.pnlAccidents.Name = "pnlAccidents";
+            this.pnlAccidents.Size = new System.Drawing.Size(200, 200);
+            this.pnlAccidents.TabIndex = 4;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -142,6 +126,15 @@
             this.label3.TabIndex = 1;
             this.label3.Text = "사고 발생 수";
             // 
+            // pnlWarnings
+            // 
+            this.pnlWarnings.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnlWarnings.Controls.Add(this.label4);
+            this.pnlWarnings.Location = new System.Drawing.Point(970, 68);
+            this.pnlWarnings.Name = "pnlWarnings";
+            this.pnlWarnings.Size = new System.Drawing.Size(200, 200);
+            this.pnlWarnings.TabIndex = 4;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -151,6 +144,14 @@
             this.label4.Size = new System.Drawing.Size(114, 25);
             this.label4.TabIndex = 2;
             this.label4.Text = "경고 발생 수";
+            // 
+            // pnlChart
+            // 
+            this.pnlChart.Controls.Add(this.chtAnalysis);
+            this.pnlChart.Location = new System.Drawing.Point(224, 276);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(946, 385);
+            this.pnlChart.TabIndex = 5;
             // 
             // chtAnalysis
             // 
@@ -184,6 +185,7 @@
             this.Controls.Add(this.pnlMenu);
             this.Name = "AnalysisForm";
             this.Text = "분석";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AnalysisForm_FormClosed);
             this.pnlTotalWorkers.ResumeLayout(false);
             this.pnlTotalWorkers.PerformLayout();
             this.pnlPPECompliance.ResumeLayout(false);

@@ -31,25 +31,26 @@
             this.pnlMenu = new System.Windows.Forms.Panel();
             this.lblDetectionHeader = new System.Windows.Forms.Label();
             this.pnlGird = new System.Windows.Forms.Panel();
-            this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
-            this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
-            this.cmbLocation = new System.Windows.Forms.ComboBox();
             this.dgvLog = new System.Windows.Forms.DataGridView();
-            this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.위치 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
+            this.cmbLocation = new System.Windows.Forms.ComboBox();
+            this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.lblTilde = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
+            this.btnLogSearch = new System.Windows.Forms.Button();
             this.pnlGird.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlMenu
             // 
+            this.pnlMenu.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pnlMenu.Location = new System.Drawing.Point(1, 1);
             this.pnlMenu.Name = "pnlMenu";
             this.pnlMenu.Size = new System.Drawing.Size(211, 671);
@@ -73,29 +74,6 @@
             this.pnlGird.Size = new System.Drawing.Size(946, 500);
             this.pnlGird.TabIndex = 2;
             // 
-            // dtpStartDate
-            // 
-            this.dtpStartDate.Location = new System.Drawing.Point(225, 81);
-            this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(221, 25);
-            this.dtpStartDate.TabIndex = 3;
-            // 
-            // dtpEndDate
-            // 
-            this.dtpEndDate.Location = new System.Drawing.Point(475, 81);
-            this.dtpEndDate.Name = "dtpEndDate";
-            this.dtpEndDate.Size = new System.Drawing.Size(215, 25);
-            this.dtpEndDate.TabIndex = 4;
-            // 
-            // cmbLocation
-            // 
-            this.cmbLocation.FormattingEnabled = true;
-            this.cmbLocation.Location = new System.Drawing.Point(608, 132);
-            this.cmbLocation.Name = "cmbLocation";
-            this.cmbLocation.Size = new System.Drawing.Size(82, 23);
-            this.cmbLocation.TabIndex = 5;
-            this.cmbLocation.Text = "위치";
-            // 
             // dgvLog
             // 
             this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -118,15 +96,6 @@
             this.dgvLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLog.Size = new System.Drawing.Size(946, 500);
             this.dgvLog.TabIndex = 0;
-            // 
-            // cmbStatus
-            // 
-            this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(796, 132);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(82, 23);
-            this.cmbStatus.TabIndex = 6;
-            this.cmbStatus.Text = "상태";
             // 
             // Date
             // 
@@ -163,6 +132,38 @@
             this.Detail.Name = "Detail";
             this.Detail.ReadOnly = true;
             // 
+            // dtpStartDate
+            // 
+            this.dtpStartDate.Location = new System.Drawing.Point(225, 81);
+            this.dtpStartDate.Name = "dtpStartDate";
+            this.dtpStartDate.Size = new System.Drawing.Size(221, 25);
+            this.dtpStartDate.TabIndex = 3;
+            // 
+            // dtpEndDate
+            // 
+            this.dtpEndDate.Location = new System.Drawing.Point(475, 81);
+            this.dtpEndDate.Name = "dtpEndDate";
+            this.dtpEndDate.Size = new System.Drawing.Size(215, 25);
+            this.dtpEndDate.TabIndex = 4;
+            // 
+            // cmbLocation
+            // 
+            this.cmbLocation.FormattingEnabled = true;
+            this.cmbLocation.Location = new System.Drawing.Point(608, 132);
+            this.cmbLocation.Name = "cmbLocation";
+            this.cmbLocation.Size = new System.Drawing.Size(82, 23);
+            this.cmbLocation.TabIndex = 5;
+            this.cmbLocation.Text = "위치";
+            // 
+            // cmbStatus
+            // 
+            this.cmbStatus.FormattingEnabled = true;
+            this.cmbStatus.Location = new System.Drawing.Point(796, 132);
+            this.cmbStatus.Name = "cmbStatus";
+            this.cmbStatus.Size = new System.Drawing.Size(82, 23);
+            this.cmbStatus.TabIndex = 6;
+            this.cmbStatus.Text = "상태";
+            // 
             // lblTilde
             // 
             this.lblTilde.AutoSize = true;
@@ -179,21 +180,21 @@
             this.txtSearch.Size = new System.Drawing.Size(260, 25);
             this.txtSearch.TabIndex = 8;
             // 
-            // btnSearch
+            // btnLogSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(491, 130);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(79, 25);
-            this.btnSearch.TabIndex = 9;
-            this.btnSearch.Text = "검색";
-            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnLogSearch.Location = new System.Drawing.Point(491, 130);
+            this.btnLogSearch.Name = "btnLogSearch";
+            this.btnLogSearch.Size = new System.Drawing.Size(79, 25);
+            this.btnLogSearch.TabIndex = 9;
+            this.btnLogSearch.Text = "검색";
+            this.btnLogSearch.UseVisualStyleBackColor = true;
             // 
             // DetectionLogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1182, 673);
-            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.btnLogSearch);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.lblTilde);
             this.Controls.Add(this.cmbStatus);
@@ -205,6 +206,7 @@
             this.Controls.Add(this.pnlMenu);
             this.Name = "DetectionLogForm";
             this.Text = "이력 / 로그";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DetectionLogForm_FormClosed);
             this.pnlGird.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.ResumeLayout(false);
@@ -229,6 +231,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Detail;
         private System.Windows.Forms.Label lblTilde;
         private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Button btnLogSearch;
     }
 }
