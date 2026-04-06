@@ -57,7 +57,7 @@
             // 
             // btnAlertSave
             // 
-            this.btnAlertSave.Location = new System.Drawing.Point(524, 432);
+            this.btnAlertSave.Location = new System.Drawing.Point(505, 417);
             this.btnAlertSave.Name = "btnAlertSave";
             this.btnAlertSave.Size = new System.Drawing.Size(149, 42);
             this.btnAlertSave.TabIndex = 6;
@@ -66,7 +66,7 @@
             // 
             // btnAlertDelete
             // 
-            this.btnAlertDelete.Location = new System.Drawing.Point(741, 432);
+            this.btnAlertDelete.Location = new System.Drawing.Point(722, 417);
             this.btnAlertDelete.Name = "btnAlertDelete";
             this.btnAlertDelete.Size = new System.Drawing.Size(149, 42);
             this.btnAlertDelete.TabIndex = 7;
@@ -83,7 +83,7 @@
             this.Controls.Add(this.lblSettingList);
             this.Controls.Add(this.dgvSettingList);
             this.Name = "US_AlertSettings";
-            this.Size = new System.Drawing.Size(945, 487);
+            this.Size = new System.Drawing.Size(890, 472);
             ((System.ComponentModel.ISupportInitialize)(this.dgvSettingList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

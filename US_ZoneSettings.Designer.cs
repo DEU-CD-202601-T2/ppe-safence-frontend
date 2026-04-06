@@ -39,7 +39,7 @@
             // 
             // btnZoneAdd
             // 
-            this.btnZoneAdd.Location = new System.Drawing.Point(537, 422);
+            this.btnZoneAdd.Location = new System.Drawing.Point(481, 418);
             this.btnZoneAdd.Name = "btnZoneAdd";
             this.btnZoneAdd.Size = new System.Drawing.Size(128, 51);
             this.btnZoneAdd.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             // btnZoneModify
             // 
-            this.btnZoneModify.Location = new System.Drawing.Point(671, 422);
+            this.btnZoneModify.Location = new System.Drawing.Point(615, 418);
             this.btnZoneModify.Name = "btnZoneModify";
             this.btnZoneModify.Size = new System.Drawing.Size(128, 51);
             this.btnZoneModify.TabIndex = 1;
@@ -57,7 +57,7 @@
             // 
             // btnZoneDelete
             // 
-            this.btnZoneDelete.Location = new System.Drawing.Point(805, 422);
+            this.btnZoneDelete.Location = new System.Drawing.Point(749, 418);
             this.btnZoneDelete.Name = "btnZoneDelete";
             this.btnZoneDelete.Size = new System.Drawing.Size(128, 51);
             this.btnZoneDelete.TabIndex = 2;
@@ -71,7 +71,7 @@
             this.dgvZones.Name = "dgvZones";
             this.dgvZones.RowHeadersWidth = 51;
             this.dgvZones.RowTemplate.Height = 27;
-            this.dgvZones.Size = new System.Drawing.Size(464, 398);
+            this.dgvZones.Size = new System.Drawing.Size(464, 380);
             this.dgvZones.TabIndex = 3;
             // 
             // lblZones
@@ -88,7 +88,7 @@
             // 
             this.lblZoneInfo.AutoSize = true;
             this.lblZoneInfo.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblZoneInfo.Location = new System.Drawing.Point(660, 21);
+            this.lblZoneInfo.Location = new System.Drawing.Point(608, 21);
             this.lblZoneInfo.Name = "lblZoneInfo";
             this.lblZoneInfo.Size = new System.Drawing.Size(139, 38);
             this.lblZoneInfo.TabIndex = 5;
@@ -106,7 +106,7 @@
             this.Controls.Add(this.btnZoneModify);
             this.Controls.Add(this.btnZoneAdd);
             this.Name = "US_ZoneSettings";
-            this.Size = new System.Drawing.Size(945, 487);
+            this.Size = new System.Drawing.Size(890, 472);
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

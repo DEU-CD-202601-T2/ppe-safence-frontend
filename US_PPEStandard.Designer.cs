@@ -43,7 +43,7 @@
             // 
             // btnPPESave
             // 
-            this.btnPPESave.Location = new System.Drawing.Point(655, 425);
+            this.btnPPESave.Location = new System.Drawing.Point(626, 425);
             this.btnPPESave.Name = "btnPPESave";
             this.btnPPESave.Size = new System.Drawing.Size(120, 40);
             this.btnPPESave.TabIndex = 0;
@@ -52,7 +52,7 @@
             // 
             // btnPPEReset
             // 
-            this.btnPPEReset.Location = new System.Drawing.Point(781, 425);
+            this.btnPPEReset.Location = new System.Drawing.Point(752, 425);
             this.btnPPEReset.Name = "btnPPEReset";
             this.btnPPEReset.Size = new System.Drawing.Size(120, 40);
             this.btnPPEReset.TabIndex = 1;
@@ -72,7 +72,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel1.Location = new System.Drawing.Point(431, 31);
+            this.panel1.Location = new System.Drawing.Point(450, 31);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(10, 434);
             this.panel1.TabIndex = 3;
@@ -90,7 +90,7 @@
             // 
             this.lblPPEStandard.AutoSize = true;
             this.lblPPEStandard.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblPPEStandard.Location = new System.Drawing.Point(604, 31);
+            this.lblPPEStandard.Location = new System.Drawing.Point(577, 31);
             this.lblPPEStandard.Name = "lblPPEStandard";
             this.lblPPEStandard.Size = new System.Drawing.Size(198, 38);
             this.lblPPEStandard.TabIndex = 5;
@@ -99,7 +99,7 @@
             // chkHelmet
             // 
             this.chkHelmet.AutoSize = true;
-            this.chkHelmet.Location = new System.Drawing.Point(579, 140);
+            this.chkHelmet.Location = new System.Drawing.Point(552, 140);
             this.chkHelmet.Name = "chkHelmet";
             this.chkHelmet.Size = new System.Drawing.Size(73, 19);
             this.chkHelmet.TabIndex = 6;
@@ -109,7 +109,7 @@
             // chkGloves
             // 
             this.chkGloves.AutoSize = true;
-            this.chkGloves.Location = new System.Drawing.Point(739, 138);
+            this.chkGloves.Location = new System.Drawing.Point(712, 138);
             this.chkGloves.Name = "chkGloves";
             this.chkGloves.Size = new System.Drawing.Size(76, 19);
             this.chkGloves.TabIndex = 7;
@@ -119,7 +119,7 @@
             // chkVest
             // 
             this.chkVest.AutoSize = true;
-            this.chkVest.Location = new System.Drawing.Point(579, 204);
+            this.chkVest.Location = new System.Drawing.Point(552, 204);
             this.chkVest.Name = "chkVest";
             this.chkVest.Size = new System.Drawing.Size(57, 19);
             this.chkVest.TabIndex = 8;
@@ -129,7 +129,7 @@
             // chkSafetyBoots
             // 
             this.chkSafetyBoots.AutoSize = true;
-            this.chkSafetyBoots.Location = new System.Drawing.Point(739, 204);
+            this.chkSafetyBoots.Location = new System.Drawing.Point(712, 204);
             this.chkSafetyBoots.Name = "chkSafetyBoots";
             this.chkSafetyBoots.Size = new System.Drawing.Size(116, 19);
             this.chkSafetyBoots.TabIndex = 9;
@@ -139,7 +139,7 @@
             // chkGoggles
             // 
             this.chkGoggles.AutoSize = true;
-            this.chkGoggles.Location = new System.Drawing.Point(579, 270);
+            this.chkGoggles.Location = new System.Drawing.Point(552, 270);
             this.chkGoggles.Name = "chkGoggles";
             this.chkGoggles.Size = new System.Drawing.Size(84, 19);
             this.chkGoggles.TabIndex = 10;
@@ -163,7 +163,7 @@
             this.Controls.Add(this.btnPPEReset);
             this.Controls.Add(this.btnPPESave);
             this.Name = "US_PPEStandard";
-            this.Size = new System.Drawing.Size(945, 487);
+            this.Size = new System.Drawing.Size(890, 472);
             this.ResumeLayout(false);
             this.PerformLayout();
 

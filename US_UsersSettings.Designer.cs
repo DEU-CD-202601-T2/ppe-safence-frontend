@@ -59,7 +59,7 @@
             this.dgvUserSetting.RowHeadersWidth = 51;
             this.dgvUserSetting.RowTemplate.Height = 27;
             this.dgvUserSetting.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUserSetting.Size = new System.Drawing.Size(945, 487);
+            this.dgvUserSetting.Size = new System.Drawing.Size(890, 472);
             this.dgvUserSetting.TabIndex = 0;
             // 
             // user_name
@@ -105,7 +105,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Controls.Add(this.dgvUserSetting);
             this.Name = "US_UsersSettings";
-            this.Size = new System.Drawing.Size(945, 487);
+            this.Size = new System.Drawing.Size(890, 472);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserSetting)).EndInit();
             this.ResumeLayout(false);
 
