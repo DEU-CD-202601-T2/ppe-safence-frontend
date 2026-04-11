@@ -42,7 +42,7 @@
             // 
             this.lblLoginHeader.AutoSize = true;
             this.lblLoginHeader.Font = new System.Drawing.Font("맑은 고딕", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblLoginHeader.Location = new System.Drawing.Point(152, 35);
+            this.lblLoginHeader.Location = new System.Drawing.Point(154, 35);
             this.lblLoginHeader.Name = "lblLoginHeader";
             this.lblLoginHeader.Size = new System.Drawing.Size(267, 45);
             this.lblLoginHeader.TabIndex = 0;
@@ -112,6 +112,7 @@
             this.ClientSize = new System.Drawing.Size(582, 453);
             this.Controls.Add(this.grpLogin);
             this.Controls.Add(this.lblLoginHeader);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "LoginForm";
             this.Text = "PPE 관제 시스템";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LoginForm_FormClosed);

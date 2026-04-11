@@ -41,24 +41,24 @@
             this.pnlWarnings = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.pnlChart = new System.Windows.Forms.Panel();
+            this.chtAnalysis = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.pnlMenu = new System.Windows.Forms.Panel();
             this.label11 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.chtAnalysis = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnAnalysis = new System.Windows.Forms.Button();
+            this.btnDetectionLog = new System.Windows.Forms.Button();
+            this.btnControl = new System.Windows.Forms.Button();
+            this.lblPPESystem = new System.Windows.Forms.Label();
+            this.btnViolationManagement = new System.Windows.Forms.Button();
+            this.btnAlerts = new System.Windows.Forms.Button();
+            this.btnMonitoring = new System.Windows.Forms.Button();
             this.pnlTotalWorkers.SuspendLayout();
             this.pnlPPECompliance.SuspendLayout();
             this.pnlAccidents.SuspendLayout();
             this.pnlWarnings.SuspendLayout();
             this.pnlChart.SuspendLayout();
-            this.pnlMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chtAnalysis)).BeginInit();
+            this.pnlMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblAnalysisHeader
@@ -155,136 +155,6 @@
             this.pnlChart.Size = new System.Drawing.Size(890, 376);
             this.pnlChart.TabIndex = 5;
             // 
-            // pnlMenu
-            // 
-            this.pnlMenu.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.pnlMenu.Controls.Add(this.label11);
-            this.pnlMenu.Controls.Add(this.button7);
-            this.pnlMenu.Controls.Add(this.button6);
-            this.pnlMenu.Controls.Add(this.button5);
-            this.pnlMenu.Controls.Add(this.button4);
-            this.pnlMenu.Controls.Add(this.label5);
-            this.pnlMenu.Controls.Add(this.button3);
-            this.pnlMenu.Controls.Add(this.button2);
-            this.pnlMenu.Controls.Add(this.button1);
-            this.pnlMenu.Location = new System.Drawing.Point(0, 0);
-            this.pnlMenu.Margin = new System.Windows.Forms.Padding(2);
-            this.pnlMenu.Name = "pnlMenu";
-            this.pnlMenu.Size = new System.Drawing.Size(268, 676);
-            this.pnlMenu.TabIndex = 6;
-            // 
-            // label11
-            // 
-            this.label11.BackColor = System.Drawing.Color.DimGray;
-            this.label11.Location = new System.Drawing.Point(56, 78);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(160, 2);
-            this.label11.TabIndex = 9;
-            // 
-            // button7
-            // 
-            this.button7.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button7.FlatAppearance.BorderSize = 0;
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.Location = new System.Drawing.Point(21, 452);
-            this.button7.Margin = new System.Windows.Forms.Padding(2);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(226, 51);
-            this.button7.TabIndex = 6;
-            this.button7.Text = "설정";
-            this.button7.UseVisualStyleBackColor = false;
-            // 
-            // button6
-            // 
-            this.button6.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button6.FlatAppearance.BorderSize = 0;
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Location = new System.Drawing.Point(22, 397);
-            this.button6.Margin = new System.Windows.Forms.Padding(2);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(226, 51);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "분석";
-            this.button6.UseVisualStyleBackColor = false;
-            // 
-            // button5
-            // 
-            this.button5.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button5.FlatAppearance.BorderSize = 0;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(21, 341);
-            this.button5.Margin = new System.Windows.Forms.Padding(2);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(226, 51);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "이력 / 로그";
-            this.button5.UseVisualStyleBackColor = false;
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(21, 285);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(226, 51);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "대응 / 제어";
-            this.button4.UseVisualStyleBackColor = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(79, 45);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(116, 15);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "PPE 관제시스템";
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(21, 229);
-            this.button3.Margin = new System.Windows.Forms.Padding(2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(226, 51);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "위반관리";
-            this.button3.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(22, 173);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(226, 51);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "알림";
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(22, 118);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(226, 51);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "실시간 모니터링";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
             // chtAnalysis
             // 
             chartArea1.Name = "ChartArea1";
@@ -301,6 +171,144 @@
             this.chtAnalysis.Size = new System.Drawing.Size(890, 376);
             this.chtAnalysis.TabIndex = 0;
             this.chtAnalysis.Text = "chart1";
+            // 
+            // pnlMenu
+            // 
+            this.pnlMenu.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.pnlMenu.Controls.Add(this.label11);
+            this.pnlMenu.Controls.Add(this.btnSettings);
+            this.pnlMenu.Controls.Add(this.btnAnalysis);
+            this.pnlMenu.Controls.Add(this.btnDetectionLog);
+            this.pnlMenu.Controls.Add(this.btnControl);
+            this.pnlMenu.Controls.Add(this.lblPPESystem);
+            this.pnlMenu.Controls.Add(this.btnViolationManagement);
+            this.pnlMenu.Controls.Add(this.btnAlerts);
+            this.pnlMenu.Controls.Add(this.btnMonitoring);
+            this.pnlMenu.Location = new System.Drawing.Point(0, 0);
+            this.pnlMenu.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlMenu.Name = "pnlMenu";
+            this.pnlMenu.Size = new System.Drawing.Size(268, 676);
+            this.pnlMenu.TabIndex = 6;
+            // 
+            // label11
+            // 
+            this.label11.BackColor = System.Drawing.Color.DimGray;
+            this.label11.Location = new System.Drawing.Point(56, 78);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(160, 2);
+            this.label11.TabIndex = 9;
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnSettings.Location = new System.Drawing.Point(21, 452);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(226, 51);
+            this.btnSettings.TabIndex = 6;
+            this.btnSettings.Text = "설정";
+            this.btnSettings.UseVisualStyleBackColor = false;
+            // 
+            // btnAnalysis
+            // 
+            this.btnAnalysis.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnAnalysis.FlatAppearance.BorderSize = 0;
+            this.btnAnalysis.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAnalysis.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnAnalysis.Location = new System.Drawing.Point(22, 397);
+            this.btnAnalysis.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAnalysis.Name = "btnAnalysis";
+            this.btnAnalysis.Size = new System.Drawing.Size(226, 51);
+            this.btnAnalysis.TabIndex = 5;
+            this.btnAnalysis.Text = "분석";
+            this.btnAnalysis.UseVisualStyleBackColor = false;
+            // 
+            // btnDetectionLog
+            // 
+            this.btnDetectionLog.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnDetectionLog.FlatAppearance.BorderSize = 0;
+            this.btnDetectionLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDetectionLog.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnDetectionLog.Location = new System.Drawing.Point(21, 341);
+            this.btnDetectionLog.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDetectionLog.Name = "btnDetectionLog";
+            this.btnDetectionLog.Size = new System.Drawing.Size(226, 51);
+            this.btnDetectionLog.TabIndex = 4;
+            this.btnDetectionLog.Text = "이력 / 로그";
+            this.btnDetectionLog.UseVisualStyleBackColor = false;
+            // 
+            // btnControl
+            // 
+            this.btnControl.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnControl.FlatAppearance.BorderSize = 0;
+            this.btnControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnControl.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnControl.Location = new System.Drawing.Point(21, 285);
+            this.btnControl.Margin = new System.Windows.Forms.Padding(2);
+            this.btnControl.Name = "btnControl";
+            this.btnControl.Size = new System.Drawing.Size(226, 51);
+            this.btnControl.TabIndex = 3;
+            this.btnControl.Text = "대응 / 제어";
+            this.btnControl.UseVisualStyleBackColor = false;
+            // 
+            // lblPPESystem
+            // 
+            this.lblPPESystem.AutoSize = true;
+            this.lblPPESystem.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblPPESystem.Location = new System.Drawing.Point(49, 38);
+            this.lblPPESystem.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPPESystem.Name = "lblPPESystem";
+            this.lblPPESystem.Size = new System.Drawing.Size(177, 31);
+            this.lblPPESystem.TabIndex = 2;
+            this.lblPPESystem.Text = "PPE 관제시스템";
+            // 
+            // btnViolationManagement
+            // 
+            this.btnViolationManagement.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnViolationManagement.FlatAppearance.BorderSize = 0;
+            this.btnViolationManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnViolationManagement.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnViolationManagement.Location = new System.Drawing.Point(21, 229);
+            this.btnViolationManagement.Margin = new System.Windows.Forms.Padding(2);
+            this.btnViolationManagement.Name = "btnViolationManagement";
+            this.btnViolationManagement.Size = new System.Drawing.Size(226, 51);
+            this.btnViolationManagement.TabIndex = 2;
+            this.btnViolationManagement.Text = "위반관리";
+            this.btnViolationManagement.UseVisualStyleBackColor = false;
+            // 
+            // btnAlerts
+            // 
+            this.btnAlerts.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnAlerts.FlatAppearance.BorderSize = 0;
+            this.btnAlerts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAlerts.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnAlerts.Location = new System.Drawing.Point(22, 173);
+            this.btnAlerts.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAlerts.Name = "btnAlerts";
+            this.btnAlerts.Size = new System.Drawing.Size(226, 51);
+            this.btnAlerts.TabIndex = 1;
+            this.btnAlerts.Text = "알림";
+            this.btnAlerts.UseVisualStyleBackColor = false;
+            // 
+            // btnMonitoring
+            // 
+            this.btnMonitoring.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnMonitoring.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnMonitoring.FlatAppearance.BorderSize = 0;
+            this.btnMonitoring.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
+            this.btnMonitoring.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMonitoring.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnMonitoring.Location = new System.Drawing.Point(22, 118);
+            this.btnMonitoring.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMonitoring.Name = "btnMonitoring";
+            this.btnMonitoring.Size = new System.Drawing.Size(226, 51);
+            this.btnMonitoring.TabIndex = 0;
+            this.btnMonitoring.Text = "실시간 모니터링";
+            this.btnMonitoring.UseVisualStyleBackColor = false;
             // 
             // AnalysisForm
             // 
@@ -326,9 +334,9 @@
             this.pnlWarnings.ResumeLayout(false);
             this.pnlWarnings.PerformLayout();
             this.pnlChart.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chtAnalysis)).EndInit();
             this.pnlMenu.ResumeLayout(false);
             this.pnlMenu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chtAnalysis)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,14 +355,14 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel pnlMenu;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnAnalysis;
+        private System.Windows.Forms.Button btnDetectionLog;
+        private System.Windows.Forms.Button btnControl;
+        private System.Windows.Forms.Label lblPPESystem;
+        private System.Windows.Forms.Button btnViolationManagement;
+        private System.Windows.Forms.Button btnAlerts;
+        private System.Windows.Forms.Button btnMonitoring;
         private System.Windows.Forms.DataVisualization.Charting.Chart chtAnalysis;
     }
 }

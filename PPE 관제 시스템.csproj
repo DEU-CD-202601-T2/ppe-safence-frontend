@@ -47,11 +47,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertsForm.Designer.cs">
+      <DependentUpon>AlertsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AnalysisForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AnalysisForm.Designer.cs">
       <DependentUpon>AnalysisForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control.Designer.cs">
+      <DependentUpon>Control.cs</DependentUpon>
     </Compile>
     <Compile Include="DetectionLogForm.cs">
       <SubType>Form</SubType>
@@ -59,11 +71,29 @@
     <Compile Include="DetectionLogForm.Designer.cs">
       <DependentUpon>DetectionLogForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="US_AlertCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_AlertCard.Designer.cs">
+      <DependentUpon>US_AlertCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Managerment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Managerment.Designer.cs">
+      <DependentUpon>Managerment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LiveMonitoringForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LiveMonitoringForm.Designer.cs">
+      <DependentUpon>LiveMonitoringForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,14 +127,29 @@
     <Compile Include="US_ZoneSettings.Designer.cs">
       <DependentUpon>US_ZoneSettings.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AlertsForm.resx">
+      <DependentUpon>AlertsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AnalysisForm.resx">
       <DependentUpon>AnalysisForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control.resx">
+      <DependentUpon>Control.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DetectionLogForm.resx">
       <DependentUpon>DetectionLogForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="US_AlertCard.resx">
+      <DependentUpon>US_AlertCard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Managerment.resx">
+      <DependentUpon>Managerment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LiveMonitoringForm.resx">
+      <DependentUpon>LiveMonitoringForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -114,6 +159,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
@@ -142,6 +188,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -223,6 +223,7 @@
             this.btnSettings.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.btnSettings.FlatAppearance.BorderSize = 0;
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSettings.Location = new System.Drawing.Point(21, 452);
             this.btnSettings.Margin = new System.Windows.Forms.Padding(2);
             this.btnSettings.Name = "btnSettings";
@@ -236,6 +237,7 @@
             this.btnAnalysis.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.btnAnalysis.FlatAppearance.BorderSize = 0;
             this.btnAnalysis.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAnalysis.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnAnalysis.Location = new System.Drawing.Point(22, 397);
             this.btnAnalysis.Margin = new System.Windows.Forms.Padding(2);
             this.btnAnalysis.Name = "btnAnalysis";
@@ -249,6 +251,7 @@
             this.btnDetectionLog.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.btnDetectionLog.FlatAppearance.BorderSize = 0;
             this.btnDetectionLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDetectionLog.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnDetectionLog.Location = new System.Drawing.Point(21, 341);
             this.btnDetectionLog.Margin = new System.Windows.Forms.Padding(2);
             this.btnDetectionLog.Name = "btnDetectionLog";
@@ -262,6 +265,7 @@
             this.btnControl.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.btnControl.FlatAppearance.BorderSize = 0;
             this.btnControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnControl.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnControl.Location = new System.Drawing.Point(21, 285);
             this.btnControl.Margin = new System.Windows.Forms.Padding(2);
             this.btnControl.Name = "btnControl";
@@ -273,10 +277,11 @@
             // lblPPESystem
             // 
             this.lblPPESystem.AutoSize = true;
-            this.lblPPESystem.Location = new System.Drawing.Point(79, 45);
+            this.lblPPESystem.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblPPESystem.Location = new System.Drawing.Point(50, 34);
             this.lblPPESystem.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPPESystem.Name = "lblPPESystem";
-            this.lblPPESystem.Size = new System.Drawing.Size(116, 15);
+            this.lblPPESystem.Size = new System.Drawing.Size(177, 31);
             this.lblPPESystem.TabIndex = 2;
             this.lblPPESystem.Text = "PPE 관제시스템";
             // 
@@ -285,6 +290,7 @@
             this.btnViolationManagement.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.btnViolationManagement.FlatAppearance.BorderSize = 0;
             this.btnViolationManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnViolationManagement.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnViolationManagement.Location = new System.Drawing.Point(21, 229);
             this.btnViolationManagement.Margin = new System.Windows.Forms.Padding(2);
             this.btnViolationManagement.Name = "btnViolationManagement";
@@ -298,6 +304,7 @@
             this.btnAlerts.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.btnAlerts.FlatAppearance.BorderSize = 0;
             this.btnAlerts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAlerts.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnAlerts.Location = new System.Drawing.Point(22, 173);
             this.btnAlerts.Margin = new System.Windows.Forms.Padding(2);
             this.btnAlerts.Name = "btnAlerts";
@@ -313,6 +320,7 @@
             this.btnMonitoring.FlatAppearance.BorderSize = 0;
             this.btnMonitoring.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
             this.btnMonitoring.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMonitoring.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnMonitoring.Location = new System.Drawing.Point(22, 118);
             this.btnMonitoring.Margin = new System.Windows.Forms.Padding(2);
             this.btnMonitoring.Name = "btnMonitoring";
