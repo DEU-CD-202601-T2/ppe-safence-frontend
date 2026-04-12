@@ -17,7 +17,7 @@ namespace PPE_관제_시스템
             InitializeComponent();
         }
 
-        public void SetData(string violation, string date, string camerazone, string targetid, Image ppeimage)
+        public void SetData(string violation, string date, string camerazone, string targetid, Image ppeimage) // 카드에 데이터 설정하는 메서드
         {
             lblViolation.Text = violation;
             lblDate.Text = date;
@@ -29,9 +29,9 @@ namespace PPE_관제_시스템
             }
         }
 
-        private void btnResolve_Click(object sender, EventArgs e)
+        private void btnResolve_Click(object sender, EventArgs e) // 해결 버튼 클릭 시 이벤트 발생
         {
-           
+            
         }
     }
 }

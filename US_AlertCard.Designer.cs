@@ -133,7 +133,7 @@
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "US_AlertCard";
-            this.Size = new System.Drawing.Size(1212, 160);
+            this.Size = new System.Drawing.Size(1225, 160);
             ((System.ComponentModel.ISupportInitialize)(this.picPPEImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

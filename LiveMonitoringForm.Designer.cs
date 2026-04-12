@@ -219,7 +219,7 @@
             this.picZoneView.Location = new System.Drawing.Point(293, 322);
             this.picZoneView.Margin = new System.Windows.Forms.Padding(2);
             this.picZoneView.Name = "picZoneView";
-            this.picZoneView.Size = new System.Drawing.Size(1228, 520);
+            this.picZoneView.Size = new System.Drawing.Size(1228, 503);
             this.picZoneView.TabIndex = 3;
             this.picZoneView.TabStop = false;
             // 
@@ -389,7 +389,7 @@
             this.cmbZone.Items.AddRange(new object[] {
             "B구역",
             "C구역"});
-            this.cmbZone.Location = new System.Drawing.Point(1400, 286);
+            this.cmbZone.Location = new System.Drawing.Point(1400, 280);
             this.cmbZone.Name = "cmbZone";
             this.cmbZone.Size = new System.Drawing.Size(121, 31);
             this.cmbZone.TabIndex = 16;

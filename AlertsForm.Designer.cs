@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlMenu = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnAnalysis = new System.Windows.Forms.Button();
@@ -42,13 +43,12 @@
             this.pnlMain = new System.Windows.Forms.Panel();
             this.flpAlertsList = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlFooter = new System.Windows.Forms.Panel();
+            this.lblPage = new System.Windows.Forms.Label();
+            this.lnkNext = new System.Windows.Forms.LinkLabel();
+            this.lnkPrev = new System.Windows.Forms.LinkLabel();
             this.cmbViolation = new System.Windows.Forms.ComboBox();
             this.cmbCamera = new System.Windows.Forms.ComboBox();
             this.cmbZone = new System.Windows.Forms.ComboBox();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.lblPage = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.pnlMenu.SuspendLayout();
             this.pnlMain.SuspendLayout();
             this.pnlFooter.SuspendLayout();
@@ -72,6 +72,14 @@
             this.pnlMenu.Name = "pnlMenu";
             this.pnlMenu.Size = new System.Drawing.Size(270, 1035);
             this.pnlMenu.TabIndex = 10;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.panel1.Location = new System.Drawing.Point(23, 184);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(10, 51);
+            this.panel1.TabIndex = 11;
             // 
             // label12
             // 
@@ -226,12 +234,48 @@
             // pnlFooter
             // 
             this.pnlFooter.Controls.Add(this.lblPage);
-            this.pnlFooter.Controls.Add(this.linkLabel1);
-            this.pnlFooter.Controls.Add(this.linkLabel2);
+            this.pnlFooter.Controls.Add(this.lnkNext);
+            this.pnlFooter.Controls.Add(this.lnkPrev);
             this.pnlFooter.Location = new System.Drawing.Point(286, 733);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(1235, 94);
             this.pnlFooter.TabIndex = 12;
+            // 
+            // lblPage
+            // 
+            this.lblPage.AutoSize = true;
+            this.lblPage.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblPage.Location = new System.Drawing.Point(578, 30);
+            this.lblPage.Name = "lblPage";
+            this.lblPage.Size = new System.Drawing.Size(59, 28);
+            this.lblPage.TabIndex = 5;
+            this.lblPage.Text = "1 / 2";
+            // 
+            // lnkNext
+            // 
+            this.lnkNext.AutoSize = true;
+            this.lnkNext.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lnkNext.LinkColor = System.Drawing.Color.Black;
+            this.lnkNext.Location = new System.Drawing.Point(674, 30);
+            this.lnkNext.Name = "lnkNext";
+            this.lnkNext.Size = new System.Drawing.Size(64, 28);
+            this.lnkNext.TabIndex = 4;
+            this.lnkNext.TabStop = true;
+            this.lnkNext.Text = "[다음]";
+            this.lnkNext.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkNext_LinkClicked);
+            // 
+            // lnkPrev
+            // 
+            this.lnkPrev.AutoSize = true;
+            this.lnkPrev.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lnkPrev.LinkColor = System.Drawing.Color.Black;
+            this.lnkPrev.Location = new System.Drawing.Point(481, 30);
+            this.lnkPrev.Name = "lnkPrev";
+            this.lnkPrev.Size = new System.Drawing.Size(64, 28);
+            this.lnkPrev.TabIndex = 3;
+            this.lnkPrev.TabStop = true;
+            this.lnkPrev.Text = "[이전]";
+            this.lnkPrev.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkPrev_LinkClicked);
             // 
             // cmbViolation
             // 
@@ -275,48 +319,6 @@
             this.cmbZone.TabIndex = 15;
             this.cmbZone.Text = "구역";
             // 
-            // linkLabel2
-            // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.linkLabel2.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel2.Location = new System.Drawing.Point(551, 30);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(64, 28);
-            this.linkLabel2.TabIndex = 3;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "[이전]";
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.linkLabel1.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel1.Location = new System.Drawing.Point(651, 30);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(64, 28);
-            this.linkLabel1.TabIndex = 4;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "[다음]";
-            // 
-            // lblPage
-            // 
-            this.lblPage.AutoSize = true;
-            this.lblPage.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblPage.Location = new System.Drawing.Point(621, 30);
-            this.lblPage.Name = "lblPage";
-            this.lblPage.Size = new System.Drawing.Size(24, 28);
-            this.lblPage.TabIndex = 5;
-            this.lblPage.Text = "1";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.panel1.Location = new System.Drawing.Point(23, 184);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(10, 51);
-            this.panel1.TabIndex = 11;
-            // 
             // AlertsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -331,7 +333,7 @@
             this.Controls.Add(this.pnlMenu);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AlertsForm";
-            this.Text = "Alarm";
+            this.Text = "알림";
             this.Load += new System.EventHandler(this.AlertsForm_Load);
             this.pnlMenu.ResumeLayout(false);
             this.pnlMenu.PerformLayout();
@@ -361,8 +363,8 @@
         private System.Windows.Forms.ComboBox cmbViolation;
         private System.Windows.Forms.ComboBox cmbCamera;
         private System.Windows.Forms.ComboBox cmbZone;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.LinkLabel lnkNext;
+        private System.Windows.Forms.LinkLabel lnkPrev;
         private System.Windows.Forms.Label lblPage;
         private System.Windows.Forms.Panel panel1;
     }
