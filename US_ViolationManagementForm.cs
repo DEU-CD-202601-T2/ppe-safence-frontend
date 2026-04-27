@@ -10,28 +10,41 @@ using System.Windows.Forms;
 
 namespace PPE_관제_시스템
 {
-    public partial class AlertsForm : Form
+    public partial class US_ViolationManagementForm : UserControl
     {
         private List<US_AlertCard> alertCards = new List<US_AlertCard>(); // 모든 카드 저장 리스트
         private int currentPage = 0; // 현재 페이지 인덱스
         private int pageSize = 5; // 한 페이지에 보여줄 카드 수
 
-        public AlertsForm()
+        public US_ViolationManagementForm()
         {
             InitializeComponent();
         }
 
-        private void AddCard() // 카드 추가 (추후 DB 연동 필요)
+        private void AddViolationCard() // 임의의 데이터 카드 추가 (추후 DB 연동 필요)
         {
             alertCards.Clear();
-            flpAlertsList.Controls.Clear();
+            flpViolationList.Controls.Clear();
 
             for (int i = 0; i < 10; i++)
             {
                 var card = new US_AlertCard();
-                card.SetData($"위반 유형 {i + 1}", $"2026-04-11 20:{56 + i}:25", $"Camera {i % 3 + 1} / {(char)('A' + i % 3)}구역", $"ID: {12345 + i}", null);
+
+                bool isResolved = (i % 2 == 0); // 짝수는 해결, 홀수는 미해결
+
+                card.SetData(
+                    $"위반 유형 {i + 1}",
+                    $"2026-04-11 20:{56 + i}:25",
+                    $"Camera {i % 3 + 1} / {(char)('A' + i % 3)}구역",
+                    $"ID: {12345 + i}",
+                    isResolved ? "해결" : "미해결",
+                    null
+                );
+
+                card.HideResolveButton(); // 버튼 숨김
+
                 alertCards.Add(card);
-                flpAlertsList.Controls.Add(card);
+                flpViolationList.Controls.Add(card);
             }
 
             UpdateCardVisibility();
@@ -46,7 +59,15 @@ namespace PPE_관제_시스템
             UpdatePageLabel();
         }
 
-        private void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) // 이전 페이지로 이동
+        private void UpdatePageLabel() // 페이지 label 업데이트
+        {
+            int totalPages = (alertCards.Count + pageSize - 1) / pageSize;
+            if (totalPages == 0)
+                totalPages = 1;
+            lblPage.Text = $"{currentPage + 1} / {totalPages}";
+        }
+
+        private void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (currentPage > 0)
             {
@@ -55,7 +76,7 @@ namespace PPE_관제_시스템
             }
         }
 
-        private void lnkNext_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) // 다음 페이지로 이동
+        private void lnkNext_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if ((currentPage + 1) * pageSize < alertCards.Count)
             {
@@ -64,24 +85,9 @@ namespace PPE_관제_시스템
             }
         }
 
-        private void UpdatePageLabel() // 페이지 label 업데이트
-        { 
-            int totalPages = (alertCards.Count + pageSize - 1) / pageSize;
-            if(totalPages == 0) 
-                totalPages = 1;
-            lblPage.Text = $"{currentPage + 1} / {totalPages}";
-        }
-
-        private void AlertsForm_Load(object sender, EventArgs e)
+        private void US_ViolationManagementForm_Load(object sender, EventArgs e)
         {
-            AddCard();
-        }
-
-        private void btnLiveMonitoring_Click(object sender, EventArgs e)
-        {
-            LiveMonitoringForm liveMonitoringForm = new LiveMonitoringForm();
-            liveMonitoringForm.Show();
-            this.Close();
+            AddViolationCard();
         }
     }
 }

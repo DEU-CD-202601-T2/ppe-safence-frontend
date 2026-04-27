@@ -19,7 +19,7 @@ namespace PPE_관제_시스템
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            LiveMonitoringForm managerView = new LiveMonitoringForm();
+            MainForm managerView = new MainForm();
             managerView.Show();
         }
 

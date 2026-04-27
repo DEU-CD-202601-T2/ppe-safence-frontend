@@ -47,23 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlertsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertsForm.Designer.cs">
-      <DependentUpon>AlertsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AnalysisForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AnalysisForm.Designer.cs">
       <DependentUpon>AnalysisForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Control.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Control.Designer.cs">
-      <DependentUpon>Control.cs</DependentUpon>
     </Compile>
     <Compile Include="DetectionLogForm.cs">
       <SubType>Form</SubType>
@@ -83,17 +71,29 @@
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Managerment.cs">
+    <Compile Include="US_AlertsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_AlertsForm.Designer.cs">
+      <DependentUpon>US_AlertsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="US_LiveMonitoringForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_LiveMonitoringForm.Designer.cs">
+      <DependentUpon>US_LiveMonitoringForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="US_ViolationManagementForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_ViolationManagementForm.Designer.cs">
+      <DependentUpon>US_ViolationManagementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Managerment.Designer.cs">
-      <DependentUpon>Managerment.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LiveMonitoringForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LiveMonitoringForm.Designer.cs">
-      <DependentUpon>LiveMonitoringForm.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,14 +127,8 @@
     <Compile Include="US_ZoneSettings.Designer.cs">
       <DependentUpon>US_ZoneSettings.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AlertsForm.resx">
-      <DependentUpon>AlertsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AnalysisForm.resx">
       <DependentUpon>AnalysisForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Control.resx">
-      <DependentUpon>Control.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DetectionLogForm.resx">
       <DependentUpon>DetectionLogForm.cs</DependentUpon>
@@ -145,11 +139,17 @@
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Managerment.resx">
-      <DependentUpon>Managerment.cs</DependentUpon>
+    <EmbeddedResource Include="US_AlertsForm.resx">
+      <DependentUpon>US_AlertsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LiveMonitoringForm.resx">
-      <DependentUpon>LiveMonitoringForm.cs</DependentUpon>
+    <EmbeddedResource Include="US_LiveMonitoringForm.resx">
+      <DependentUpon>US_LiveMonitoringForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_ViolationManagementForm.resx">
+      <DependentUpon>US_ViolationManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
