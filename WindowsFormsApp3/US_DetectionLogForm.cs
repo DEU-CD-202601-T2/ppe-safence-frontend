@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace PPE_관제_시스템
 {
-    public partial class Managerment : Form
+    public partial class US_DetectionLogForm : UserControl
     {
-        public Managerment()
+        public US_DetectionLogForm()
         {
             InitializeComponent();
         }

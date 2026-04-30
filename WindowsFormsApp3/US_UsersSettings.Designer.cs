@@ -30,19 +30,25 @@ namespace PPE_관제_시스템
         /// </summary>
         private void InitializeComponent()
         {
-            this.dgvUserSetting = new System.Windows.Forms.DataGridView();
-            this.user_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.user_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.role = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.location = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.manage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.cmbZone = new System.Windows.Forms.ComboBox();
-            this.flpUserAlerts = new System.Windows.Forms.FlowLayoutPanel();
-
+            this.dgvUserSetting = new System.Windows.Forms.DataGridView();
+            this.manage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.location = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.role = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.user_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.user_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserSetting)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // cmbZone
+            // 
+            this.cmbZone.Location = new System.Drawing.Point(0, 0);
+            this.cmbZone.Name = "cmbZone";
+            this.cmbZone.Size = new System.Drawing.Size(121, 23);
+            this.cmbZone.TabIndex = 0;
             // 
             // dgvUserSetting
             // 
@@ -65,43 +71,20 @@ namespace PPE_관제_시스템
             this.dgvUserSetting.RowHeadersWidth = 51;
             this.dgvUserSetting.RowTemplate.Height = 27;
             this.dgvUserSetting.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUserSetting.Size = new System.Drawing.Size(890, 472);
+            this.dgvUserSetting.Size = new System.Drawing.Size(1219, 653);
             this.dgvUserSetting.TabIndex = 0;
-
-            this.flpUserAlerts.AutoScroll = true;
-            this.flpUserAlerts.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.flpUserAlerts.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flpUserAlerts.Location = new System.Drawing.Point(0,100);
-            this.flpUserAlerts.Size = new System.Drawing.Size(890,372);
-            this.flpUserAlerts.Name = "flpUserAlerts";
-            this.flpUserAlerts.TabIndex = 0;
-
-            this.cmbStatus.Items.AddRange(new object[] { "전체", "미해결", "해결" });
-            this.cmbStatus.Location = new System.Drawing.Point(600, 20);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(121, 23);
-            this.cmbStatus.TabIndex = 1;
-
-            this.Controls.Add(this.cmbStatus);
-            this.Controls.Add(this.flpUserAlerts);
             // 
-            // user_name
+            // manage
             // 
-            this.user_name.HeaderText = "이름";
-            this.user_name.MinimumWidth = 6;
-            this.user_name.Name = "user_name";
+            this.manage.HeaderText = "관리";
+            this.manage.MinimumWidth = 6;
+            this.manage.Name = "manage";
             // 
-            // user_id
+            // status
             // 
-            this.user_id.HeaderText = "ID";
-            this.user_id.MinimumWidth = 6;
-            this.user_id.Name = "user_id";
-            // 
-            // role
-            // 
-            this.role.HeaderText = "역할";
-            this.role.MinimumWidth = 6;
-            this.role.Name = "role";
+            this.status.HeaderText = "상태";
+            this.status.MinimumWidth = 6;
+            this.status.Name = "status";
             // 
             // location
             // 
@@ -109,33 +92,48 @@ namespace PPE_관제_시스템
             this.location.MinimumWidth = 6;
             this.location.Name = "location";
             // 
-            //status
+            // role
             // 
-            this.status.HeaderText = "상태";
-            this.status.MinimumWidth = 6;
-            this.status.Name = "status";
+            this.role.HeaderText = "역할";
+            this.role.MinimumWidth = 6;
+            this.role.Name = "role";
             // 
-            //manage
+            // user_id
             // 
-            this.manage.HeaderText = "관리";
-            this.manage.MinimumWidth = 6;
-            this.manage.Name = "manage";
+            this.user_id.HeaderText = "ID";
+            this.user_id.MinimumWidth = 6;
+            this.user_id.Name = "user_id";
             // 
-            //US_UsersSettings
+            // user_name
+            // 
+            this.user_name.HeaderText = "이름";
+            this.user_name.MinimumWidth = 6;
+            this.user_name.Name = "user_name";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dgvUserSetting);
+            this.panel1.Location = new System.Drawing.Point(1, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1219, 653);
+            this.panel1.TabIndex = 1;
+            // 
+            // US_UsersSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Controls.Add(this.dgvUserSetting);
+            this.Controls.Add(this.panel1);
             this.Name = "US_UsersSettings";
-            this.Size = new System.Drawing.Size(890, 472);
+            this.Size = new System.Drawing.Size(1219, 653);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserSetting)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            
+
         }
 
         #endregion
-
+        private System.Windows.Forms.ComboBox cmbZone;
         private System.Windows.Forms.DataGridView dgvUserSetting;
         private System.Windows.Forms.DataGridViewTextBoxColumn user_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn user_id;
@@ -143,10 +141,6 @@ namespace PPE_관제_시스템
         private System.Windows.Forms.DataGridViewTextBoxColumn location;
         private System.Windows.Forms.DataGridViewTextBoxColumn status;
         private System.Windows.Forms.DataGridViewTextBoxColumn manage;
-        private System.Windows.Forms.ComboBox cmbStatus;
-        private System.Windows.Forms.ComboBox cmbZone;
-        private System.Windows.Forms.FlowLayoutPanel flpUserAlerts;
-
-
+        private System.Windows.Forms.Panel panel1;
     }
 }

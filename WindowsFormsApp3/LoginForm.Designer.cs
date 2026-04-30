@@ -71,7 +71,7 @@
             this.btnLogin.TabIndex = 4;
             this.btnLogin.Text = "로그인";
             this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(async (sender, e) => await this.btnLogin_Click(sender, e));
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // txtPwd
             // 

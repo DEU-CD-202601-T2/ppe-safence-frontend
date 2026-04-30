@@ -106,7 +106,7 @@
             this.Controls.Add(this.btnZoneModify);
             this.Controls.Add(this.btnZoneAdd);
             this.Name = "US_ZoneSettings";
-            this.Size = new System.Drawing.Size(890, 472);
+            this.Size = new System.Drawing.Size(1219, 653);
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

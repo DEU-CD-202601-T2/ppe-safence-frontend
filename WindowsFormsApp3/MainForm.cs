@@ -20,8 +20,6 @@ namespace PPE_관제_시스템
         public MainForm()
         {
             InitializeComponent();
-            pnlBar.Visible = false; // 왼쪽 패널 초기에는 숨김
-            lblMenuName.Text = ""; // 초기 메뉴 이름 설정
             this.Load += MainForm_Load; // 폼 로드 이벤트 핸들러 등록
             DataManager.InitTestData(); // 테스트 데이터 초기화
         }
@@ -58,7 +56,7 @@ namespace PPE_관제_시스템
                 {
                     newForm = new US_LiveMonitoringForm();
                 }
-                else if (formName == "AlertsForm") // 알람 폼
+                else if (formName == "AlertsForm") // 알림 폼
                 {
                     newForm = new US_AlertsForm();
                 }
@@ -66,21 +64,21 @@ namespace PPE_관제_시스템
                 {
                     newForm = new US_ViolationManagementForm();
                 }
-                else if (formName == "ControlForm") // 위반 관리 폼
+                else if (formName == "ControlForm") // 대응 / 제어 폼
                 {
-                    //newForm = new US_ControlForm();
+                    newForm = new US_ControlForm();
                 }
-                else if (formName == "DetectionLogForm") // 위반 관리 폼
+                else if (formName == "DetectionLogForm") // 이력 / 로그 폼
                 {
-                    //newForm = new US_DetectionLogForm();
+                    newForm = new US_DetectionLogForm();
                 }
-                else if (formName == "AnalysisForm") // 위반 관리 폼
+                else if (formName == "AnalysisForm") // 분석 폼
                 {
-                    //newForm = new US_AnalysisForm();
+                    newForm = new US_AnalysisForm();
                 }
-                else if (formName == "SettingForm") // 위반 관리 폼
+                else if (formName == "SettingsForm") // 설정 폼
                 {
-                    //newForm = new US_SettingForm();
+                    newForm = new US_SettingsForm();
                 }
 
                 if (newForm != null)
@@ -125,7 +123,7 @@ namespace PPE_관제_시스템
         {
             ShowForm("AlertsForm");
             pnlBar.Visible = true;
-            lblMenuName.Text = "알람";
+            lblMenuName.Text = "알림";
             SelectMenuButton(btnAlerts);
             MoveSideBar(btnAlerts);
         }
@@ -137,7 +135,8 @@ namespace PPE_관제_시스템
             SelectMenuButton(btnViolationManagement);
             MoveSideBar(btnViolationManagement);
         }
-        private void btnControl_Click(object sender, EventArgs e)
+
+        private void btnControl_Click_1(object sender, EventArgs e)
         {
             ShowForm("ControlForm");
             pnlBar.Visible = true;
@@ -145,7 +144,8 @@ namespace PPE_관제_시스템
             SelectMenuButton(btnControl);
             MoveSideBar(btnControl);
         }
-        private void btnDetectionLog_Click(object sender, EventArgs e)
+
+        private void btnDetectionLog_Click_1(object sender, EventArgs e)
         {
             ShowForm("DetectionLogForm");
             pnlBar.Visible = true;
@@ -154,7 +154,7 @@ namespace PPE_관제_시스템
             MoveSideBar(btnDetectionLog);
         }
 
-        private void btnAnalsys_Click(object sender, EventArgs e)
+        private void btnAnalysis_Click(object sender, EventArgs e)
         {
             ShowForm("AnalysisForm");
             pnlBar.Visible = true;
@@ -163,7 +163,7 @@ namespace PPE_관제_시스템
             MoveSideBar(btnAnalysis);
         }
 
-        private void btnSettings_Click(object sender, EventArgs e)
+        private void btnSettings_Click_1(object sender, EventArgs e)
         {
             ShowForm("SettingsForm");
             pnlBar.Visible = true;
@@ -171,6 +171,5 @@ namespace PPE_관제_시스템
             SelectMenuButton(btnSettings);
             MoveSideBar(btnSettings);
         }
-
     }
 }

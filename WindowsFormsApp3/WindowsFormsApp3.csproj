@@ -136,42 +136,40 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlertsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertsForm.Designer.cs" />
     <Compile Include="AlterDataClass.cs" />
     <Compile Include="AnalysisForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AnalysisForm.Designer.cs" />
+    <Compile Include="AnalysisForm.Designer.cs">
+      <DependentUpon>AnalysisForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ControlForm.Designer.cs" />
+    <Compile Include="ControlForm.Designer.cs">
+      <DependentUpon>ControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataManager.cs" />
     <Compile Include="db.cs" />
     <Compile Include="DetectionLogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DetectionLogForm.Designer.cs" />
-    <Compile Include="Globaldata.cs" />
-    <Compile Include="LiveMonitoringForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="DetectionLogForm.Designer.cs">
+      <DependentUpon>DetectionLogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LiveMonitoringForm.Designer.cs" />
+    <Compile Include="Globaldata.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForm.Designer.cs" />
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs" />
-    <Compile Include="Managerment.cs">
-      <SubType>Form</SubType>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Managerment.Designer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
@@ -182,54 +180,98 @@
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForm.Designer.cs" />
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserData.cs" />
     <Compile Include="US_AlertCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_AlertCard.Designer.cs" />
+    <Compile Include="US_AlertCard.Designer.cs">
+      <DependentUpon>US_AlertCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="US_AlertSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_AlertSettings.Designer.cs" />
+    <Compile Include="US_AlertSettings.Designer.cs">
+      <DependentUpon>US_AlertSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="US_AlertsForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_AlertsForm.Designer.cs" />
+    <Compile Include="US_AlertsForm.Designer.cs">
+      <DependentUpon>US_AlertsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="US_AnalysisForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_AnalysisForm.Designer.cs">
+      <DependentUpon>US_AnalysisForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="US_ControlForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_ControlForm.Designer.cs">
+      <DependentUpon>US_ControlForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="US_DetectionLogForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_DetectionLogForm.Designer.cs">
+      <DependentUpon>US_DetectionLogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="US_LiveMonitoringForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_LiveMonitoringForm.Designer.cs" />
+    <Compile Include="US_LiveMonitoringForm.Designer.cs">
+      <DependentUpon>US_LiveMonitoringForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="US_PPEStandard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_PPEStandard.Designer.cs" />
+    <Compile Include="US_PPEStandard.Designer.cs">
+      <DependentUpon>US_PPEStandard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="US_SettingsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="US_SettingsForm.Designer.cs">
+      <DependentUpon>US_SettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="US_UsersSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_UsersSettings.Designer.cs" />
+    <Compile Include="US_UsersSettings.Designer.cs">
+      <DependentUpon>US_UsersSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="US_ViolationManagementForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_ViolationManagementForm.Designer.cs" />
+    <Compile Include="US_ViolationManagementForm.Designer.cs">
+      <DependentUpon>US_ViolationManagementForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="US_ZoneSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_ZoneSettings.Designer.cs" />
+    <Compile Include="US_ZoneSettings.Designer.cs">
+      <DependentUpon>US_ZoneSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Violation.cs" />
-    <EmbeddedResource Include="AlertsForm.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AlertsForm1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="AnalysisForm.resx">
       <DependentUpon>AnalysisForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControlForm.resx" />
-    <EmbeddedResource Include="DetectionLogForm.resx" />
-    <EmbeddedResource Include="LiveMonitoringForm.resx" />
-    <EmbeddedResource Include="LoginForm.resx" />
-    <EmbeddedResource Include="MainForm.resx" />
-    <EmbeddedResource Include="Managerment.resx" />
+    <EmbeddedResource Include="ControlForm.resx">
+      <DependentUpon>ControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetectionLogForm.resx">
+      <DependentUpon>DetectionLogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -245,15 +287,45 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <CustomToolNamespace>WindowsFormsApp3</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx" />
-    <EmbeddedResource Include="US_AlertCard.resx" />
-    <EmbeddedResource Include="US_AlertSettings.resx" />
-    <EmbeddedResource Include="US_AlertsForm.resx" />
-    <EmbeddedResource Include="US_LiveMonitoringForm.resx" />
-    <EmbeddedResource Include="US_PPEStandard.resx" />
-    <EmbeddedResource Include="US_UsersSettings.resx" />
-    <EmbeddedResource Include="US_ViolationManagementForm.resx" />
-    <EmbeddedResource Include="US_ZoneSettings.resx" />
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_AlertCard.resx">
+      <DependentUpon>US_AlertCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_AlertSettings.resx">
+      <DependentUpon>US_AlertSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_AlertsForm.resx">
+      <DependentUpon>US_AlertsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_AnalysisForm.resx">
+      <DependentUpon>US_AnalysisForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_ControlForm.resx">
+      <DependentUpon>US_ControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_DetectionLogForm.resx">
+      <DependentUpon>US_DetectionLogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_LiveMonitoringForm.resx">
+      <DependentUpon>US_LiveMonitoringForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_PPEStandard.resx">
+      <DependentUpon>US_PPEStandard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_SettingsForm.resx">
+      <DependentUpon>US_SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_UsersSettings.resx">
+      <DependentUpon>US_UsersSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_ViolationManagementForm.resx">
+      <DependentUpon>US_ViolationManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_ZoneSettings.resx">
+      <DependentUpon>US_ZoneSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

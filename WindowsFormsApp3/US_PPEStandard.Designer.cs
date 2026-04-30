@@ -163,7 +163,7 @@
             this.Controls.Add(this.btnPPEReset);
             this.Controls.Add(this.btnPPESave);
             this.Name = "US_PPEStandard";
-            this.Size = new System.Drawing.Size(890, 472);
+            this.Size = new System.Drawing.Size(1219, 653);
             this.ResumeLayout(false);
             this.PerformLayout();
 

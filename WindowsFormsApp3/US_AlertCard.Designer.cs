@@ -87,9 +87,8 @@
             this.btnResolve.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResolve.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnResolve.ForeColor = System.Drawing.SystemColors.ControlText;
-            //this.btnResolve.Image = global::PPE_관제_시스템.Properties.Resources.check;
             this.btnResolve.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResolve.Location = new System.Drawing.Point(1132, 120);
+            this.btnResolve.Location = new System.Drawing.Point(1127, 120);
             this.btnResolve.Name = "btnResolve";
             this.btnResolve.Size = new System.Drawing.Size(95, 35);
             this.btnResolve.TabIndex = 6;

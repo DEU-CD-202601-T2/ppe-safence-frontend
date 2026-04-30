@@ -93,6 +93,7 @@
             this.btnSettings.TabIndex = 6;
             this.btnSettings.Text = "설정";
             this.btnSettings.UseVisualStyleBackColor = false;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click_1);
             // 
             // btnAnalysis
             // 
@@ -107,6 +108,7 @@
             this.btnAnalysis.TabIndex = 5;
             this.btnAnalysis.Text = "분석";
             this.btnAnalysis.UseVisualStyleBackColor = false;
+            this.btnAnalysis.Click += new System.EventHandler(this.btnAnalysis_Click);
             // 
             // btnDetectionLog
             // 
@@ -121,6 +123,7 @@
             this.btnDetectionLog.TabIndex = 4;
             this.btnDetectionLog.Text = "이력 / 로그";
             this.btnDetectionLog.UseVisualStyleBackColor = false;
+            this.btnDetectionLog.Click += new System.EventHandler(this.btnDetectionLog_Click_1);
             // 
             // btnControl
             // 
@@ -135,6 +138,7 @@
             this.btnControl.TabIndex = 3;
             this.btnControl.Text = "대응 / 제어";
             this.btnControl.UseVisualStyleBackColor = false;
+            this.btnControl.Click += new System.EventHandler(this.btnControl_Click_1);
             // 
             // lblPPESystem
             // 
