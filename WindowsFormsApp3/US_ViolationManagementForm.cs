@@ -116,7 +116,7 @@ namespace PPE_관제_시스템
             }
         }
 
-        // 주석 테스트
+      
         private void RefreshCardList()
         {
             if (this.InvokeRequired)
