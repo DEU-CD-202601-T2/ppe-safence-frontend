@@ -37,12 +37,12 @@ namespace PPE_관제_시스템
 
         private void btnUserSettings_Click(object sender, EventArgs e)
         {
-            ShowControl(new US_UsersSettings());
+            ShowControl(new US_UsersSetting());
         }
 
         private void btnZoneSettings_Click(object sender, EventArgs e)
         {
-            ShowControl(new US_ZoneSettings());
+            ShowControl(new US_ZoneSetting());
         }
 
         private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)

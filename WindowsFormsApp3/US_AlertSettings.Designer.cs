@@ -28,36 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dgvSettingList = new System.Windows.Forms.DataGridView();
-            this.lblSettingList = new System.Windows.Forms.Label();
+            this.lblAlertSetting = new System.Windows.Forms.Label();
             this.btnAlertSave = new System.Windows.Forms.Button();
             this.btnAlertDelete = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSettingList)).BeginInit();
+            this.chkSound = new System.Windows.Forms.CheckBox();
+            this.chkPopup = new System.Windows.Forms.CheckBox();
+            this.chkEnableAlerts = new System.Windows.Forms.CheckBox();
+            this.lblSetting = new System.Windows.Forms.Label();
+            this.cmbAlertTypeList = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblAlertType = new System.Windows.Forms.Label();
+            this.lblAlertMethod = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // dgvSettingList
+            // lblAlertSetting
             // 
-            this.dgvSettingList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSettingList.Location = new System.Drawing.Point(0, 89);
-            this.dgvSettingList.Name = "dgvSettingList";
-            this.dgvSettingList.RowHeadersWidth = 51;
-            this.dgvSettingList.RowTemplate.Height = 27;
-            this.dgvSettingList.Size = new System.Drawing.Size(464, 398);
-            this.dgvSettingList.TabIndex = 4;
-            // 
-            // lblSettingList
-            // 
-            this.lblSettingList.AutoSize = true;
-            this.lblSettingList.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSettingList.Location = new System.Drawing.Point(161, 25);
-            this.lblSettingList.Name = "lblSettingList";
-            this.lblSettingList.Size = new System.Drawing.Size(139, 38);
-            this.lblSettingList.TabIndex = 5;
-            this.lblSettingList.Text = "설정 목록";
+            this.lblAlertSetting.AutoSize = true;
+            this.lblAlertSetting.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblAlertSetting.Location = new System.Drawing.Point(3, 3);
+            this.lblAlertSetting.Name = "lblAlertSetting";
+            this.lblAlertSetting.Size = new System.Drawing.Size(114, 31);
+            this.lblAlertSetting.TabIndex = 5;
+            this.lblAlertSetting.Text = "알림 설정";
             // 
             // btnAlertSave
             // 
-            this.btnAlertSave.Location = new System.Drawing.Point(505, 417);
+            this.btnAlertSave.Location = new System.Drawing.Point(897, 594);
             this.btnAlertSave.Name = "btnAlertSave";
             this.btnAlertSave.Size = new System.Drawing.Size(149, 42);
             this.btnAlertSave.TabIndex = 6;
@@ -66,35 +62,123 @@
             // 
             // btnAlertDelete
             // 
-            this.btnAlertDelete.Location = new System.Drawing.Point(722, 417);
+            this.btnAlertDelete.Location = new System.Drawing.Point(1052, 594);
             this.btnAlertDelete.Name = "btnAlertDelete";
             this.btnAlertDelete.Size = new System.Drawing.Size(149, 42);
             this.btnAlertDelete.TabIndex = 7;
             this.btnAlertDelete.Text = "삭제";
             this.btnAlertDelete.UseVisualStyleBackColor = true;
             // 
+            // chkSound
+            // 
+            this.chkSound.AutoSize = true;
+            this.chkSound.Location = new System.Drawing.Point(687, 287);
+            this.chkSound.Name = "chkSound";
+            this.chkSound.Size = new System.Drawing.Size(59, 19);
+            this.chkSound.TabIndex = 19;
+            this.chkSound.Text = "소리";
+            this.chkSound.UseVisualStyleBackColor = true;
+            // 
+            // chkPopup
+            // 
+            this.chkPopup.AutoSize = true;
+            this.chkPopup.Location = new System.Drawing.Point(687, 249);
+            this.chkPopup.Name = "chkPopup";
+            this.chkPopup.Size = new System.Drawing.Size(59, 19);
+            this.chkPopup.TabIndex = 18;
+            this.chkPopup.Text = "팝업";
+            this.chkPopup.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableAlerts
+            // 
+            this.chkEnableAlerts.AutoSize = true;
+            this.chkEnableAlerts.Location = new System.Drawing.Point(660, 175);
+            this.chkEnableAlerts.Name = "chkEnableAlerts";
+            this.chkEnableAlerts.Size = new System.Drawing.Size(94, 19);
+            this.chkEnableAlerts.TabIndex = 17;
+            this.chkEnableAlerts.Text = "알림 사용";
+            this.chkEnableAlerts.UseVisualStyleBackColor = true;
+            // 
+            // lblSetting
+            // 
+            this.lblSetting.AutoSize = true;
+            this.lblSetting.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSetting.Location = new System.Drawing.Point(766, 110);
+            this.lblSetting.Name = "lblSetting";
+            this.lblSetting.Size = new System.Drawing.Size(73, 38);
+            this.lblSetting.TabIndex = 16;
+            this.lblSetting.Text = "설정";
+            // 
+            // cmbAlertTypeList
+            // 
+            this.cmbAlertTypeList.FormattingEnabled = true;
+            this.cmbAlertTypeList.Location = new System.Drawing.Point(217, 182);
+            this.cmbAlertTypeList.Name = "cmbAlertTypeList";
+            this.cmbAlertTypeList.Size = new System.Drawing.Size(223, 23);
+            this.cmbAlertTypeList.TabIndex = 15;
+            this.cmbAlertTypeList.Text = "PPE 위반";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.panel1.Location = new System.Drawing.Point(580, 109);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(5, 434);
+            this.panel1.TabIndex = 14;
+            // 
+            // lblAlertType
+            // 
+            this.lblAlertType.AutoSize = true;
+            this.lblAlertType.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblAlertType.Location = new System.Drawing.Point(265, 110);
+            this.lblAlertType.Name = "lblAlertType";
+            this.lblAlertType.Size = new System.Drawing.Size(139, 38);
+            this.lblAlertType.TabIndex = 13;
+            this.lblAlertType.Text = "알림 유형";
+            // 
+            // lblAlertMethod
+            // 
+            this.lblAlertMethod.AutoSize = true;
+            this.lblAlertMethod.Location = new System.Drawing.Point(657, 215);
+            this.lblAlertMethod.Name = "lblAlertMethod";
+            this.lblAlertMethod.Size = new System.Drawing.Size(72, 15);
+            this.lblAlertMethod.TabIndex = 22;
+            this.lblAlertMethod.Text = "알림 방식";
+            // 
             // US_AlertSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.lblAlertMethod);
+            this.Controls.Add(this.chkSound);
+            this.Controls.Add(this.chkPopup);
+            this.Controls.Add(this.chkEnableAlerts);
+            this.Controls.Add(this.lblSetting);
+            this.Controls.Add(this.cmbAlertTypeList);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lblAlertType);
             this.Controls.Add(this.btnAlertDelete);
             this.Controls.Add(this.btnAlertSave);
-            this.Controls.Add(this.lblSettingList);
-            this.Controls.Add(this.dgvSettingList);
+            this.Controls.Add(this.lblAlertSetting);
             this.Name = "US_AlertSettings";
-            this.Size = new System.Drawing.Size(890, 472);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSettingList)).EndInit();
+            this.Size = new System.Drawing.Size(1219, 653);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView dgvSettingList;
-        private System.Windows.Forms.Label lblSettingList;
+        private System.Windows.Forms.Label lblAlertSetting;
         private System.Windows.Forms.Button btnAlertSave;
         private System.Windows.Forms.Button btnAlertDelete;
+        private System.Windows.Forms.CheckBox chkSound;
+        private System.Windows.Forms.CheckBox chkPopup;
+        private System.Windows.Forms.CheckBox chkEnableAlerts;
+        private System.Windows.Forms.Label lblSetting;
+        private System.Windows.Forms.ComboBox cmbAlertTypeList;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblAlertType;
+        private System.Windows.Forms.Label lblAlertMethod;
     }
 }

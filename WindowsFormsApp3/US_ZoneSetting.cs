@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace PPE_관제_시스템
 {
-    public partial class US_ZoneSettings : UserControl
+    public partial class US_ZoneSetting : UserControl
     {
-        public US_ZoneSettings()
+        public US_ZoneSetting()
         {
             InitializeComponent();
         }

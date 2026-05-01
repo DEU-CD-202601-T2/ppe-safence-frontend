@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace PPE_관제_시스템
 {
-    public partial class US_UsersSettings : UserControl
+    public partial class US_UsersSetting : UserControl
     {
-        public US_UsersSettings()
+        public US_UsersSetting()
         {
             InitializeComponent();
             //DataManager.OnDataChanged += RefreshCardList;

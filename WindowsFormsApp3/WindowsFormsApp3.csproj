@@ -238,11 +238,11 @@
     <Compile Include="US_SettingsForm.Designer.cs">
       <DependentUpon>US_SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="US_UsersSettings.cs">
+    <Compile Include="US_UsersSetting.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_UsersSettings.Designer.cs">
-      <DependentUpon>US_UsersSettings.cs</DependentUpon>
+    <Compile Include="US_UsersSetting.Designer.cs">
+      <DependentUpon>US_UsersSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="US_ViolationManagementForm.cs">
       <SubType>UserControl</SubType>
@@ -250,11 +250,11 @@
     <Compile Include="US_ViolationManagementForm.Designer.cs">
       <DependentUpon>US_ViolationManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="US_ZoneSettings.cs">
+    <Compile Include="US_ZoneSetting.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="US_ZoneSettings.Designer.cs">
-      <DependentUpon>US_ZoneSettings.cs</DependentUpon>
+    <Compile Include="US_ZoneSetting.Designer.cs">
+      <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Violation.cs" />
     <EmbeddedResource Include="AnalysisForm.resx">
@@ -317,14 +317,14 @@
     <EmbeddedResource Include="US_SettingsForm.resx">
       <DependentUpon>US_SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="US_UsersSettings.resx">
-      <DependentUpon>US_UsersSettings.cs</DependentUpon>
+    <EmbeddedResource Include="US_UsersSetting.resx">
+      <DependentUpon>US_UsersSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="US_ViolationManagementForm.resx">
       <DependentUpon>US_ViolationManagementForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="US_ZoneSettings.resx">
-      <DependentUpon>US_ZoneSettings.cs</DependentUpon>
+    <EmbeddedResource Include="US_ZoneSetting.resx">
+      <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

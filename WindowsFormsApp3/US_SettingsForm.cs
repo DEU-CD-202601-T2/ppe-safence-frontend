@@ -51,11 +51,11 @@ namespace PPE_관제_시스템
                 }
                 else if (formName == "UserSettings") // 사용자 관리 메뉴
                 {
-                    newForm = new US_UsersSettings();
+                    newForm = new US_UsersSetting();
                 }
                 else if (formName == "ZoneSettings") // 구역 관리 메뉴
                 {
-                    newForm = new US_ZoneSettings();
+                    newForm = new US_ZoneSetting();
                 }
 
                 if (newForm != null)
