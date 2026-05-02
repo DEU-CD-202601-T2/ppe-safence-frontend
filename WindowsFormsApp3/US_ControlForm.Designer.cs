@@ -41,7 +41,6 @@
             this.lblPersonCount = new System.Windows.Forms.Label();
             this.lblNoPPEPersonnel = new System.Windows.Forms.Label();
             this.pnlWorkersList = new System.Windows.Forms.Panel();
-            this.lblActiveWorkers = new System.Windows.Forms.Label();
             this.dgvActiveWorkers = new System.Windows.Forms.DataGridView();
             this.Coumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,6 +48,7 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblActiveWorkers = new System.Windows.Forms.Label();
             this.pnlNumberofAlerts.SuspendLayout();
             this.pnlSensorStatus.SuspendLayout();
             this.pnlNoPPEPersonnel.SuspendLayout();
@@ -110,11 +110,11 @@
             // 
             this.lblNumberofAlerts.AutoSize = true;
             this.lblNumberofAlerts.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblNumberofAlerts.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblNumberofAlerts.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblNumberofAlerts.Location = new System.Drawing.Point(5, 2);
             this.lblNumberofAlerts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNumberofAlerts.Name = "lblNumberofAlerts";
-            this.lblNumberofAlerts.Size = new System.Drawing.Size(145, 31);
+            this.lblNumberofAlerts.Size = new System.Drawing.Size(126, 28);
             this.lblNumberofAlerts.TabIndex = 5;
             this.lblNumberofAlerts.Text = "경고 발생 수";
             // 
@@ -144,11 +144,11 @@
             // lblSensorStatus
             // 
             this.lblSensorStatus.AutoSize = true;
-            this.lblSensorStatus.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSensorStatus.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblSensorStatus.Location = new System.Drawing.Point(5, 2);
             this.lblSensorStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSensorStatus.Name = "lblSensorStatus";
-            this.lblSensorStatus.Size = new System.Drawing.Size(114, 31);
+            this.lblSensorStatus.Size = new System.Drawing.Size(99, 28);
             this.lblSensorStatus.TabIndex = 6;
             this.lblSensorStatus.Text = "센서 상태";
             // 
@@ -191,11 +191,11 @@
             // lblNoPPEPersonnel
             // 
             this.lblNoPPEPersonnel.AutoSize = true;
-            this.lblNoPPEPersonnel.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblNoPPEPersonnel.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblNoPPEPersonnel.Location = new System.Drawing.Point(5, 2);
             this.lblNoPPEPersonnel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNoPPEPersonnel.Name = "lblNoPPEPersonnel";
-            this.lblNoPPEPersonnel.Size = new System.Drawing.Size(185, 31);
+            this.lblNoPPEPersonnel.Size = new System.Drawing.Size(161, 28);
             this.lblNoPPEPersonnel.TabIndex = 4;
             this.lblNoPPEPersonnel.Text = "PPE 미착용 인원";
             // 
@@ -208,17 +208,6 @@
             this.pnlWorkersList.Name = "pnlWorkersList";
             this.pnlWorkersList.Size = new System.Drawing.Size(1224, 467);
             this.pnlWorkersList.TabIndex = 10;
-            // 
-            // lblActiveWorkers
-            // 
-            this.lblActiveWorkers.AutoSize = true;
-            this.lblActiveWorkers.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblActiveWorkers.Location = new System.Drawing.Point(9, 257);
-            this.lblActiveWorkers.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblActiveWorkers.Name = "lblActiveWorkers";
-            this.lblActiveWorkers.Size = new System.Drawing.Size(158, 23);
-            this.lblActiveWorkers.TabIndex = 9;
-            this.lblActiveWorkers.Text = "실시간 작업자 목록";
             // 
             // dgvActiveWorkers
             // 
@@ -275,6 +264,17 @@
             this.Column5.HeaderText = "시간";
             this.Column5.MinimumWidth = 8;
             this.Column5.Name = "Column5";
+            // 
+            // lblActiveWorkers
+            // 
+            this.lblActiveWorkers.AutoSize = true;
+            this.lblActiveWorkers.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblActiveWorkers.Location = new System.Drawing.Point(9, 257);
+            this.lblActiveWorkers.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblActiveWorkers.Name = "lblActiveWorkers";
+            this.lblActiveWorkers.Size = new System.Drawing.Size(158, 23);
+            this.lblActiveWorkers.TabIndex = 9;
+            this.lblActiveWorkers.Text = "실시간 작업자 목록";
             // 
             // US_ControlForm
             // 

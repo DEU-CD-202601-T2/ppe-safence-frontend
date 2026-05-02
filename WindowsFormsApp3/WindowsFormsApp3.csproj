@@ -137,26 +137,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlterDataClass.cs" />
-    <Compile Include="AnalysisForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AnalysisForm.Designer.cs">
-      <DependentUpon>AnalysisForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ControlForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ControlForm.Designer.cs">
-      <DependentUpon>ControlForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="DataManager.cs" />
     <Compile Include="db.cs" />
-    <Compile Include="DetectionLogForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DetectionLogForm.Designer.cs">
-      <DependentUpon>DetectionLogForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Globaldata.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
@@ -176,12 +158,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UserData.cs" />
     <Compile Include="US_AlertCard.cs">
@@ -257,15 +233,6 @@
       <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Violation.cs" />
-    <EmbeddedResource Include="AnalysisForm.resx">
-      <DependentUpon>AnalysisForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ControlForm.resx">
-      <DependentUpon>ControlForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DetectionLogForm.resx">
-      <DependentUpon>DetectionLogForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -286,9 +253,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <CustomToolNamespace>WindowsFormsApp3</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="US_AlertCard.resx">
       <DependentUpon>US_AlertCard.cs</DependentUpon>

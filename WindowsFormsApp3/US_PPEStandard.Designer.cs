@@ -31,20 +31,21 @@
             this.btnPPESave = new System.Windows.Forms.Button();
             this.btnPPEReset = new System.Windows.Forms.Button();
             this.lblZoneList = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.cmbZoneList = new System.Windows.Forms.ComboBox();
-            this.lblPPEStandard = new System.Windows.Forms.Label();
-            this.chkHelmet = new System.Windows.Forms.CheckBox();
-            this.chkGloves = new System.Windows.Forms.CheckBox();
-            this.chkVest = new System.Windows.Forms.CheckBox();
-            this.chkSafetyBoots = new System.Windows.Forms.CheckBox();
-            this.chkGoggles = new System.Windows.Forms.CheckBox();
             this.lblPPESetting = new System.Windows.Forms.Label();
+            this.pnlZoneList = new System.Windows.Forms.Panel();
+            this.pnlPPESetting = new System.Windows.Forms.Panel();
+            this.lblSetting = new System.Windows.Forms.Label();
+            this.chkSafetyHelmet = new System.Windows.Forms.CheckBox();
+            this.chkSafetyMask = new System.Windows.Forms.CheckBox();
+            this.chkSafetyGloves = new System.Windows.Forms.CheckBox();
+            this.pnlZoneList.SuspendLayout();
+            this.pnlPPESetting.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPPESave
             // 
-            this.btnPPESave.Location = new System.Drawing.Point(969, 610);
+            this.btnPPESave.Location = new System.Drawing.Point(1096, 610);
             this.btnPPESave.Name = "btnPPESave";
             this.btnPPESave.Size = new System.Drawing.Size(120, 40);
             this.btnPPESave.TabIndex = 0;
@@ -53,7 +54,7 @@
             // 
             // btnPPEReset
             // 
-            this.btnPPEReset.Location = new System.Drawing.Point(1095, 610);
+            this.btnPPEReset.Location = new System.Drawing.Point(970, 610);
             this.btnPPEReset.Name = "btnPPEReset";
             this.btnPPEReset.Size = new System.Drawing.Size(120, 40);
             this.btnPPEReset.TabIndex = 1;
@@ -64,88 +65,21 @@
             // 
             this.lblZoneList.AutoSize = true;
             this.lblZoneList.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblZoneList.Location = new System.Drawing.Point(294, 110);
+            this.lblZoneList.Location = new System.Drawing.Point(186, 24);
             this.lblZoneList.Name = "lblZoneList";
             this.lblZoneList.Size = new System.Drawing.Size(167, 38);
             this.lblZoneList.TabIndex = 2;
             this.lblZoneList.Text = "구역 리스트";
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel1.Location = new System.Drawing.Point(624, 110);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(5, 434);
-            this.panel1.TabIndex = 3;
-            // 
             // cmbZoneList
             // 
+            this.cmbZoneList.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cmbZoneList.FormattingEnabled = true;
-            this.cmbZoneList.Location = new System.Drawing.Point(261, 183);
+            this.cmbZoneList.Location = new System.Drawing.Point(151, 98);
             this.cmbZoneList.Name = "cmbZoneList";
-            this.cmbZoneList.Size = new System.Drawing.Size(223, 23);
+            this.cmbZoneList.Size = new System.Drawing.Size(223, 31);
             this.cmbZoneList.TabIndex = 4;
             this.cmbZoneList.Text = "구역 리스트";
-            // 
-            // lblPPEStandard
-            // 
-            this.lblPPEStandard.AutoSize = true;
-            this.lblPPEStandard.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblPPEStandard.Location = new System.Drawing.Point(810, 110);
-            this.lblPPEStandard.Name = "lblPPEStandard";
-            this.lblPPEStandard.Size = new System.Drawing.Size(73, 38);
-            this.lblPPEStandard.TabIndex = 5;
-            this.lblPPEStandard.Text = "설정";
-            // 
-            // chkHelmet
-            // 
-            this.chkHelmet.AutoSize = true;
-            this.chkHelmet.Location = new System.Drawing.Point(726, 219);
-            this.chkHelmet.Name = "chkHelmet";
-            this.chkHelmet.Size = new System.Drawing.Size(73, 19);
-            this.chkHelmet.TabIndex = 6;
-            this.chkHelmet.Text = "Helmet";
-            this.chkHelmet.UseVisualStyleBackColor = true;
-            // 
-            // chkGloves
-            // 
-            this.chkGloves.AutoSize = true;
-            this.chkGloves.Location = new System.Drawing.Point(886, 217);
-            this.chkGloves.Name = "chkGloves";
-            this.chkGloves.Size = new System.Drawing.Size(76, 19);
-            this.chkGloves.TabIndex = 7;
-            this.chkGloves.Text = "Gloves";
-            this.chkGloves.UseVisualStyleBackColor = true;
-            // 
-            // chkVest
-            // 
-            this.chkVest.AutoSize = true;
-            this.chkVest.Location = new System.Drawing.Point(726, 283);
-            this.chkVest.Name = "chkVest";
-            this.chkVest.Size = new System.Drawing.Size(57, 19);
-            this.chkVest.TabIndex = 8;
-            this.chkVest.Text = "Vest";
-            this.chkVest.UseVisualStyleBackColor = true;
-            // 
-            // chkSafetyBoots
-            // 
-            this.chkSafetyBoots.AutoSize = true;
-            this.chkSafetyBoots.Location = new System.Drawing.Point(886, 283);
-            this.chkSafetyBoots.Name = "chkSafetyBoots";
-            this.chkSafetyBoots.Size = new System.Drawing.Size(116, 19);
-            this.chkSafetyBoots.TabIndex = 9;
-            this.chkSafetyBoots.Text = "Safety Boots";
-            this.chkSafetyBoots.UseVisualStyleBackColor = true;
-            // 
-            // chkGoggles
-            // 
-            this.chkGoggles.AutoSize = true;
-            this.chkGoggles.Location = new System.Drawing.Point(726, 349);
-            this.chkGoggles.Name = "chkGoggles";
-            this.chkGoggles.Size = new System.Drawing.Size(84, 19);
-            this.chkGoggles.TabIndex = 10;
-            this.chkGoggles.Text = "Goggles";
-            this.chkGoggles.UseVisualStyleBackColor = true;
             // 
             // lblPPESetting
             // 
@@ -157,25 +91,87 @@
             this.lblPPESetting.TabIndex = 11;
             this.lblPPESetting.Text = "PPE 기준 설정";
             // 
+            // pnlZoneList
+            // 
+            this.pnlZoneList.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlZoneList.Controls.Add(this.lblZoneList);
+            this.pnlZoneList.Controls.Add(this.cmbZoneList);
+            this.pnlZoneList.Location = new System.Drawing.Point(39, 117);
+            this.pnlZoneList.Name = "pnlZoneList";
+            this.pnlZoneList.Size = new System.Drawing.Size(551, 445);
+            this.pnlZoneList.TabIndex = 12;
+            // 
+            // pnlPPESetting
+            // 
+            this.pnlPPESetting.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlPPESetting.Controls.Add(this.lblSetting);
+            this.pnlPPESetting.Controls.Add(this.chkSafetyHelmet);
+            this.pnlPPESetting.Controls.Add(this.chkSafetyMask);
+            this.pnlPPESetting.Controls.Add(this.chkSafetyGloves);
+            this.pnlPPESetting.Location = new System.Drawing.Point(631, 117);
+            this.pnlPPESetting.Name = "pnlPPESetting";
+            this.pnlPPESetting.Size = new System.Drawing.Size(551, 445);
+            this.pnlPPESetting.TabIndex = 13;
+            // 
+            // lblSetting
+            // 
+            this.lblSetting.AutoSize = true;
+            this.lblSetting.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSetting.Location = new System.Drawing.Point(244, 24);
+            this.lblSetting.Name = "lblSetting";
+            this.lblSetting.Size = new System.Drawing.Size(73, 38);
+            this.lblSetting.TabIndex = 5;
+            this.lblSetting.Text = "설정";
+            // 
+            // chkSafetyHelmet
+            // 
+            this.chkSafetyHelmet.AutoSize = true;
+            this.chkSafetyHelmet.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSafetyHelmet.Location = new System.Drawing.Point(100, 102);
+            this.chkSafetyHelmet.Name = "chkSafetyHelmet";
+            this.chkSafetyHelmet.Size = new System.Drawing.Size(83, 27);
+            this.chkSafetyHelmet.TabIndex = 6;
+            this.chkSafetyHelmet.Text = "안전모";
+            this.chkSafetyHelmet.UseVisualStyleBackColor = true;
+            // 
+            // chkSafetyMask
+            // 
+            this.chkSafetyMask.AutoSize = true;
+            this.chkSafetyMask.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSafetyMask.Location = new System.Drawing.Point(100, 190);
+            this.chkSafetyMask.Name = "chkSafetyMask";
+            this.chkSafetyMask.Size = new System.Drawing.Size(83, 27);
+            this.chkSafetyMask.TabIndex = 8;
+            this.chkSafetyMask.Text = "마스크";
+            this.chkSafetyMask.UseVisualStyleBackColor = true;
+            // 
+            // chkSafetyGloves
+            // 
+            this.chkSafetyGloves.AutoSize = true;
+            this.chkSafetyGloves.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSafetyGloves.Location = new System.Drawing.Point(100, 146);
+            this.chkSafetyGloves.Name = "chkSafetyGloves";
+            this.chkSafetyGloves.Size = new System.Drawing.Size(66, 27);
+            this.chkSafetyGloves.TabIndex = 7;
+            this.chkSafetyGloves.Text = "장갑";
+            this.chkSafetyGloves.UseVisualStyleBackColor = true;
+            // 
             // US_PPEStandard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.pnlPPESetting);
+            this.Controls.Add(this.pnlZoneList);
             this.Controls.Add(this.lblPPESetting);
-            this.Controls.Add(this.chkGoggles);
-            this.Controls.Add(this.chkSafetyBoots);
-            this.Controls.Add(this.chkVest);
-            this.Controls.Add(this.chkGloves);
-            this.Controls.Add(this.chkHelmet);
-            this.Controls.Add(this.lblPPEStandard);
-            this.Controls.Add(this.cmbZoneList);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.lblZoneList);
             this.Controls.Add(this.btnPPEReset);
             this.Controls.Add(this.btnPPESave);
             this.Name = "US_PPEStandard";
             this.Size = new System.Drawing.Size(1219, 653);
+            this.pnlZoneList.ResumeLayout(false);
+            this.pnlZoneList.PerformLayout();
+            this.pnlPPESetting.ResumeLayout(false);
+            this.pnlPPESetting.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,14 +182,13 @@
         private System.Windows.Forms.Button btnPPESave;
         private System.Windows.Forms.Button btnPPEReset;
         private System.Windows.Forms.Label lblZoneList;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ComboBox cmbZoneList;
-        private System.Windows.Forms.Label lblPPEStandard;
-        private System.Windows.Forms.CheckBox chkHelmet;
-        private System.Windows.Forms.CheckBox chkGloves;
-        private System.Windows.Forms.CheckBox chkVest;
-        private System.Windows.Forms.CheckBox chkSafetyBoots;
-        private System.Windows.Forms.CheckBox chkGoggles;
         private System.Windows.Forms.Label lblPPESetting;
+        private System.Windows.Forms.Panel pnlZoneList;
+        private System.Windows.Forms.Panel pnlPPESetting;
+        private System.Windows.Forms.Label lblSetting;
+        private System.Windows.Forms.CheckBox chkSafetyHelmet;
+        private System.Windows.Forms.CheckBox chkSafetyMask;
+        private System.Windows.Forms.CheckBox chkSafetyGloves;
     }
 }
