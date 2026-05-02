@@ -35,7 +35,7 @@
             this.pnlViolationMain = new System.Windows.Forms.Panel();
             this.flpViolationList = new System.Windows.Forms.FlowLayoutPanel();
             this.cmbTime = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblTilde = new System.Windows.Forms.Label();
             this.dtpDateEnd = new System.Windows.Forms.DateTimePicker();
             this.dtpDateStart = new System.Windows.Forms.DateTimePicker();
             this.cmbZone = new System.Windows.Forms.ComboBox();
@@ -119,14 +119,14 @@
             this.cmbTime.TabIndex = 24;
             this.cmbTime.Text = "시간";
             // 
-            // label1
+            // lblTilde
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(628, 34);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(18, 15);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "~";
+            this.lblTilde.AutoSize = true;
+            this.lblTilde.Location = new System.Drawing.Point(628, 34);
+            this.lblTilde.Name = "lblTilde";
+            this.lblTilde.Size = new System.Drawing.Size(18, 15);
+            this.lblTilde.TabIndex = 23;
+            this.lblTilde.Text = "~";
             // 
             // dtpDateEnd
             // 
@@ -173,7 +173,7 @@
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlViolationMain);
             this.Controls.Add(this.cmbTime);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblTilde);
             this.Controls.Add(this.dtpDateEnd);
             this.Controls.Add(this.dtpDateStart);
             this.Controls.Add(this.cmbZone);
@@ -198,7 +198,7 @@
         private System.Windows.Forms.Panel pnlViolationMain;
         private System.Windows.Forms.FlowLayoutPanel flpViolationList;
         private System.Windows.Forms.ComboBox cmbTime;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblTilde;
         private System.Windows.Forms.DateTimePicker dtpDateEnd;
         private System.Windows.Forms.DateTimePicker dtpDateStart;
         private System.Windows.Forms.ComboBox cmbZone;
