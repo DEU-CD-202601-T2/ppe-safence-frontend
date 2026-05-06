@@ -132,9 +132,9 @@ namespace PPE_관제_시스템
             string timeFilter = cmbTime?.SelectedItem?.ToString() ?? "전체";
 
             DateTime startDate = dtpDateStart.Value.Date;
-            DateTime endDate = dtpDateEnd.Value.Date.AddDays(1).AddTicks(-1)
+            DateTime endDate = dtpDateEnd.Value.Date.AddDays(1).AddTicks(-1);
 
-            foreach(var data in filteredList)
+            foreach(var data in Filt)
             {
                 var card = new US_AlertCard();
 
