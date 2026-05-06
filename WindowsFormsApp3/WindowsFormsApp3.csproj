@@ -138,6 +138,7 @@
   <ItemGroup>
     <Compile Include="AlterDataClass.cs" />
     <Compile Include="ApiService.cs" />
+    <Compile Include="CameraInfo.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Globaldata.cs" />
     <Compile Include="LoginForm.cs">

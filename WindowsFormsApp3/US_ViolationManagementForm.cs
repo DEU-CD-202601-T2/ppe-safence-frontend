@@ -115,7 +115,6 @@ namespace PPE_관제_시스템
             }
         }
 
-      
         private void RefreshCardList()
         {
             if (this.InvokeRequired)
@@ -134,11 +133,30 @@ namespace PPE_관제_시스템
             DateTime startDate = dtpDateStart.Value.Date;
             DateTime endDate = dtpDateEnd.Value.Date.AddDays(1).AddTicks(-1);
 
-            foreach(var data in Filt)
+            var filteredList = DataManager.AllAlerts.Where(data =>
+            {
+                if (!DateTime.TryParse(data.Time.ToString(), out DateTime recordTime)) return false;
+
+                if (recordTime.Date < startDate || recordTime.Date > endDate) return false;
+
+                if (statusFilter != "전체" && data.Status != statusFilter) return false;
+
+                if (zoneFilter != "전체" && data.Zone != zoneFilter) return false;
+
+                if (timeFilter != "전체")
+                {
+                    int filterHour = int.Parse(timeFilter.Substring(0, 2));
+                    if (recordTime.Hour != filterHour) return false;
+                }
+                return true;
+            }).ToList();
+
+
+            foreach (var data in filteredList)
             {
                 var card = new US_AlertCard();
 
-                card.SetData(data.Type,data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status,data.Img,true);
+                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, true);
                 card.Width = flpViolationList.Width - 35;
 
                 alertCards.Add(card);
@@ -147,6 +165,7 @@ namespace PPE_관제_시스템
             flpViolationList.ResumeLayout();
             UpdateCardVisibility();
         }
+
         private async Task LoadViolationData()
         {
             try

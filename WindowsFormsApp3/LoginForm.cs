@@ -32,7 +32,7 @@ namespace PPE_관제_시스템
             {
                 var loginData = new { id = txtId, pw = txtPwd.Text };
                 var json = JsonConvert.SerializeObject(loginData);
-                var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "/application/json");
+                var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync("http://43.200.27.117:5000", content);
                 if (response.IsSuccessStatusCode)
@@ -52,7 +52,6 @@ namespace PPE_관제_시스템
             {
                 MessageBox.Show("서버 오류가 발생하였습니다: 테스트 모드 진입합니다");
                 UserContext.JwtToken = "dumy_token_for_testing";
-
                 ProceedToMain();
             }
         }

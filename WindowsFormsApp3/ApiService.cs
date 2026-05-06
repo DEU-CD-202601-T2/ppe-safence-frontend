@@ -19,6 +19,36 @@ namespace PPE_관제_시스템
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserContext.JwtToken);
         }
 
+        public static async Task<CameraInfo> GetCameraStreamInfoAsync() // 카메라 스트리밍 URL과 카메라 수 조회
+        {
+            try
+            {
+                SetAuthHeader(); // 토큰 장착
+
+                // 서버의 스트리밍 URL 조회 API 호출
+                var response = await client.GetAsync($"{BaseUrl}/api/stream-urls");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var result = Newtonsoft.Json.Linq.JObject.Parse(json);
+
+                    return new CameraInfo
+                    {
+                        // 서버 응답 JSON의 키값(url, count)에 맞춰 파싱
+                        Url = result["url"]?.ToString(),
+                        Count = result["count"]?.ToObject<int>() ?? 1
+                    };
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"카메라 정보 로드 실패: {ex.Message}");
+                return null;
+            }
+        }
+
         public static async Task<List<AlterDataClass>> GetViolationsAsync()
         {
             try
