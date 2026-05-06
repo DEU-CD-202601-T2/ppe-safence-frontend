@@ -4,26 +4,40 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace PPE_관제_시스템
 {
-    public class AlterDataClass
-    {
-        public string ID { get; set; }
-        public string Type { get; set; }
-        public string Time { get; set; }
-        public string Location { get; set; }
-        public string Status { get; set; }
-        public Image Img { get; set; }
+        public class AlterDataClass
+        {
+            [JsonProperty("id")]
+            public string Id { get; set; }
+            [JsonProperty("type")]
+            public string Type { get; set; }
+            [JsonProperty("uid")]
+            public string Uid { get; set; }
+            [JsonProperty("status")]
+            public string Status { get; set; }
+            [JsonProperty("time")]
+            public string Time { get; set; }
+            [JsonProperty("zone")]
+            public string Zone { get; set; }
+            [JsonProperty("cam")]
+            public string Cam { get; set; }
+            [JsonProperty]
+            public Image Img { get; set; }
+
 
         public AlterDataClass() { }
 
-        public AlterDataClass(string id, string type, string time, string location, string status, Image img = null)
+        public AlterDataClass(string id, string uid, string type, string time, string zone, string cam, string status, Image img = null)
         {
-            ID = id;
+            Id = id;
+            Uid = uid;
             Type = type;
             Time = time;
-            Location = location;
+            Zone = zone;
+            Cam = cam;
             Status = status;
             Img = img;
         }

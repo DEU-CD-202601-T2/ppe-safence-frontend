@@ -20,7 +20,7 @@ namespace PPE_관제_시스템
         private static readonly HttpClient client = new HttpClient();
         private List<US_AlertCard> alertCards = new List<US_AlertCard>(); // 모든 카드 저장 리스트
         private int currentPage = 0; //현재 페이지 인덱스
-        private int pageSize = 5; //한 페이지에 보여줄 카드 수
+        private int pageSize = 10; //한 페이지에 보여줄 카드 수
 
         public US_ViolationManagementForm()
         {
@@ -77,12 +77,11 @@ namespace PPE_관제_시스템
 
         private async void US_ViolationManagementForm_Load(object sender, EventArgs e)
         {
-            if (cmbState != null && cmbState.Items.Count > 0) cmbState.SelectedIndex = 0;
-            if (cmbState != null && cmbState.Items.Count > 0) cmbState.SelectedIndex = 0;
             SetFilterItems();
-
-            RefreshCardList();
             await LoadViolationData();
+
+            dtpDateStart.Value = DateTime.Now.AddDays(-7);
+            dtpDateEnd.Value = DateTime.Now;
         }
 
         private void SetFilterItems()
@@ -129,25 +128,17 @@ namespace PPE_관제_시스템
             flpViolationList.SuspendLayout();
 
             string statusFilter = cmbState?.SelectedItem?.ToString().Trim() ?? "전체";
-            if (statusFilter == "상태" || string.IsNullOrWhiteSpace(statusFilter)) statusFilter = "전체";
             string zoneFilter = cmbZone?.SelectedItem?.ToString().Trim() ?? "전체";
-            if (statusFilter == "구역" || string.IsNullOrWhiteSpace(statusFilter)) statusFilter = "전체";
             string timeFilter = cmbTime?.SelectedItem?.ToString() ?? "전체";
-            if (statusFilter == "시간" || string.IsNullOrWhiteSpace(statusFilter)) statusFilter = "전체";
 
-            string startTimePrefix = (timeFilter != "전체" && timeFilter.Length >= 5)
-                ? timeFilter.Substring(0, 5) : "전체";
-            var filteredList = DataManager.AllAlerts.Where(d =>
-                (statusFilter == "전체" || d.Status == statusFilter) &&
-                (zoneFilter == "전체" || d.Location.Contains(zoneFilter))&&
-                (timeFilter == "전체" || d.Time.Contains(startTimePrefix.Substring(0,3)))
-            ).ToList();
+            DateTime startDate = dtpDateStart.Value.Date;
+            DateTime endDate = dtpDateEnd.Value.Date.AddDays(1).AddTicks(-1)
 
             foreach(var data in filteredList)
             {
                 var card = new US_AlertCard();
 
-                card.SetData(data.Type,data.Time,data.Location,data.ID,data.Status,data.Img,true);
+                card.SetData(data.Type,data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status,data.Img,true);
                 card.Width = flpViolationList.Width - 35;
 
                 alertCards.Add(card);
@@ -160,34 +151,20 @@ namespace PPE_관제_시스템
         {
             try
             {
-                client.DefaultRequestHeaders.Authorization = 
-                    new AuthenticationHeaderValue("Bearer", UserContext.JwtToken);
+                List<AlterDataClass> violations = await ApiService.GetViolationsAsync();
 
-                var response = await client.GetAsync("http://localhost:8080/api/violations");
-                if (response.IsSuccessStatusCode)
+                if (violations != null && violations.Count > 0)
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    var violations = JsonConvert.DeserializeObject<List<Violation>>(json);
-                    
                     DataManager.AllAlerts.Clear();
-                    foreach(var item in violations)
-                    {
-                        DataManager.AllAlerts.Add(new AlertData
-                        {
-                            Type = item.Type,
-                            Time = item.Timestamp,
-                            Location = item.Area,
-                            ID = item.Id.ToString(),
-                            Status = item.Status
-                        });
-                    }
+                    DataManager.AllAlerts = violations;
                     RefreshCardList();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("데이터를 불러오는 중 오류 발생" + ex.Message);
+                MessageBox.Show("데이터 로드 실패" + ex.Message);
             }
         }
+
     }
 }

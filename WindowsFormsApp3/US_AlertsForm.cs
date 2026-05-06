@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Tls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -52,12 +53,13 @@ namespace PPE_관제_시스템
         {
             string typeFilter = cmbViolation.SelectedItem?.ToString() ?? "전체";
             string camFilter = cmbCamera.SelectedItem?.ToString() ?? "전체";
-
+            string zoneFilter = cmbZone.SelectedItem?.ToString() ?? "전체";
 
             int totalCount = DataManager.AllAlerts.Count(d =>
             d.Status == "미해결" &&
             (typeFilter == "전체" || d.Type.Contains(typeFilter)) &&
-            (camFilter == "전체" || d.Location.Contains(camFilter))
+            (camFilter == "전체" || d.Cam.Contains(camFilter)) &&
+            (zoneFilter == "전체" || d.Zone.Contains(zoneFilter))
             );
             int totalPages = (int)Math.Ceiling((double)totalCount / DataManager.PageSize);
             if ((DataManager.CurrentPage + 1) < totalPages)
@@ -69,37 +71,39 @@ namespace PPE_관제_시스템
 
         private void US_AlertsForm_Load(object sender, EventArgs e)
         {
-            if(cmbViolation != null)
+            cmbViolation.Items.Clear();
+            cmbViolation.Items.AddRange(new object[]
             {
-                cmbViolation.Items.Clear();
-                cmbViolation.Items.AddRange(new object[]
-                {
-                    "전체",
-                    "방진마스크 미착용",
-                    "안전화 미착용",
-                    "장갑 미착용",
-                    "보호구 미착용"
-                });
-                cmbViolation.SelectedIndex = 0;
-            }
-            ApplyFilter();
-        }
-        private void LoadDataFromDB()
-        {
-            if(DataManager.AllAlerts.Count == 0)
-            {
-                string[] violationTypes = { "방진마스크 미착용", "안전화 미착용", "장갑 미착용", "보호구 미착용" };
+                "전체",
+                "마스크 미착용",
+                "왼쪽 장갑 미착용",
+                "오른쪽 장갑 미착용",
+                "보호구 미착용"
+            });
+            cmbViolation.SelectedIndex = 0;
 
-                for (int i = 1; i<= 25; i++) {
-                    DataManager.AddAlert(
-                        violationTypes[i%4],
-                        $"Camera {i % 3 + 1} / {(char)('A' + i % 3)}구역"
-                    );
-                }
-            }
+            cmbCamera.Items.Clear();
+            cmbCamera.Items.AddRange(new object[]
+            {
+                "전체",
+                "Camera 01",
+                "Camera 02",
+                "Camera 03",
+            });
+            cmbCamera.SelectedIndex = 0;
+
+            cmbZone.Items.Clear();
+            cmbZone.Items.AddRange(new object[]
+            {
+                "전체",
+                "A구역",
+                "B구역",
+                "C구역",
+            });
+            cmbZone.SelectedIndex = 0;
+
             ApplyFilter();
         }
-        
         private void ApplyFilter()
         {
             if (this.InvokeRequired)
@@ -107,40 +111,66 @@ namespace PPE_관제_시스템
                 this.Invoke(new Action(ApplyFilter));
                 return;
             }
-            flpAlertsList.Controls.Clear();
+
             flpAlertsList.SuspendLayout();
+            for(int i = flpAlertsList.Controls.Count - 1; i >= 0; i--)
+            {
+                var ctrl = flpAlertsList.Controls[i];
+                flpAlertsList.Controls.Remove(ctrl);
+                ctrl.Dispose();
+            }
 
-            string typeFilter = cmbViolation.SelectedItem?.ToString() ?? "전체";
-            string camFilter = cmbCamera.SelectedItem?.ToString() ?? "전체";
-
-            var filteredList = DataManager.AllAlerts.Where(d =>
-                d.Status == "미해결" &&
-                (typeFilter == "전체" || d.Type.Contains(typeFilter)) &&
-                (camFilter == "전체" || d.Location.Contains(camFilter))
-            ).ToList();
+            var filteredList = GetFilteredList();
 
             var pageItems = filteredList
-            .Skip(DataManager.CurrentPage * DataManager.PageSize)
-            .Take(DataManager.PageSize)
-            .ToList();
+                .Skip(DataManager.CurrentPage * DataManager.PageSize)
+                .Take(DataManager.PageSize)
+                .ToList();
 
             foreach(var data in pageItems)
             {
                 var card = new US_AlertCard();
-                card.SetData(data.Type, data.Time, data.Location, data.ID, data.Status, data.Img, false);
+                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
 
                 card.OnResolveRequested += (targetCard) =>
                 {
-                    DialogResult result = MessageBox.Show("이 알람을 해결 처리하겠습니까?", "확인", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
+                    if (MessageBox.Show("이 알람을 해결 처리하시겠습니까?", "확인", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
                         DataManager.ResolveAlert(targetCard.AlertID);
+                        DataManager.NotifyDataChanged();
+                    }
                 };
-
-               card.Width = flpAlertsList.Width - 30;
-               flpAlertsList.Controls.Add(card);
+                card.Width = flpAlertsList.ClientSize.Width - 10;
+                flpAlertsList.Controls.Add(card);
             }
             flpAlertsList.ResumeLayout();
             UpdatePageLabel(filteredList.Count);
+        }
+        private void btnResolve_Click(object sender, EventArgs e)
+        { 
+            var card = (sender as Button)?.Parent as US_AlertCard;
+            if (card == null) return;
+            string targetId = card.AlertID;
+            DataManager.ResolveAlert(targetId);
+            DataManager.NotifyDataChanged();
+            
+   
+        }
+
+        private List<AlterDataClass> GetFilteredList()
+        {
+            string typeFilter = cmbViolation.SelectedItem?.ToString() ?? "전체";
+            string camFilter = cmbCamera.SelectedItem?.ToString() ?? "전체";
+            string zoneFilter = cmbZone.SelectedItem?.ToString() ?? "전체";
+
+            var filteredList = DataManager.AllAlerts.Where(d =>
+                d.Status == "미해결" &&
+                (typeFilter == "전체" || d.Type.Contains(typeFilter)) &&
+                (camFilter == "전체" || d.Cam.Contains(camFilter)) &&
+                (zoneFilter == "전체" || d.Zone.Contains(zoneFilter))
+            ).ToList();
+
+            return filteredList;
         }
     }
 }

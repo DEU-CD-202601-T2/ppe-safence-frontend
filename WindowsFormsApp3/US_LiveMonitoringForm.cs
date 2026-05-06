@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Threading;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using System.Drawing.Text;
+using System.Security.Policy;
 
 namespace PPE_관제_시스템
 {
@@ -28,6 +30,23 @@ namespace PPE_관제_시스템
             picZoneView.Size = new System.Drawing.Size(800, 450);
             picZoneView.Location = new System.Drawing.Point(50, 200);
 
+            DataManager.OnDataChanged += () =>
+            {
+                if (this.IsHandleCreated)
+                {
+
+                    this.BeginInvoke(new Action(() => {
+                        UpdateDashboard();
+                        UpdateLiveAlarmList(); 
+                    }));
+                }
+            };
+
+            if (cmbZone != null)
+            {
+                cmbZone.SelectedIndexChanged += (s, e) => UpdateDashboard();
+            }
+
             picZoneView.BringToFront();
             picZoneView.SizeMode = PictureBoxSizeMode.Zoom;
             picZoneView.BackColor = Color.Black;
@@ -42,22 +61,19 @@ namespace PPE_관제_시스템
             };
         }
 
-        private void UpdateLiveAlarmList()
-        {
-            if (this.InvokeRequired) { }
-        }
-
         private void US_LiveMonitoringForm_Load(object sender, EventArgs e)
         {
+            if (cmbZone != null && cmbZone.Items.Count > 0) cmbZone.SelectedIndex = 0;
+            UpdateDashboard();
             StartCamera();
         }
 
-        private void StartCamera()
+        private async void StartCamera()
         {
             try {
 
                 string rtsUrl = "http://43.200.27.117:5000/api/stream-urls";
-                capture = new VideoCapture(0);
+                capture = new VideoCapture(rtsUrl);
                 if (!capture.IsOpened())
                 {
                     lblCameraStatus.Text = "연결 실패";
@@ -87,16 +103,20 @@ namespace PPE_관제_시스템
             {
                 if (capture == null || !capture.IsOpened()) break;
 
-                capture.Read(frame);
-                if (!frame.Empty()) continue;
-
-                Bitmap bitmap = BitmapConverter.ToBitmap(frame);
-
-                this.BeginInvoke(new MethodInvoker(delegate
+                using (Mat frame = new Mat())
                 {
-                    if (picZoneView.Image != null) picZoneView.Image.Dispose();
-                    picZoneView.Image = bitmap;
-                }));
+                    if (capture.Read(frame) && !frame.Empty())
+                    {
+                        Bitmap bitmap = BitmapConverter.ToBitmap(frame);
+
+                        this.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            var oldImg = picZoneView.Image;
+                            picZoneView.Image = bitmap;
+                            oldImg?.Dispose();
+                        }));
+                    }
+                }
                 Thread.Sleep(33);
             }
         }
@@ -115,6 +135,52 @@ namespace PPE_관제_시스템
                 picZoneView.Image.Dispose();
                 picZoneView.Image = null;
             }
+        }
+
+        private void UpdateDashboard()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(UpdateDashboard));
+                return;
+            }
+            try
+            {
+                var allData = DataManager.AllAlerts ?? new List<AlterDataClass>();
+                var zoneData = allData;
+  
+                int unwornCount = zoneData.Count(d => d.Status != null && d.Status.Trim().Contains ("미해결"));
+                lblNoPPECount.Text = unwornCount.ToString();
+
+                int warningCount = zoneData.Count(d => d.Status == "미해결" && d.Type.Contains("미착용"));
+                lblWarningCount.Text = warningCount.ToString();
+
+                double complianceRate = 100.0;
+                if (zoneData.Count > 0)
+                {
+                    int resolvedCount = zoneData.Count(d => d.Status == "해결");
+                    complianceRate = ((double)resolvedCount / zoneData.Count) * 100;
+                }
+                lblComplianceRate.Text = $"{complianceRate:F0}%";
+
+                if (unwornCount > 0)
+                {
+                    lblCameraStatus.Text = "위험";
+                    lblCameraStatus.ForeColor = Color.Red;
+                }
+                else
+                {
+                    lblCameraStatus.Text = "정상";
+                    lblCameraStatus.ForeColor = Color.Green;
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        private void UpdateLiveAlarmList()
+        {
+
         }
     }
 }

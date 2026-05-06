@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace PPE_관제_시스템
 {
     public class DataManager
     {
-        public static List<AlertData> AllAlerts = new List<AlertData>();
+        public static List<AlterDataClass> AllAlerts = new List<AlterDataClass>();
         public static event Action OnDataChanged;
         public static int CurrentPage = 0;
         public static int PageSize = 10;
@@ -16,12 +17,15 @@ namespace PPE_관제_시스템
         {
             OnDataChanged?.Invoke();
         }
-        public static void AddAlert(string type, string location)
+        public static void AddAlert(string type, string zone, string cam, string uid)
         {
-            AllAlerts.Add(new AlertData{
-                    ID = $"ID-{100 + AllAlerts.Count + 1}",
+            AllAlerts.Add(new AlterDataClass
+            {
+                    Id = $"ID-{100 + AllAlerts.Count + 1}",
                     Type = type,
-                    Location = location,
+                    Zone = zone,
+                    Cam = cam,
+                    Uid = uid,
                     Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                     Status = "미해결"
                 });
@@ -31,7 +35,7 @@ namespace PPE_관제_시스템
 
             public static void ResolveAlert(string alertId)
             {
-                var target = AllAlerts.FirstOrDefault(a => a.ID == alertId);
+                var target = AllAlerts.FirstOrDefault(a => a.Id == alertId);
                 if (target != null)
                 {
                     target.Status = "해결";
@@ -42,15 +46,21 @@ namespace PPE_관제_시스템
             {
                 if (AllAlerts.Count == 0)
                 {
-                    string[] violationTypes = { "방진마스크 미착용", "안전화 미착용", "장갑 미착용", "보호구 미착용" };
+                    string[] violationTypes = { "마스크 미착용", "왼쪽 장갑 미착용", "오른쪽 장갑 미착용", "보호구 미착용" };
+                    string[] zones = { "A구역", "B구역", "C구역" };
+                string[] cameras = { "Camera 01", "Camera 02", "Camera 03" };
 
-                    for (int i = 0; i < 25; i++)
+
+                for (int i = 0; i < 25; i++)
                     {
-                        AllAlerts.Add(new AlertData
+                        string tempUid = $"u{i % 5 + 1:D3}";
+                        AllAlerts.Add(new AlterDataClass
                         {
-                            ID = $"ID-{100 + i + 1}",
-                            Type = violationTypes[i % 4],
-                            Location = $"Camera {i % 3 + 1} / {(char)('A' + i % 3)}구역",
+                            Id = $"{DateTime.Now:yyyyMMdd}_{100+i+1}_{tempUid}",
+                            Uid = tempUid,
+                            Type = violationTypes[i%4],
+                            Zone = zones[i%3],
+                            Cam = cameras[i%3],
                             Time = DateTime.Now.AddMinutes(-i * 5).ToString("yyyy-MM-dd HH:mm:ss"),
                             Status = "미해결"
                         });
@@ -59,17 +69,9 @@ namespace PPE_관제_시스템
                 }
             }
 
-
-
-            public class AlertData
-            {
-                public string Type { get; set; }
-                public string Time { get; set; }
-                public string Location { get; set; }
-                public string ID { get; set; }
-
-                public string Status { get; set; }
-                public System.Drawing.Image Img { get; set; }
-            }
+        public class AlertSettingsData
+        {
+            public string AlertType { get; set; }
+        }
     }
 }

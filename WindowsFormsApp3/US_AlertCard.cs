@@ -15,20 +15,25 @@ namespace PPE_관제_시스템
         public event Action<US_AlertCard> OnResolveRequested; // 해결 버튼 클릭 이벤트
         public string LocationInfo { get; set; }
         public string AlertID { get; private set; } // 알람 ID 속성
+        public string Zone { get; set; }
+        public string Cam { get; set; }
         public US_AlertCard()
         {
             InitializeComponent();
-        }
+        } 
 
-        public void SetData(string type, string time, string location, string id, string status, Image img, bool isManagementMode) // 카드에 데이터 설정하는 메서드
+        public void SetData(string type, string time, string zone, string cam, string id, string uid, string status, Image img, bool isManagementMode) // 카드에 데이터 설정하는 메서드
         {
             this.AlertID = id;
-            this.LocationInfo = location;
+            this.Zone = zone;
+            this.Cam = cam;
+
             lblViolation.Text = type;
             lblDate.Text = time;
-            lblCameraZone.Text = location;
-            lblTargetID.Text = id;
+            lblTargetID.Text = uid;
             lblStatus.Text = status; // 상태 설정
+            lblCam.Text = cam;
+            lblZone.Text = Zone;
             if (img != null)
             {
                 if(picPPEImage.Image != null)picPPEImage.Image.Dispose();

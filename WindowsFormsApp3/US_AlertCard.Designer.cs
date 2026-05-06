@@ -30,11 +30,14 @@
         {
             this.lblViolation = new System.Windows.Forms.Label();
             this.lblDate = new System.Windows.Forms.Label();
-            this.lblCameraZone = new System.Windows.Forms.Label();
+            this.lblCam = new System.Windows.Forms.Label();
             this.lblTargetID = new System.Windows.Forms.Label();
             this.btnResolve = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this.picPPEImage = new System.Windows.Forms.PictureBox();
+            this.lblZone = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picPPEImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,9 +46,10 @@
             this.lblViolation.AutoSize = true;
             this.lblViolation.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblViolation.ForeColor = System.Drawing.Color.Red;
-            this.lblViolation.Location = new System.Drawing.Point(164, 8);
+            this.lblViolation.Location = new System.Drawing.Point(205, 10);
+            this.lblViolation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblViolation.Name = "lblViolation";
-            this.lblViolation.Size = new System.Drawing.Size(114, 31);
+            this.lblViolation.Size = new System.Drawing.Size(139, 38);
             this.lblViolation.TabIndex = 1;
             this.lblViolation.Text = "위반 내용";
             // 
@@ -53,29 +57,32 @@
             // 
             this.lblDate.AutoSize = true;
             this.lblDate.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblDate.Location = new System.Drawing.Point(165, 49);
+            this.lblDate.Location = new System.Drawing.Point(206, 59);
+            this.lblDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(48, 25);
+            this.lblDate.Size = new System.Drawing.Size(57, 30);
             this.lblDate.TabIndex = 2;
             this.lblDate.Text = "날짜";
             // 
-            // lblCameraZone
+            // lblCam
             // 
-            this.lblCameraZone.AutoSize = true;
-            this.lblCameraZone.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblCameraZone.Location = new System.Drawing.Point(165, 83);
-            this.lblCameraZone.Name = "lblCameraZone";
-            this.lblCameraZone.Size = new System.Drawing.Size(121, 25);
-            this.lblCameraZone.TabIndex = 3;
-            this.lblCameraZone.Text = "카메라 / 구역";
+            this.lblCam.AutoSize = true;
+            this.lblCam.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblCam.Location = new System.Drawing.Point(206, 100);
+            this.lblCam.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCam.Name = "lblCam";
+            this.lblCam.Size = new System.Drawing.Size(79, 30);
+            this.lblCam.TabIndex = 3;
+            this.lblCam.Text = "카메라";
             // 
             // lblTargetID
             // 
             this.lblTargetID.AutoSize = true;
             this.lblTargetID.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblTargetID.Location = new System.Drawing.Point(165, 120);
+            this.lblTargetID.Location = new System.Drawing.Point(206, 144);
+            this.lblTargetID.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTargetID.Name = "lblTargetID";
-            this.lblTargetID.Size = new System.Drawing.Size(72, 25);
+            this.lblTargetID.Size = new System.Drawing.Size(87, 30);
             this.lblTargetID.TabIndex = 4;
             this.lblTargetID.Text = "대상 ID";
             // 
@@ -88,9 +95,10 @@
             this.btnResolve.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnResolve.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnResolve.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResolve.Location = new System.Drawing.Point(1127, 120);
+            this.btnResolve.Location = new System.Drawing.Point(1409, 144);
+            this.btnResolve.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnResolve.Name = "btnResolve";
-            this.btnResolve.Size = new System.Drawing.Size(95, 35);
+            this.btnResolve.Size = new System.Drawing.Size(119, 42);
             this.btnResolve.TabIndex = 6;
             this.btnResolve.Text = "해결";
             this.btnResolve.UseVisualStyleBackColor = false;
@@ -101,9 +109,10 @@
             this.lblStatus.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lblStatus.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblStatus.Location = new System.Drawing.Point(984, 8);
+            this.lblStatus.Location = new System.Drawing.Point(1230, 10);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(110, 45);
+            this.lblStatus.Size = new System.Drawing.Size(138, 54);
             this.lblStatus.TabIndex = 5;
             this.lblStatus.Text = "미해결";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -111,28 +120,63 @@
             // picPPEImage
             // 
             this.picPPEImage.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.picPPEImage.Location = new System.Drawing.Point(14, 13);
+            this.picPPEImage.Location = new System.Drawing.Point(18, 16);
+            this.picPPEImage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.picPPEImage.Name = "picPPEImage";
-            this.picPPEImage.Size = new System.Drawing.Size(130, 130);
+            this.picPPEImage.Size = new System.Drawing.Size(162, 156);
             this.picPPEImage.TabIndex = 0;
             this.picPPEImage.TabStop = false;
             // 
+            // lblZone
+            // 
+            this.lblZone.AutoSize = true;
+            this.lblZone.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblZone.Location = new System.Drawing.Point(395, 100);
+            this.lblZone.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblZone.Name = "lblZone";
+            this.lblZone.Size = new System.Drawing.Size(57, 30);
+            this.lblZone.TabIndex = 7;
+            this.lblZone.Text = "구역";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Location = new System.Drawing.Point(699, 89);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(0, 30);
+            this.label2.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label3.Location = new System.Drawing.Point(707, 97);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 30);
+            this.label3.TabIndex = 9;
+            // 
             // US_AlertCard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblZone);
             this.Controls.Add(this.btnResolve);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblTargetID);
-            this.Controls.Add(this.lblCameraZone);
+            this.Controls.Add(this.lblCam);
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.lblViolation);
             this.Controls.Add(this.picPPEImage);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "US_AlertCard";
-            this.Size = new System.Drawing.Size(1225, 160);
+            this.Size = new System.Drawing.Size(1531, 192);
             ((System.ComponentModel.ISupportInitialize)(this.picPPEImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -144,9 +188,12 @@
         private System.Windows.Forms.PictureBox picPPEImage;
         private System.Windows.Forms.Label lblViolation;
         private System.Windows.Forms.Label lblDate;
-        private System.Windows.Forms.Label lblCameraZone;
+        private System.Windows.Forms.Label lblCam;
         private System.Windows.Forms.Label lblTargetID;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnResolve;
+        private System.Windows.Forms.Label lblZone;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
