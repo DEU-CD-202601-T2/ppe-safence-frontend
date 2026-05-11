@@ -183,6 +183,7 @@
             this.Controls.Add(this.pnlGird);
             this.Name = "US_DetectionLogForm";
             this.Size = new System.Drawing.Size(1228, 762);
+            this.Load += new System.EventHandler(this.US_DetectionLogForm_Load);
             this.pnlGird.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.ResumeLayout(false);

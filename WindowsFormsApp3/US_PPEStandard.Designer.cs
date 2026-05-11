@@ -168,6 +168,7 @@
             this.Controls.Add(this.btnPPESave);
             this.Name = "US_PPEStandard";
             this.Size = new System.Drawing.Size(1219, 653);
+            this.Load += new System.EventHandler(this.US_PPEStandard_Load);
             this.pnlZoneList.ResumeLayout(false);
             this.pnlZoneList.PerformLayout();
             this.pnlPPESetting.ResumeLayout(false);

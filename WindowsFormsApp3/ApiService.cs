@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,40 +12,51 @@ namespace PPE_관제_시스템
     public static class ApiService
     {
         private static readonly HttpClient client = new HttpClient();
-        private const string BaseUrl = "http://43.200.27.117:5000";
+        private const string BaseUrl = "http://43.200.27.117:5002";
 
         private static void SetAuthHeader()
         {
             client.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserContext.JwtToken);
+                new System.Net.Http.Headers.AuthenticationHeaderValue(
+                    "Bearer",
+                    UserContext.JwtToken
+                );
         }
 
         public static async Task<CameraInfo> GetCameraStreamInfoAsync() // 카메라 스트리밍 URL과 카메라 수 조회
         {
             try
             {
-                SetAuthHeader(); // 토큰 장착
+                SetAuthHeader();
 
-                // 서버의 스트리밍 URL 조회 API 호출
-                var response = await client.GetAsync($"{BaseUrl}/api/stream-urls");
+                var response =
+                    await client.GetAsync($"{BaseUrl}/stream-urls");
+
+                string json =
+                    await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine(json);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    var result = Newtonsoft.Json.Linq.JObject.Parse(json);
+                    var result = JObject.Parse(json);
 
                     return new CameraInfo
                     {
-                        // 서버 응답 JSON의 키값(url, count)에 맞춰 파싱
                         Url = result["url"]?.ToString(),
                         Count = result["count"]?.ToObject<int>() ?? 1
                     };
                 }
+
+                Console.WriteLine(
+                    $"카메라 정보 조회 실패 : {(int)response.StatusCode}");
+
                 return null;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"카메라 정보 로드 실패: {ex.Message}");
+                Console.WriteLine($"카메라 정보 로드 실패: {ex}");
+
                 return null;
             }
         }
@@ -77,7 +89,118 @@ namespace PPE_관제_시스템
             var response = await client.PostAsync($"{BaseUrl}/api/violations/{alertId}/resolve", content);
             return response.IsSuccessStatusCode;
         }
+
+        public static async Task<List<HistoryDto>> LoadHistoryLog() // 이력 / 로그 데이터를 API에서 불러오는 메서드
+        {
+            try
+            {
+                SetAuthHeader();
+
+                var response =
+                    await client.GetAsync($"{BaseUrl}/api/logs");
+
+                var json =
+                    await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<List<HistoryDto>>(json)
+                           ?? new List<HistoryDto>();
+                }
+
+                Console.WriteLine(
+                    $"이력 로그 조회 실패: {(int)response.StatusCode}");
+
+                Console.WriteLine(json);
+
+                return new List<HistoryDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"이력 로그 조회 실패: {ex}");
+
+                return new List<HistoryDto>();
+            }
+        }
+
+        public static async Task<List<ZoneData>> GetZonesAsync() // 구역 목록 조회 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var response = await client.GetAsync($"{BaseUrl}/api/areas?include_inactive=true");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+
+                    var result = Newtonsoft.Json.Linq.JObject.Parse(json);
+
+                    var areasJson = result["areas"]?.ToString();
+
+                    if (!string.IsNullOrEmpty(areasJson))
+                    {
+                        return JsonConvert.DeserializeObject<List<ZoneData>>(areasJson);
+                    }
+                }
+                return new List<ZoneData>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"구역 목록 로드 실패: {ex.Message}");
+                return new List<ZoneData>();
+            }
+        }
+
+        public static async Task<bool> AddZoneAsync(ZoneData zone) // 구역 추가 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var json = JsonConvert.SerializeObject(zone);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync($"{BaseUrl}/api/areas", content);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"구역 추가 실패: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static async Task<bool> UpdateZoneAsync(int zoneId, ZoneData zone) // 구역 수정 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var json = JsonConvert.SerializeObject(zone);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PutAsync($"{BaseUrl}/api/areas/{zoneId}", content);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"구역 수정 실패: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static async Task<bool> DeleteZoneAsync(int zoneId) // 구역 삭제 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var response = await client.DeleteAsync($"{BaseUrl}/api/areas/{zoneId}?hard=true");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"구역 삭제 실패: {ex.Message}");
+                return false;
+            }
+        }
     }
-    
 }
 

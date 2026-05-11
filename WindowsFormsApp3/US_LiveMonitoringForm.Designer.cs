@@ -15,10 +15,19 @@ namespace PPE_관제_시스템
         /// <param name="disposing">관리되는 리소스를 삭제해야 하면 true이고, 그렇지 않으면 false입니다.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                StopCamera();
+
+                DataManager.OnDataChanged
+                    -= OnDashboardUpdated;
+
+                if (components != null)
+                {
+                    components.Dispose();
+                }
             }
+
             base.Dispose(disposing);
         }
 
@@ -95,13 +104,13 @@ namespace PPE_관제_시스템
             // lblCameraStatus
             // 
             this.lblCameraStatus.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblCameraStatus.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblCameraStatus.Location = new System.Drawing.Point(161, 105);
+            this.lblCameraStatus.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblCameraStatus.Location = new System.Drawing.Point(10, 105);
             this.lblCameraStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCameraStatus.Name = "lblCameraStatus";
-            this.lblCameraStatus.Size = new System.Drawing.Size(134, 38);
+            this.lblCameraStatus.Size = new System.Drawing.Size(288, 38);
             this.lblCameraStatus.TabIndex = 11;
-            this.lblCameraStatus.Text = "정상";
+            this.lblCameraStatus.Text = "카메라 정보 불러오기 실패";
             this.lblCameraStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblCamera
@@ -252,6 +261,7 @@ namespace PPE_관제_시스템
             this.Controls.Add(this.pnlNoPPE);
             this.Name = "US_LiveMonitoringForm";
             this.Size = new System.Drawing.Size(1228, 762);
+            this.Load += new System.EventHandler(this.US_LiveMonitoringForm_Load);
             this.pnlCamera.ResumeLayout(false);
             this.pnlCamera.PerformLayout();
             this.pnlCompliance.ResumeLayout(false);

@@ -141,6 +141,7 @@
     <Compile Include="CameraInfo.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Globaldata.cs" />
+    <Compile Include="HistoryDto.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -234,6 +235,7 @@
       <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Violation.cs" />
+    <Compile Include="ZoneData.cs" />
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
