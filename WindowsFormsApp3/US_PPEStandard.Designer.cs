@@ -31,7 +31,6 @@
             this.btnPPESave = new System.Windows.Forms.Button();
             this.btnPPEReset = new System.Windows.Forms.Button();
             this.lblZoneList = new System.Windows.Forms.Label();
-            this.cmbZoneList = new System.Windows.Forms.ComboBox();
             this.lblPPESetting = new System.Windows.Forms.Label();
             this.pnlZoneList = new System.Windows.Forms.Panel();
             this.pnlPPESetting = new System.Windows.Forms.Panel();
@@ -39,6 +38,7 @@
             this.chkSafetyHelmet = new System.Windows.Forms.CheckBox();
             this.chkSafetyMask = new System.Windows.Forms.CheckBox();
             this.chkSafetyGloves = new System.Windows.Forms.CheckBox();
+            this.lstPPE_ZoneList = new System.Windows.Forms.ListBox();
             this.pnlZoneList.SuspendLayout();
             this.pnlPPESetting.SuspendLayout();
             this.SuspendLayout();
@@ -65,21 +65,11 @@
             // 
             this.lblZoneList.AutoSize = true;
             this.lblZoneList.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblZoneList.Location = new System.Drawing.Point(186, 24);
+            this.lblZoneList.Location = new System.Drawing.Point(200, 24);
             this.lblZoneList.Name = "lblZoneList";
-            this.lblZoneList.Size = new System.Drawing.Size(167, 38);
+            this.lblZoneList.Size = new System.Drawing.Size(139, 38);
             this.lblZoneList.TabIndex = 2;
-            this.lblZoneList.Text = "구역 리스트";
-            // 
-            // cmbZoneList
-            // 
-            this.cmbZoneList.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmbZoneList.FormattingEnabled = true;
-            this.cmbZoneList.Location = new System.Drawing.Point(151, 98);
-            this.cmbZoneList.Name = "cmbZoneList";
-            this.cmbZoneList.Size = new System.Drawing.Size(223, 31);
-            this.cmbZoneList.TabIndex = 4;
-            this.cmbZoneList.Text = "구역 리스트";
+            this.lblZoneList.Text = "구역 목록";
             // 
             // lblPPESetting
             // 
@@ -94,8 +84,8 @@
             // pnlZoneList
             // 
             this.pnlZoneList.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlZoneList.Controls.Add(this.lstPPE_ZoneList);
             this.pnlZoneList.Controls.Add(this.lblZoneList);
-            this.pnlZoneList.Controls.Add(this.cmbZoneList);
             this.pnlZoneList.Location = new System.Drawing.Point(39, 117);
             this.pnlZoneList.Name = "pnlZoneList";
             this.pnlZoneList.Size = new System.Drawing.Size(551, 445);
@@ -156,6 +146,21 @@
             this.chkSafetyGloves.Text = "장갑";
             this.chkSafetyGloves.UseVisualStyleBackColor = true;
             // 
+            // lstPPE_ZoneList
+            // 
+            this.lstPPE_ZoneList.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lstPPE_ZoneList.FormattingEnabled = true;
+            this.lstPPE_ZoneList.ItemHeight = 28;
+            this.lstPPE_ZoneList.Items.AddRange(new object[] {
+            "A구역 | 위험도 높음",
+            "B구역 | 위험도 보통",
+            "C구역 | 위험도 낮음"});
+            this.lstPPE_ZoneList.Location = new System.Drawing.Point(21, 102);
+            this.lstPPE_ZoneList.Name = "lstPPE_ZoneList";
+            this.lstPPE_ZoneList.Size = new System.Drawing.Size(505, 228);
+            this.lstPPE_ZoneList.TabIndex = 6;
+            this.lstPPE_ZoneList.SelectedIndexChanged += new System.EventHandler(this.lstPPE_ZoneList_SelectedIndexChanged);
+            // 
             // US_PPEStandard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -183,7 +188,6 @@
         private System.Windows.Forms.Button btnPPESave;
         private System.Windows.Forms.Button btnPPEReset;
         private System.Windows.Forms.Label lblZoneList;
-        private System.Windows.Forms.ComboBox cmbZoneList;
         private System.Windows.Forms.Label lblPPESetting;
         private System.Windows.Forms.Panel pnlZoneList;
         private System.Windows.Forms.Panel pnlPPESetting;
@@ -191,5 +195,6 @@
         private System.Windows.Forms.CheckBox chkSafetyHelmet;
         private System.Windows.Forms.CheckBox chkSafetyMask;
         private System.Windows.Forms.CheckBox chkSafetyGloves;
+        private System.Windows.Forms.ListBox lstPPE_ZoneList;
     }
 }

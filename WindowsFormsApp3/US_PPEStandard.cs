@@ -12,6 +12,9 @@ namespace PPE_관제_시스템
 {
     public partial class US_PPEStandard : UserControl
     {
+        private List<ZoneData> zonelist = new List<ZoneData>();
+        private int selectedZoneId = -1;
+
         public US_PPEStandard()
         {
             InitializeComponent();
@@ -19,46 +22,39 @@ namespace PPE_관제_시스템
             this.Load += US_PPEStandard_Load;
         }
 
-        private async Task LoadZoneList_PPE()
+        private async Task LoadPPE_ZoneList() // PPE 기준 설정에서 구역 목록을 불러와 리스트에 표시
         {
             try
             {
-                var zones = await ApiService.GetZonesAsync();
+                zonelist = await ApiService.GetZonesAsync();
+                lstPPE_ZoneList.Items.Clear();
 
-                if (zones == null) return;
-
-                cmbZoneList.SelectedIndex = -1;
-
-                cmbZoneList.DataSource = null;
-
-                cmbZoneList.Items.Clear();
-
-                cmbZoneList.DataSource =
-                    zones
-                    .Where(z => z.is_active)
-                    .ToList();
-
-                cmbZoneList.DisplayMember = "name";
-
-                cmbZoneList.ValueMember = "id";
-
-                if (cmbZoneList.Items.Count > 0)
+                foreach (var zone in zonelist)
                 {
-                    cmbZoneList.SelectedIndex = 0;
+                    lstPPE_ZoneList.Items.Add($"{zone.name}");
                 }
-
-                cmbZoneList.Refresh();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"구역 목록 로드 실패: {ex.Message}");
+                MessageBox.Show($"목록 로드 실패: {ex.Message}");
             }
         }
 
         private async void US_PPEStandard_Load(object sender, EventArgs e)
         {
-            await LoadZoneList_PPE();
+            await LoadPPE_ZoneList();
+        }
+
+        private void lstPPE_ZoneList_SelectedIndexChanged(object sender, EventArgs e) // 리스트에서 선택된 구역의 PPE 기준을 UI에 반영
+        {
+            if (lstPPE_ZoneList.SelectedIndex == -1) return;
+
+            var selectedZone = zonelist[lstPPE_ZoneList.SelectedIndex];
+            selectedZoneId = selectedZone.id;
+
+            chkSafetyHelmet.Checked = selectedZone.is_active; // 실제로는 위험도에 따라 체크 여부를 결정해야 하지만, 현재는 is_active로 임시 설정
+            chkSafetyGloves.Checked = selectedZone.is_active;
+            chkSafetyMask.Checked = selectedZone.is_active;
         }
     }
 }

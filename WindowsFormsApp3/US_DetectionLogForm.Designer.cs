@@ -31,8 +31,6 @@
             this.btnLogSearch = new System.Windows.Forms.Button();
             this.txtLogSearch = new System.Windows.Forms.TextBox();
             this.lblTilde = new System.Windows.Forms.Label();
-            this.cmbStatus = new System.Windows.Forms.ComboBox();
-            this.cmbLocation = new System.Windows.Forms.ComboBox();
             this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
             this.pnlGird = new System.Windows.Forms.Panel();
@@ -49,7 +47,7 @@
             // btnLogSearch
             // 
             this.btnLogSearch.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnLogSearch.Location = new System.Drawing.Point(283, 72);
+            this.btnLogSearch.Location = new System.Drawing.Point(1137, 72);
             this.btnLogSearch.Name = "btnLogSearch";
             this.btnLogSearch.Size = new System.Drawing.Size(79, 30);
             this.btnLogSearch.TabIndex = 17;
@@ -60,7 +58,7 @@
             // txtLogSearch
             // 
             this.txtLogSearch.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtLogSearch.Location = new System.Drawing.Point(17, 72);
+            this.txtLogSearch.Location = new System.Drawing.Point(871, 72);
             this.txtLogSearch.Name = "txtLogSearch";
             this.txtLogSearch.Size = new System.Drawing.Size(260, 30);
             this.txtLogSearch.TabIndex = 16;
@@ -69,49 +67,31 @@
             // lblTilde
             // 
             this.lblTilde.AutoSize = true;
-            this.lblTilde.Location = new System.Drawing.Point(244, 32);
+            this.lblTilde.Location = new System.Drawing.Point(230, 78);
             this.lblTilde.Name = "lblTilde";
             this.lblTilde.Size = new System.Drawing.Size(18, 15);
             this.lblTilde.TabIndex = 15;
             this.lblTilde.Text = "~";
             // 
-            // cmbStatus
-            // 
-            this.cmbStatus.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(521, 71);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(82, 31);
-            this.cmbStatus.TabIndex = 14;
-            this.cmbStatus.Text = "상태";
-            // 
-            // cmbLocation
-            // 
-            this.cmbLocation.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmbLocation.FormattingEnabled = true;
-            this.cmbLocation.Location = new System.Drawing.Point(401, 71);
-            this.cmbLocation.Name = "cmbLocation";
-            this.cmbLocation.Size = new System.Drawing.Size(82, 31);
-            this.cmbLocation.TabIndex = 13;
-            this.cmbLocation.Text = "위치";
-            // 
             // dtpEndDate
             // 
             this.dtpEndDate.CalendarFont = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.dtpEndDate.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.dtpEndDate.Location = new System.Drawing.Point(268, 26);
+            this.dtpEndDate.Location = new System.Drawing.Point(254, 72);
             this.dtpEndDate.Name = "dtpEndDate";
             this.dtpEndDate.Size = new System.Drawing.Size(215, 30);
             this.dtpEndDate.TabIndex = 12;
+            this.dtpEndDate.ValueChanged += new System.EventHandler(this.dtpEndDate_ValueChanged);
             // 
             // dtpStartDate
             // 
             this.dtpStartDate.CalendarFont = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.dtpStartDate.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.dtpStartDate.Location = new System.Drawing.Point(17, 26);
+            this.dtpStartDate.Location = new System.Drawing.Point(3, 72);
             this.dtpStartDate.Name = "dtpStartDate";
             this.dtpStartDate.Size = new System.Drawing.Size(221, 30);
             this.dtpStartDate.TabIndex = 11;
+            this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
             // 
             // pnlGird
             // 
@@ -186,8 +166,6 @@
             this.Controls.Add(this.btnLogSearch);
             this.Controls.Add(this.txtLogSearch);
             this.Controls.Add(this.lblTilde);
-            this.Controls.Add(this.cmbStatus);
-            this.Controls.Add(this.cmbLocation);
             this.Controls.Add(this.dtpEndDate);
             this.Controls.Add(this.dtpStartDate);
             this.Controls.Add(this.pnlGird);
@@ -206,8 +184,6 @@
         private System.Windows.Forms.Button btnLogSearch;
         private System.Windows.Forms.TextBox txtLogSearch;
         private System.Windows.Forms.Label lblTilde;
-        private System.Windows.Forms.ComboBox cmbStatus;
-        private System.Windows.Forms.ComboBox cmbLocation;
         private System.Windows.Forms.DateTimePicker dtpEndDate;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
         private System.Windows.Forms.Panel pnlGird;
