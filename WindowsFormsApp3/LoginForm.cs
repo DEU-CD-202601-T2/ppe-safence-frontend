@@ -33,18 +33,19 @@ namespace PPE_관제_시스템
                 var json = JsonConvert.SerializeObject(loginData);
                 var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("http://43.200.27.117:5000", content);
+                var response = await client.PostAsync("http://43.200.27.117:5002/api/login", content);
                 if (response.IsSuccessStatusCode)
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject<dynamic>(responseString);
-                    UserContext.JwtToken = result.token;
+                    UserContext.JwtToken = (string)result.token;
 
                     ProceedToMain();
                 }
                 else
                 {
-                    MessageBox.Show("아이디 또는 비밀번호가 일치하지 않습니다.");
+                    string errorBody = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"아이디 또는 비밀번호가 일치하지 않습니다.\n({(int)response.StatusCode}: {errorBody})");
                 }
             }
             catch (Exception ex)
@@ -54,6 +55,7 @@ namespace PPE_관제_시스템
                 ProceedToMain();
             }
         }
+
         private void ProceedToMain()
         {
             this.Hide();

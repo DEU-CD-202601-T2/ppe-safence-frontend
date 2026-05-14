@@ -147,6 +147,7 @@
     <Compile Include="CameraInfo.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Globaldata.cs" />
+    <Compile Include="HistoryDto.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
