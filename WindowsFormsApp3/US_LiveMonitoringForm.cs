@@ -16,6 +16,7 @@ using System.Windows.Forms;
 
 namespace PPE_관제_시스템
 {
+    
     public partial class US_LiveMonitoringForm : UserControl
     {
         private OpenCvSharp.VideoCapture capture;
@@ -47,6 +48,7 @@ namespace PPE_관제_시스템
             picZoneView.SizeMode = PictureBoxSizeMode.Zoom;
             picZoneView.BackColor = Color.Black;
             this.Load += US_LiveMonitoringForm_Load; // 폼 로드 이벤트 핸들러 등록
+            _ = InitUpdateTimer();
         }
 
         private async void StartCamera() // 카메라 스트림을 시작하는 메서드, API에서 스트림 URL을 받아 OpenCV로 연결 시도
@@ -137,24 +139,25 @@ namespace PPE_관제_시스템
 
             try
             {
+                string selectedZone = cmbZone.SelectedItem?.ToString() ?? "A구역";
                 var allData = DataManager.AllAlerts ?? new List<AlterDataClass>();
+                var zoneData = allData.Where(d => d.Zone == selectedZone).ToList();
 
-                int unwornCount = allData.Count(d => d.Status?.Trim() == "미해결");
-                lblNoPPECount.Text = unwornCount.ToString();
+                lblNoPPECount.Text = zoneData.Count.ToString();
 
-                int activeWorkers = allData.Count;
-                lblActiveWorkersCount.Text = activeWorkers.ToString();
+                int warningCount = zoneData.Count(d => d.Status != null && d.Status.Trim() =="미해결");
+                lblActiveWorkersCount.Text = warningCount.ToString();
 
                 double complianceRate = 100.0;
-                if (activeWorkers > 0)
+                if (zoneData.Count > 0)
                 {
-                    complianceRate = ((double)(activeWorkers - unwornCount) / activeWorkers) * 100;
-
-                    if (complianceRate < 0) complianceRate = 0;
+                    int resolvedCount = zoneData.Count(d => d.Status == "해결");
+                    complianceRate = ((double)resolvedCount / zoneData.Count) * 100;
                 }
                 lblComplianceRate.Text = $"{complianceRate:F0}%";
-
-                if (unwornCount > 0)
+ 
+     
+                if (warningCount > 0)
                     SetCameraStatus("위험", Color.Red);
                 else
                     SetCameraStatus("정상", Color.Green);
@@ -189,6 +192,22 @@ namespace PPE_관제_시스템
             SetCameraStatus("구역 변경 중...", Color.Orange);
             UpdateDashboard();
             StartCamera();
+        }
+        private System.Windows.Forms.Timer dataUpdateTimer;
+        private async Task InitUpdateTimer()
+        {
+            dataUpdateTimer = new System.Windows.Forms.Timer();
+            dataUpdateTimer.Interval = 5000;
+            dataUpdateTimer.Tick += async(s, e) =>{
+                string selectedZone = cmbZone.SelectedItem.ToString();
+                var newData = await ApiService.GetViolationsAsync(selectedZone, "미해결"); ;
+                if(newData != null && newData.Count > 0)
+                {
+                    DataManager.AllAlerts = newData;
+                    DataManager.NotifyDataChanged();
+                }
+            };
+            dataUpdateTimer.Start();
         }
     }
 }

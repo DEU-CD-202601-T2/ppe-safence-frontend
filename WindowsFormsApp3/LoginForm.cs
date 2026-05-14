@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +29,7 @@ namespace PPE_관제_시스템
         {
             try
             {
-                var loginData = new { id = txtId, pw = txtPwd.Text };
+                var loginData = new { id = txtId.Text, pw = txtPwd.Text };
                 var json = JsonConvert.SerializeObject(loginData);
                 var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 

@@ -24,9 +24,8 @@ namespace PPE_관제_시스템
             public string Zone { get; set; }
             [JsonProperty("cam")]
             public string Cam { get; set; }
-            [JsonProperty]
+            [JsonIgnore]
             public Image Img { get; set; }
-
 
         public AlterDataClass() { }
 

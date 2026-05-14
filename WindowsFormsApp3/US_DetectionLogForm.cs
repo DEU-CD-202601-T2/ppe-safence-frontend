@@ -16,5 +16,23 @@ namespace PPE_관제_시스템
         {
             InitializeComponent();
         }
+        private void US_DetectionLogForm_Load(object sender, EventArgs e)
+        {
+            LoadLogData();
+        }
+
+        private async void LoadLogData()
+        {
+            var logs = await ApiService.GetViolationsAsync();
+            if(logs != null && logs.Count > 0)
+            {
+                dgvLog.DataSource = null;
+                dgvLog.DataSource = logs;
+            }
+            else
+            {
+                MessageBox.Show("no");
+            }
+        }
     }
 }
