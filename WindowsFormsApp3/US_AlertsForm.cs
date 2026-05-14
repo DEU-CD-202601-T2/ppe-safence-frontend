@@ -153,15 +153,15 @@ namespace PPE_관제_시스템
                         if(frm.ShowDialog() == DialogResult.OK)
                         {
                             bool success = await ApiService.ResolveViolationAsync(targetCard.AlertId, frm.AdminId, frm.Memo);
+
                             if (success)
                             {
                                 MessageBox.Show("해결 처리가 완료되었습니다");
-
                                 DataManager.ResolveAlert(targetCard.AlertId);
                                 DataManager.NotifyDataChanged();
                                 ApplyFilter();
                             }
-                            }
+                        }
                     }
                 };
                 card.Width = flpAlertsList.ClientSize.Width - 10;
@@ -177,8 +177,6 @@ namespace PPE_관제_시스템
             string targetId = card.AlertId;
             DataManager.ResolveAlert(targetId);
             DataManager.NotifyDataChanged();
-            
-   
         }
         private List<AlterDataClass> GetFilteredList()
         {

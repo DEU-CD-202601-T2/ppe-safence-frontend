@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using PPE_관제_시스템;
 
 namespace PPE_관제_시스템
 {
@@ -28,50 +30,38 @@ namespace PPE_관제_시스템
             try
             {
                 SetAuthHeader();
-
                 var response =
-                    await client.GetAsync($"{BaseUrl}/stream-urls");
-
-                string json =
-                    await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine(json);
-
+                await client.GetAsync($"{BaseUrl}/stream-urls");
                 if (response.IsSuccessStatusCode)
                 {
+                    string json = await response.Content.ReadAsStringAsync();
                     var result = JObject.Parse(json);
-
                     return new CameraInfo
                     {
                         Url = result["url"]?.ToString(),
                         Count = result["count"]?.ToObject<int>() ?? 1
                     };
                 }
-
-                Console.WriteLine(
-                    $"카메라 정보 조회 실패 : {(int)response.StatusCode}");
-
                 return null;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"카메라 정보 로드 실패: {ex}");
-
+                Console.WriteLine($"카메라 정보 조회 실패: {ex.Message}");
                 return null;
             }
         }
 
-        //필터링된 위반 내역 조회
+        //알람 목록 조회
         public static async Task<List<AlterDataClass>> GetViolationsAsync()
         {
             try
             {
                 SetAuthHeader();
-                var response = await client.GetAsync($"{BaseUrl}/api/violations");
+                var response = await client.GetAsync($"{BaseUrl}/api/alarms?");
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<AlterDataClass>>(json);
+                    return JsonConvert.DeserializeObject<List<AlterDataClass>>(json) ?? new List<AlterDataClass>();
                 }
                 return new List<AlterDataClass>();
             }
@@ -86,15 +76,24 @@ namespace PPE_관제_시스템
             try
             {
                 SetAuthHeader();
-                var data = new {
-                    status = "해결",
+                var data = new { status = "해결",
                     admin_id = adminId,
-                    resolve_memo = memo
-                };
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                    memo = memo };
+                var json = JsonConvert.SerializeObject(data);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"{BaseUrl}/api/violations/{alertId}/resolve", content);
-            return response.IsSuccessStatusCode;
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{BaseUrl}/api/alarms/{alertId}")
+                {
+                    Content = content
+                };
+                var response = await client.SendAsync(request);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"알람 처리 실패: {ex.Message}");
+                return false;
+            }
         }
 
         public static async Task<List<HistoryDto>> LoadHistoryLog() // 이력 / 로그 데이터를 API에서 불러오는 메서드
@@ -139,9 +138,7 @@ namespace PPE_관제_시스템
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-
                     var result = Newtonsoft.Json.Linq.JObject.Parse(json);
-
                     var areasJson = result["areas"]?.ToString();
 
                     if (!string.IsNullOrEmpty(areasJson))
@@ -208,20 +205,6 @@ namespace PPE_관제_시스템
                 return false;
             }
         }
-    }
-                var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{BaseUrl}/api/violations/{alertId}/resolve")
-                {
-                    Content = content
-                };
-                var response = await client.SendAsync(request);
-                return response.IsSuccessStatusCode;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"해결 처리 오류: {ex.Message}");
-                return false;
-            }
-        }
 
         public static async Task<List<AlterDataClass>> GetViolationsAsync(string area = null, string status = null)
         {
@@ -238,11 +221,13 @@ namespace PPE_관제_시스템
                     string json = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<List<AlterDataClass>>(json) ?? new List<AlterDataClass>();
                 }
+                return new List<AlterDataClass>();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
-            return new List<AlterDataClass>();
+            catch (Exception ex) { 
+                Console.WriteLine(ex.Message);
+                return new List<AlterDataClass>();
+            }
+            
         }
     }
-    
 }
-

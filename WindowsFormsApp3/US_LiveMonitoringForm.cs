@@ -25,6 +25,7 @@ namespace PPE_관제_시스템
         private Thread cameraThread;
 
         private bool isCameraRunning = false;
+        private System.Windows.Forms.Timer dataUpdateTimer;
 
         public US_LiveMonitoringForm()
         {
@@ -43,6 +44,8 @@ namespace PPE_관제_시스템
             cmbZone.SelectedIndexChanged += cmbZone_SelectedIndexChanged;
 
             DataManager.OnDataChanged += OnDashboardUpdated;
+
+            _ = InitUpdateTimer();
         }
 
         private void OnDashboardUpdated() // DataManager의 데이터 업데이트 이벤트 핸들러, 대시보드 정보 갱신 트리거
@@ -54,7 +57,6 @@ namespace PPE_관제_시스템
                     UpdateDashboard();
                 }));
             }
-        }
 
             picZoneView.BringToFront();
             picZoneView.SizeMode = PictureBoxSizeMode.Zoom;
@@ -63,7 +65,7 @@ namespace PPE_관제_시스템
             _ = InitUpdateTimer();
         }
 
-        private async void StartCamera() // 카메라 스트림을 시작하는 메서드, API에서 스트림 URL을 받아 OpenCV로 연결 시도
+        private async Task StartCamera() // 카메라 스트림을 시작하는 메서드, API에서 스트림 URL을 받아 OpenCV로 연결 시도
         {
             try
             {
@@ -235,15 +237,16 @@ namespace PPE_관제_시스템
                 }
 
                 lblComplianceRate.Text = $"{complianceRate:F0}%";
- 
-     
+
+
                 if (warningCount > 0)
+                {
                     SetCameraStatus("위험", Color.Red);
                 }
                 else
                 {
                     SetCameraStatus("안전", Color.Green);
-                }
+                }    
             }
             catch (Exception ex)
             {
@@ -294,18 +297,13 @@ namespace PPE_관제_시스템
                 {
                     cmbZone.SelectedIndex = 0;
                 }
-
                 UpdateDashboard();
-
-                await StartCamera();
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"폼 로드 오류: {ex.Message}");
             }
         }
-        private System.Windows.Forms.Timer dataUpdateTimer;
         private async Task InitUpdateTimer()
         {
             dataUpdateTimer = new System.Windows.Forms.Timer();

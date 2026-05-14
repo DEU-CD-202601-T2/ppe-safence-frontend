@@ -202,10 +202,6 @@ namespace PPE_관제_시스템
                 btnLogSearch_Click(sender, e);
             }
         }
-        private void US_DetectionLogForm_Load(object sender, EventArgs e)
-        {
-            LoadLogData();
-        }
 
         private async void LoadLogData()
         {

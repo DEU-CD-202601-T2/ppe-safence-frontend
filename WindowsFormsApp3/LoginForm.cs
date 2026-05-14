@@ -29,7 +29,7 @@ namespace PPE_관제_시스템
         {
             try
             {
-                var loginData = new { id = txtId.Text, pw = txtPwd.Text };
+                var loginData = new { login_id = txtId.Text, password = txtPwd.Text };
                 var json = JsonConvert.SerializeObject(loginData);
                 var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
@@ -38,7 +38,7 @@ namespace PPE_관제_시스템
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject<dynamic>(responseString);
-                    UserContext.JwtToken = (string)result.token;
+                    UserContext.JwtToken = (string)result["토큰"];
 
                     ProceedToMain();
                 }
