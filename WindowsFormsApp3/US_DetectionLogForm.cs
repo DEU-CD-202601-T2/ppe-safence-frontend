@@ -12,7 +12,7 @@ namespace PPE_관제_시스템
 {
     public partial class US_DetectionLogForm : UserControl
     {
-        private List<HistoryDto> historyLogs = new List<HistoryDto>();
+        private List<HistoryDto> HistoryLogs = new List<HistoryDto>();
         public US_DetectionLogForm()
         {
             InitializeComponent();
@@ -91,7 +91,7 @@ namespace PPE_관제_시스템
 
             string keyword = txtLogSearch.Text.Trim().ToLower();
 
-            var filteredLogs = historyLogs
+            var filteredLogs = HistoryLogs
                 .Where(log =>
                 {
                     DateTime logDate;
@@ -183,11 +183,11 @@ namespace PPE_관제_시스템
 
                 if (LogData != null)
                 {
-                    historyLogs = LogData;
+                    HistoryLogs = LogData;
 
                     dgvLog.DataSource = null;
 
-                    dgvLog.DataSource = historyLogs;
+                    dgvLog.DataSource = HistoryLogs;
                 }
                 else
                 {
