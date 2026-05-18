@@ -40,9 +40,6 @@
             this.pnlUseAlert = new System.Windows.Forms.Panel();
             this.lblUseAlert = new System.Windows.Forms.Label();
             this.pnlAlertMethod = new System.Windows.Forms.Panel();
-            this.chkSendManager = new System.Windows.Forms.CheckBox();
-            this.chkSound = new System.Windows.Forms.CheckBox();
-            this.chkPopup = new System.Windows.Forms.CheckBox();
             this.lblAlertMethod = new System.Windows.Forms.Label();
             this.pnlDetailSetting = new System.Windows.Forms.Panel();
             this.chkStopWork = new System.Windows.Forms.CheckBox();
@@ -53,6 +50,7 @@
             this.lblSeverity = new System.Windows.Forms.Label();
             this.lblInterval = new System.Windows.Forms.Label();
             this.lblDetailSetting = new System.Windows.Forms.Label();
+            this.chkSendManager = new System.Windows.Forms.CheckBox();
             this.pnlAlertType.SuspendLayout();
             this.pnlUseAlert.SuspendLayout();
             this.pnlAlertMethod.SuspendLayout();
@@ -175,46 +173,11 @@
             // 
             this.pnlAlertMethod.BackColor = System.Drawing.SystemColors.Control;
             this.pnlAlertMethod.Controls.Add(this.chkSendManager);
-            this.pnlAlertMethod.Controls.Add(this.chkSound);
-            this.pnlAlertMethod.Controls.Add(this.chkPopup);
             this.pnlAlertMethod.Controls.Add(this.lblAlertMethod);
             this.pnlAlertMethod.Location = new System.Drawing.Point(9, 268);
             this.pnlAlertMethod.Name = "pnlAlertMethod";
             this.pnlAlertMethod.Size = new System.Drawing.Size(580, 315);
             this.pnlAlertMethod.TabIndex = 10;
-            // 
-            // chkSendManager
-            // 
-            this.chkSendManager.AutoSize = true;
-            this.chkSendManager.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSendManager.Location = new System.Drawing.Point(36, 191);
-            this.chkSendManager.Name = "chkSendManager";
-            this.chkSendManager.Size = new System.Drawing.Size(197, 27);
-            this.chkSendManager.TabIndex = 5;
-            this.chkSendManager.Text = "관리자에게 알림 전송";
-            this.chkSendManager.UseVisualStyleBackColor = true;
-            // 
-            // chkSound
-            // 
-            this.chkSound.AutoSize = true;
-            this.chkSound.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSound.Location = new System.Drawing.Point(36, 141);
-            this.chkSound.Name = "chkSound";
-            this.chkSound.Size = new System.Drawing.Size(106, 27);
-            this.chkSound.TabIndex = 4;
-            this.chkSound.Text = "소리 알림";
-            this.chkSound.UseVisualStyleBackColor = true;
-            // 
-            // chkPopup
-            // 
-            this.chkPopup.AutoSize = true;
-            this.chkPopup.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkPopup.Location = new System.Drawing.Point(36, 93);
-            this.chkPopup.Name = "chkPopup";
-            this.chkPopup.Size = new System.Drawing.Size(106, 27);
-            this.chkPopup.TabIndex = 3;
-            this.chkPopup.Text = "팝업 알림";
-            this.chkPopup.UseVisualStyleBackColor = true;
             // 
             // lblAlertMethod
             // 
@@ -320,6 +283,17 @@
             this.lblDetailSetting.TabIndex = 3;
             this.lblDetailSetting.Text = "세부 설정";
             // 
+            // chkSendManager
+            // 
+            this.chkSendManager.AutoSize = true;
+            this.chkSendManager.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSendManager.Location = new System.Drawing.Point(18, 97);
+            this.chkSendManager.Name = "chkSendManager";
+            this.chkSendManager.Size = new System.Drawing.Size(197, 27);
+            this.chkSendManager.TabIndex = 5;
+            this.chkSendManager.Text = "관리자에게 알림 전송";
+            this.chkSendManager.UseVisualStyleBackColor = true;
+            // 
             // US_AlertSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -362,9 +336,6 @@
         private System.Windows.Forms.Panel pnlAlertMethod;
         private System.Windows.Forms.Panel pnlDetailSetting;
         private System.Windows.Forms.Label lblAlertMethod;
-        private System.Windows.Forms.CheckBox chkSendManager;
-        private System.Windows.Forms.CheckBox chkSound;
-        private System.Windows.Forms.CheckBox chkPopup;
         private System.Windows.Forms.Label lblDetailSetting;
         private System.Windows.Forms.Label lblStopWork;
         private System.Windows.Forms.Label lblSeverity;
@@ -373,5 +344,6 @@
         private System.Windows.Forms.TextBox txtInterval;
         private System.Windows.Forms.ComboBox cmbSeverity;
         private System.Windows.Forms.CheckBox chkStopWork;
+        private System.Windows.Forms.CheckBox chkSendManager;
     }
 }

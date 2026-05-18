@@ -33,12 +33,12 @@
             this.lblZoneList = new System.Windows.Forms.Label();
             this.lblPPESetting = new System.Windows.Forms.Label();
             this.pnlZoneList = new System.Windows.Forms.Panel();
+            this.lstPPE_ZoneList = new System.Windows.Forms.ListBox();
             this.pnlPPESetting = new System.Windows.Forms.Panel();
             this.lblSetting = new System.Windows.Forms.Label();
             this.chkSafetyHelmet = new System.Windows.Forms.CheckBox();
             this.chkSafetyMask = new System.Windows.Forms.CheckBox();
             this.chkSafetyGloves = new System.Windows.Forms.CheckBox();
-            this.lstPPE_ZoneList = new System.Windows.Forms.ListBox();
             this.pnlZoneList.SuspendLayout();
             this.pnlPPESetting.SuspendLayout();
             this.SuspendLayout();
@@ -51,6 +51,7 @@
             this.btnPPESave.TabIndex = 0;
             this.btnPPESave.Text = "저장";
             this.btnPPESave.UseVisualStyleBackColor = true;
+            this.btnPPESave.Click += new System.EventHandler(this.btnPPESave_Click);
             // 
             // btnPPEReset
             // 
@@ -60,6 +61,7 @@
             this.btnPPEReset.TabIndex = 1;
             this.btnPPEReset.Text = "초기화";
             this.btnPPEReset.UseVisualStyleBackColor = true;
+            this.btnPPEReset.Click += new System.EventHandler(this.btnPPEReset_Click);
             // 
             // lblZoneList
             // 
@@ -90,6 +92,21 @@
             this.pnlZoneList.Name = "pnlZoneList";
             this.pnlZoneList.Size = new System.Drawing.Size(551, 445);
             this.pnlZoneList.TabIndex = 12;
+            // 
+            // lstPPE_ZoneList
+            // 
+            this.lstPPE_ZoneList.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lstPPE_ZoneList.FormattingEnabled = true;
+            this.lstPPE_ZoneList.ItemHeight = 28;
+            this.lstPPE_ZoneList.Items.AddRange(new object[] {
+            "A구역 | 위험도 높음",
+            "B구역 | 위험도 보통",
+            "C구역 | 위험도 낮음"});
+            this.lstPPE_ZoneList.Location = new System.Drawing.Point(21, 102);
+            this.lstPPE_ZoneList.Name = "lstPPE_ZoneList";
+            this.lstPPE_ZoneList.Size = new System.Drawing.Size(505, 228);
+            this.lstPPE_ZoneList.TabIndex = 6;
+            this.lstPPE_ZoneList.SelectedIndexChanged += new System.EventHandler(this.lstPPE_ZoneList_SelectedIndexChanged);
             // 
             // pnlPPESetting
             // 
@@ -145,21 +162,6 @@
             this.chkSafetyGloves.TabIndex = 7;
             this.chkSafetyGloves.Text = "장갑";
             this.chkSafetyGloves.UseVisualStyleBackColor = true;
-            // 
-            // lstPPE_ZoneList
-            // 
-            this.lstPPE_ZoneList.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lstPPE_ZoneList.FormattingEnabled = true;
-            this.lstPPE_ZoneList.ItemHeight = 28;
-            this.lstPPE_ZoneList.Items.AddRange(new object[] {
-            "A구역 | 위험도 높음",
-            "B구역 | 위험도 보통",
-            "C구역 | 위험도 낮음"});
-            this.lstPPE_ZoneList.Location = new System.Drawing.Point(21, 102);
-            this.lstPPE_ZoneList.Name = "lstPPE_ZoneList";
-            this.lstPPE_ZoneList.Size = new System.Drawing.Size(505, 228);
-            this.lstPPE_ZoneList.TabIndex = 6;
-            this.lstPPE_ZoneList.SelectedIndexChanged += new System.EventHandler(this.lstPPE_ZoneList_SelectedIndexChanged);
             // 
             // US_PPEStandard
             // 
