@@ -56,9 +56,14 @@ namespace PPE_관제_시스템
             {
                 int zoneId = zones[lstPPE_ZoneList.SelectedIndex].ZoneID;
 
-                var result = await ApiService.GetPpeSettingAsync(zoneId);
+                var results = await ApiService.GetPpeSettingAsync();
+
+                var result = results.FirstOrDefault(x => x.ZoneID == zoneId);
 
                 ResetPPECheckBox();
+
+                if (result == null)
+                    return;
 
                 List<string> requiredPPE =
                     result.RequiredPPE ?? new List<string>();

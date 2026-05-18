@@ -178,16 +178,16 @@ namespace PPE_관제_시스템
         // PPE 기준 설정 API 호출 메서드들
         // ========================================
 
-        public static async Task<PPESetting> GetPpeSettingAsync(int zoneId) // PPE 기준 설정 조회 API 호출
+        public static async Task<List<PPESetting>> GetPpeSettingAsync() // PPE 기준 설정 조회 API 호출
         {
             HttpResponseMessage response =
-                await client.GetAsync($"{BaseUrl}/api/ppe/settings/{zoneId}");
+                await client.GetAsync($"{BaseUrl}/api/ppe-standards");
 
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<PPESetting>(json);
+            return JsonConvert.DeserializeObject<List<PPESetting>>(json);
         }
 
         public static async Task<bool> SavePpeSettingAsync(PpeSettingRequest request) // PPE 기준 설정 저장 API 호출
