@@ -32,7 +32,7 @@ namespace PPE_관제_시스템
     {
         [JsonProperty("zoneID")]
         public int ZoneID { get; set; }
-        
+
         [JsonProperty("zone_name")]
         public string ZoneName { get; set; }
     }

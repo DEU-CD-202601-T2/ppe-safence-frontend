@@ -65,17 +65,16 @@ namespace PPE_관제_시스템
                 if (result == null)
                     return;
 
-                List<string> requiredPPE =
-                    result.RequiredPPE ?? new List<string>();
+                List<string> requiredPPE = result.RequiredPPE ?? new List<string>();
 
                 if (requiredPPE.Contains("안전모"))
-                    chkSafetyHelmet.Checked = true;
+    chkSafetyHelmet.Checked = true;
 
-                if (requiredPPE.Contains("장갑"))
-                    chkSafetyGloves.Checked = true;
+if (requiredPPE.Contains("장갑"))
+    chkSafetyGloves.Checked = true;
 
-                if (requiredPPE.Contains("마스크"))
-                    chkSafetyMask.Checked = true;
+if (requiredPPE.Contains("마스크"))
+    chkSafetyMask.Checked = true;
             }
             catch (Exception ex)
             {

@@ -17,6 +17,7 @@ namespace PPE_관제_시스템
         public US_AnalysisForm()
         {
             InitializeComponent();
+            this.Load += US_AnalysisForm_Load;
             cmbPeriod.SelectedIndexChanged += cmbPeriod_SelectedIndexChanged;
             cmbChartType.SelectedIndexChanged += cmbChartType_SelectedIndexChanged;
         }
@@ -25,13 +26,25 @@ namespace PPE_관제_시스템
         {
             try
             {
-                AnalysisDashboardStats stats =
-                    await ApiService.GetDashboardStatsAsync();
+                string range =
+                    cmbPeriod.SelectedItem?.ToString() ?? "";
 
-                lblTotalWorkersCount.Text = stats.TotalWorkersCount.ToString();
-                lblPPEComplianceRate.Text = $"{stats.PPEComplianceRate:F1}%";
-                lblAccidentCount.Text = stats.TotalAccidentCount.ToString();
-                lblWarningCount.Text = stats.TotalWarningCount.ToString();
+                AnalysisDashboardStats stats =
+                    await ApiService.GetDashboardStatsAsync(range);
+
+                if (stats == null) return;
+
+                lblTotalWorkersCount.Text =
+                    stats.TotalWorkersCount.ToString();
+
+                lblPPEComplianceRate.Text =
+                    stats.PPEComplianceRate.ToString();
+
+                lblAccidentCount.Text =
+                    stats.TotalAccidentCount.ToString();
+
+                lblWarningCount.Text =
+                    stats.TotalWarningCount.ToString();
             }
             catch (Exception ex)
             {

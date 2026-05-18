@@ -34,19 +34,19 @@
             this.pnlChart = new System.Windows.Forms.Panel();
             this.chtAnalysis = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.pnlWarnings = new System.Windows.Forms.Panel();
+            this.lblWarningCount = new System.Windows.Forms.Label();
             this.lblWarnings = new System.Windows.Forms.Label();
             this.pnlAccidents = new System.Windows.Forms.Panel();
+            this.lblAccidentCount = new System.Windows.Forms.Label();
             this.lblAccidents = new System.Windows.Forms.Label();
             this.pnlPPECompliance = new System.Windows.Forms.Panel();
+            this.lblPPEComplianceRate = new System.Windows.Forms.Label();
             this.lblPPECompliance = new System.Windows.Forms.Label();
             this.pnlTotalWorkers = new System.Windows.Forms.Panel();
+            this.lblTotalWorkersCount = new System.Windows.Forms.Label();
             this.lblTotalWorkers = new System.Windows.Forms.Label();
             this.cmbPeriod = new System.Windows.Forms.ComboBox();
             this.cmbChartType = new System.Windows.Forms.ComboBox();
-            this.lblTotalWorkersCount = new System.Windows.Forms.Label();
-            this.lblPPEComplianceRate = new System.Windows.Forms.Label();
-            this.lblAccidentCount = new System.Windows.Forms.Label();
-            this.lblWarningCount = new System.Windows.Forms.Label();
             this.pnlChart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chtAnalysis)).BeginInit();
             this.pnlWarnings.SuspendLayout();
@@ -90,6 +90,18 @@
             this.pnlWarnings.Size = new System.Drawing.Size(288, 156);
             this.pnlWarnings.TabIndex = 7;
             // 
+            // lblWarningCount
+            // 
+            this.lblWarningCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblWarningCount.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblWarningCount.Location = new System.Drawing.Point(184, 106);
+            this.lblWarningCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblWarningCount.Name = "lblWarningCount";
+            this.lblWarningCount.Size = new System.Drawing.Size(92, 38);
+            this.lblWarningCount.TabIndex = 9;
+            this.lblWarningCount.Text = "0";
+            this.lblWarningCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // lblWarnings
             // 
             this.lblWarnings.AutoSize = true;
@@ -109,6 +121,18 @@
             this.pnlAccidents.Name = "pnlAccidents";
             this.pnlAccidents.Size = new System.Drawing.Size(288, 156);
             this.pnlAccidents.TabIndex = 8;
+            // 
+            // lblAccidentCount
+            // 
+            this.lblAccidentCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblAccidentCount.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblAccidentCount.Location = new System.Drawing.Point(199, 106);
+            this.lblAccidentCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAccidentCount.Name = "lblAccidentCount";
+            this.lblAccidentCount.Size = new System.Drawing.Size(77, 38);
+            this.lblAccidentCount.TabIndex = 9;
+            this.lblAccidentCount.Text = "0";
+            this.lblAccidentCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblAccidents
             // 
@@ -130,6 +154,18 @@
             this.pnlPPECompliance.Size = new System.Drawing.Size(288, 156);
             this.pnlPPECompliance.TabIndex = 9;
             // 
+            // lblPPEComplianceRate
+            // 
+            this.lblPPEComplianceRate.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblPPEComplianceRate.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblPPEComplianceRate.Location = new System.Drawing.Point(204, 106);
+            this.lblPPEComplianceRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPPEComplianceRate.Name = "lblPPEComplianceRate";
+            this.lblPPEComplianceRate.Size = new System.Drawing.Size(72, 38);
+            this.lblPPEComplianceRate.TabIndex = 9;
+            this.lblPPEComplianceRate.Text = "0";
+            this.lblPPEComplianceRate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // lblPPECompliance
             // 
             this.lblPPECompliance.AutoSize = true;
@@ -150,6 +186,18 @@
             this.pnlTotalWorkers.Size = new System.Drawing.Size(288, 154);
             this.pnlTotalWorkers.TabIndex = 6;
             // 
+            // lblTotalWorkersCount
+            // 
+            this.lblTotalWorkersCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblTotalWorkersCount.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTotalWorkersCount.Location = new System.Drawing.Point(210, 106);
+            this.lblTotalWorkersCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTotalWorkersCount.Name = "lblTotalWorkersCount";
+            this.lblTotalWorkersCount.Size = new System.Drawing.Size(66, 38);
+            this.lblTotalWorkersCount.TabIndex = 9;
+            this.lblTotalWorkersCount.Text = "0";
+            this.lblTotalWorkersCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // lblTotalWorkers
             // 
             this.lblTotalWorkers.AutoSize = true;
@@ -165,7 +213,6 @@
             this.cmbPeriod.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cmbPeriod.FormattingEnabled = true;
             this.cmbPeriod.Items.AddRange(new object[] {
-            "전체",
             "이번 달",
             "이번 주"});
             this.cmbPeriod.Location = new System.Drawing.Point(977, 181);
@@ -189,54 +236,6 @@
             this.cmbChartType.TabIndex = 12;
             this.cmbChartType.Text = "PPE 준수율";
             this.cmbChartType.SelectedIndexChanged += new System.EventHandler(this.cmbChartType_SelectedIndexChanged);
-            // 
-            // lblTotalWorkersCount
-            // 
-            this.lblTotalWorkersCount.AutoSize = true;
-            this.lblTotalWorkersCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblTotalWorkersCount.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblTotalWorkersCount.Location = new System.Drawing.Point(248, 106);
-            this.lblTotalWorkersCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTotalWorkersCount.Name = "lblTotalWorkersCount";
-            this.lblTotalWorkersCount.Size = new System.Drawing.Size(33, 38);
-            this.lblTotalWorkersCount.TabIndex = 9;
-            this.lblTotalWorkersCount.Text = "0";
-            // 
-            // lblPPEComplianceRate
-            // 
-            this.lblPPEComplianceRate.AutoSize = true;
-            this.lblPPEComplianceRate.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblPPEComplianceRate.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblPPEComplianceRate.Location = new System.Drawing.Point(248, 106);
-            this.lblPPEComplianceRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblPPEComplianceRate.Name = "lblPPEComplianceRate";
-            this.lblPPEComplianceRate.Size = new System.Drawing.Size(33, 38);
-            this.lblPPEComplianceRate.TabIndex = 9;
-            this.lblPPEComplianceRate.Text = "0";
-            // 
-            // lblAccidentCount
-            // 
-            this.lblAccidentCount.AutoSize = true;
-            this.lblAccidentCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblAccidentCount.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAccidentCount.Location = new System.Drawing.Point(248, 106);
-            this.lblAccidentCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblAccidentCount.Name = "lblAccidentCount";
-            this.lblAccidentCount.Size = new System.Drawing.Size(33, 38);
-            this.lblAccidentCount.TabIndex = 9;
-            this.lblAccidentCount.Text = "0";
-            // 
-            // lblWarningCount
-            // 
-            this.lblWarningCount.AutoSize = true;
-            this.lblWarningCount.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblWarningCount.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblWarningCount.Location = new System.Drawing.Point(248, 106);
-            this.lblWarningCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblWarningCount.Name = "lblWarningCount";
-            this.lblWarningCount.Size = new System.Drawing.Size(33, 38);
-            this.lblWarningCount.TabIndex = 9;
-            this.lblWarningCount.Text = "0";
             // 
             // US_AnalysisForm
             // 

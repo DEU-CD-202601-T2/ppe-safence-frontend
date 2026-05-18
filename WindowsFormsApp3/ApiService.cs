@@ -25,6 +25,7 @@ namespace PPE_관제_시스템
                     UserContext.JwtToken
                 );
         }
+
         //스트리밍 URL 조회
         public static async Task<CameraInfo> GetCameraStreamInfoAsync() // 카메라 스트리밍 URL과 카메라 수 조회
         {
@@ -130,25 +131,28 @@ namespace PPE_관제_시스템
             }
         }
 
-        public static async Task<AnalysisDashboardStats> GetDashboardStatsAsync() // 대시보드 통계 데이터 조회 API 호출
+        public static async Task<AnalysisDashboardStats> GetDashboardStatsAsync(string range) // 대시보드 통계 데이터 조회 API 호출
         {
             try
             {
                 SetAuthHeader();
+
                 var response =
-                    await client.GetAsync($"{BaseUrl}/api/analysis/summary");
+                    await client.GetAsync(
+                        $"{BaseUrl}/api/analysis/summary?range={range}");
+
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
+                    var json =
+                        await response.Content.ReadAsStringAsync();
+
                     return JsonConvert.DeserializeObject<AnalysisDashboardStats>(json);
                 }
-                Console.WriteLine(
-                    $"대시보드 통계 조회 실패: {(int)response.StatusCode}");
+
                 return null;
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"대시보드 통계 조회 실패: {ex}");
                 return null;
             }
         }
@@ -186,6 +190,7 @@ namespace PPE_관제_시스템
 
         public static async Task<List<PPESetting>> GetPpeSettingAsync() // PPE 기준 설정 조회 API 호출
         {
+            SetAuthHeader();
             HttpResponseMessage response =
                 await client.GetAsync($"{BaseUrl}/api/ppe-standards");
 
@@ -198,6 +203,7 @@ namespace PPE_관제_시스템
 
         public static async Task<bool> SavePpeSettingAsync(PpeSettingRequest request) // PPE 기준 설정 저장 API 호출
         {
+            SetAuthHeader();
             string json = JsonConvert.SerializeObject(request);
 
             StringContent content =
@@ -211,6 +217,7 @@ namespace PPE_관제_시스템
 
         public static async Task<List<ZoneItem>> GetPPEZoneListAsync() // PPE 기준 설정에서 구역 목록 조회 API 호출
         {
+            SetAuthHeader();
             HttpResponseMessage response =
                 await client.GetAsync($"{BaseUrl}/api/ppe-zones");
 
@@ -286,6 +293,7 @@ namespace PPE_관제_시스템
         {
             try
             {
+                SetAuthHeader();
                 var response =
                     await client.DeleteAsync($"{BaseUrl}/api/users/{userID}");
 
