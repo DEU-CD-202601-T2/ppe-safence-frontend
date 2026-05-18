@@ -136,6 +136,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertResolution.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertResolution.Designer.cs">
+      <DependentUpon>AlertResolution.cs</DependentUpon>
+    </Compile>
     <Compile Include="AlterDataClass.cs" />
     <Compile Include="AnalysisDashboardStats.cs" />
     <Compile Include="ApiService.cs" />
@@ -245,6 +251,9 @@
     </Compile>
     <Compile Include="Violation.cs" />
     <Compile Include="ZoneData.cs" />
+    <EmbeddedResource Include="AlertResolution.resx">
+      <DependentUpon>AlertResolution.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>

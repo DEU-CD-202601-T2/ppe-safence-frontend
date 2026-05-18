@@ -12,21 +12,23 @@ namespace PPE_관제_시스템
 {
     public partial class US_AlertCard : UserControl
     {
-        public event Action<US_AlertCard> OnResolveRequested; // 해결 버튼 클릭 이벤트
-        public string LocationInfo { get; set; }
-        public string AlertID { get; private set; } // 알람 ID 속성
-        public string Zone { get; set; }
-        public string Cam { get; set; }
         public US_AlertCard()
         {
             InitializeComponent();
-        } 
-
+        }
+        public event Action<US_AlertCard> OnResolveRequested; // 해결 버튼 클릭 이벤트
+        public string LocationInfo { get; set; }
+        public string AlertId { get; private set; } // 알람 ID 속성
+        public string Zone { get; set; }
+        public string Cam { get; set; }
+        public string WorkerId { get; set; }
+   
         public void SetData(string type, string time, string zone, string cam, string id, string uid, string status, Image img, bool isManagementMode) // 카드에 데이터 설정하는 메서드
         {
-            this.AlertID = id;
+            this.AlertId = id;
             this.Zone = zone;
             this.Cam = cam;
+            this.WorkerId = uid;
 
             lblViolation.Text = type;
             lblDate.Text = time;

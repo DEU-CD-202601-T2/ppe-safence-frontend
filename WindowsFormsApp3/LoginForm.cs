@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,7 +38,7 @@ namespace PPE_관제_시스템
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject<dynamic>(responseString);
-                    UserContext.JwtToken = (string)result.token;
+                    UserContext.JwtToken = (string)result["토큰"];
 
                     ProceedToMain();
                 }

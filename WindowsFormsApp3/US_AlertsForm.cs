@@ -1,4 +1,4 @@
-﻿using Org.BouncyCastle.Tls;
+﻿using PPE_관제_시스템.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +18,7 @@ namespace PPE_관제_시스템
             InitializeComponent();
             DataManager.OnDataChanged += ApplyFilter;
 
+            //이벤트 연결
             cmbViolation.SelectedIndexChanged += (s, e) => { DataManager.CurrentPage = 0; ApplyFilter(); };
             cmbCamera.SelectedIndexChanged += (s, e) => { DataManager.CurrentPage = 0; ApplyFilter(); };
             cmbZone.SelectedIndexChanged += (s, e) => { DataManager.CurrentPage = 0; ApplyFilter(); };
@@ -40,12 +41,25 @@ namespace PPE_관제_시스템
             lnkNext.Enabled = (DataManager.CurrentPage + 1 < totalPages);
         }
 
-        private void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (DataManager.CurrentPage > 0)
+            try
             {
-                DataManager.CurrentPage--;
-                ApplyFilter();
+                var serverData = await ApiService.GetViolationsAsync();
+
+                if (serverData != null)
+                {
+                    DataManager.AllAlerts = serverData;
+                }
+                if (DataManager.CurrentPage > 0)
+                {
+                    DataManager.CurrentPage--;
+                    ApplyFilter();
+                }
+            }
+            catch(Exception ex)
+            {
+               
             }
         }
 
@@ -132,12 +146,22 @@ namespace PPE_관제_시스템
                 var card = new US_AlertCard();
                 card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
 
-                card.OnResolveRequested += (targetCard) =>
+                card.OnResolveRequested += async (targetCard) =>
                 {
-                    if (MessageBox.Show("이 알람을 해결 처리하시겠습니까?", "확인", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    using (var frm = new AlertResolution(targetCard.WorkerId))
                     {
-                        DataManager.ResolveAlert(targetCard.AlertID);
-                        DataManager.NotifyDataChanged();
+                        if(frm.ShowDialog() == DialogResult.OK)
+                        {
+                            bool success = await ApiService.ResolveViolationAsync(targetCard.AlertId, frm.AdminId, frm.Memo);
+
+                            if (success)
+                            {
+                                MessageBox.Show("해결 처리가 완료되었습니다");
+                                DataManager.ResolveAlert(targetCard.AlertId);
+                                DataManager.NotifyDataChanged();
+                                ApplyFilter();
+                            }
+                        }
                     }
                 };
                 card.Width = flpAlertsList.ClientSize.Width - 10;
@@ -150,13 +174,10 @@ namespace PPE_관제_시스템
         { 
             var card = (sender as Button)?.Parent as US_AlertCard;
             if (card == null) return;
-            string targetId = card.AlertID;
+            string targetId = card.AlertId;
             DataManager.ResolveAlert(targetId);
             DataManager.NotifyDataChanged();
-            
-   
         }
-
         private List<AlterDataClass> GetFilteredList()
         {
             string typeFilter = cmbViolation.SelectedItem?.ToString() ?? "전체";

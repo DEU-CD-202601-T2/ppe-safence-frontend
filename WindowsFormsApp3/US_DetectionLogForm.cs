@@ -231,5 +231,19 @@ namespace PPE_관제_시스템
         {
             FilterLog();
         }
+
+        private async void LoadLogData()
+        {
+            var logs = await ApiService.GetViolationsAsync();
+            if(logs != null && logs.Count > 0)
+            {
+                dgvLog.DataSource = null;
+                dgvLog.DataSource = logs;
+            }
+            else
+            {
+                MessageBox.Show("no");
+            }
+        }
     }
 }
