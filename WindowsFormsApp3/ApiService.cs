@@ -201,10 +201,12 @@ namespace PPE_관제_시스템
             return JsonConvert.DeserializeObject<List<PPESetting>>(json);
         }
 
-        public static async Task<bool> SavePpeSettingAsync(PpeSettingRequest request) // PPE 기준 설정 저장 API 호출
+        public static async Task<bool> SavePpeSettingAsync(List<PpeSettingRequest> requestList) // PPE 기준 설정 저장 API 호출
         {
             SetAuthHeader();
-            string json = JsonConvert.SerializeObject(request);
+
+            // 이제 화면에 있는 모든 구역의 상태가 담긴 배열 JSON이 생성됩니다.
+            string json = JsonConvert.SerializeObject(requestList);
 
             StringContent content =
                 new StringContent(json, Encoding.UTF8, "application/json");

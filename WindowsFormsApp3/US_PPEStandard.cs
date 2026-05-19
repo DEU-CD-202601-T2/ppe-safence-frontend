@@ -68,13 +68,13 @@ namespace PPE_관제_시스템
                 List<string> requiredPPE = result.RequiredPPE ?? new List<string>();
 
                 if (requiredPPE.Contains("안전모"))
-    chkSafetyHelmet.Checked = true;
+                    chkSafetyHelmet.Checked = true;
 
-if (requiredPPE.Contains("장갑"))
-    chkSafetyGloves.Checked = true;
+                if (requiredPPE.Contains("장갑"))
+                    chkSafetyGloves.Checked = true;
 
-if (requiredPPE.Contains("마스크"))
-    chkSafetyMask.Checked = true;
+                if (requiredPPE.Contains("마스크"))
+                    chkSafetyMask.Checked = true;
             }
             catch (Exception ex)
             {
@@ -107,29 +107,38 @@ if (requiredPPE.Contains("마스크"))
                 int zoneId = zones[lstPPE_ZoneList.SelectedIndex].ZoneID;
 
                 List<string> ppeList = new List<string>();
+                if (chkSafetyHelmet.Checked) ppeList.Add("안전모");
+                if (chkSafetyGloves.Checked) ppeList.Add("장갑");
+                if (chkSafetyMask.Checked) ppeList.Add("마스크");
 
-                if (chkSafetyHelmet.Checked)
-                    ppeList.Add("안전모");
+                List<PPESetting> currentAllSettings = await ApiService.GetPpeSettingAsync();
 
-                if (chkSafetyGloves.Checked)
-                    ppeList.Add("장갑");
+                var targetSetting = currentAllSettings.FirstOrDefault(x => x.ZoneID == zoneId);
 
-                if (chkSafetyMask.Checked)
-                    ppeList.Add("마스크");
-
-                PpeSettingRequest request = new PpeSettingRequest
+                if (targetSetting != null)
                 {
-                    ZoneID = zoneId,
-                    RequiredPPE = ppeList
-                };
+                    targetSetting.RequiredPPE = ppeList;
+                }
+                else
+                {
+                    currentAllSettings.Add(new PPESetting
+                    {
+                        ZoneID = zoneId,
+                        ZoneName = zones[lstPPE_ZoneList.SelectedIndex].ZoneName,
+                        RequiredPPE = ppeList
+                    });
+                }
+                List<PpeSettingRequest> requestsToSend = currentAllSettings.Select(x => new PpeSettingRequest
+                {
+                    ZoneID = x.ZoneID,
+                    RequiredPPE = x.RequiredPPE
+                }).ToList();
 
-                bool success =
-                    await ApiService.SavePpeSettingAsync(request);
+                bool success = await ApiService.SavePpeSettingAsync(requestsToSend);
 
                 if (success)
                 {
                     MessageBox.Show("저장 성공");
-
                     await LoadPPE_ZoneList();
                 }
                 else
