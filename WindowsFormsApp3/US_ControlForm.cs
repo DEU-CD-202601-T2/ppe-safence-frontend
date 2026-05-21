@@ -19,7 +19,7 @@ namespace PPE_관제_시스템
         {
             InitializeComponent();
             DataManager.OnDataChanged += UpdateUI;
-            DataManager.InitTestData();
+           
         }
         private void UpdateUI()
         {

@@ -311,10 +311,9 @@ namespace PPE_관제_시스템
             dataUpdateTimer.Tick += async(s, e) =>{
                 string selectedZone = cmbZone.SelectedItem.ToString();
                 var newData = await ApiService.GetViolationsAsync(selectedZone, "미해결"); ;
-                if(newData != null && newData.Count > 0)
+                if(newData != null)
                 {
-                    DataManager.AllAlerts = newData;
-                    DataManager.NotifyDataChanged();
+                    DataManager.MergeServerAlerts(newData);
                 }
             };
             dataUpdateTimer.Start();

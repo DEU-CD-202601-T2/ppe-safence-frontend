@@ -17,8 +17,7 @@ namespace PPE_관제_시스템
 {
     public partial class US_ViolationManagementForm : UserControl
     {
-        private static readonly HttpClient client = new HttpClient();
-        private List<US_AlertCard> alertCards = new List<US_AlertCard>(); // 모든 카드 저장 리스트
+        private int totalCount = 0;
         private int currentPage = 0; //현재 페이지 인덱스
         private int pageSize = 10; //한 페이지에 보여줄 카드 수
 
@@ -27,33 +26,23 @@ namespace PPE_관제_시스템
             InitializeComponent();
 
             DataManager.OnDataChanged += RefreshCardList;
-            if (cmbState != null)
-                cmbState.SelectedIndexChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
-            if (cmbZone != null)
-                cmbZone.SelectedIndexChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
-            if (cmbTime != null)
-                cmbTime.SelectedIndexChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
-        }
-
-        private void UpdateCardVisibility() // 페이지에 따라 카드의 Visible 속성 조정
-        {
-            for (int i = 0; i < alertCards.Count; i++)
-            {
-                alertCards[i].Visible = i >= currentPage * pageSize && i < (currentPage + 1) * pageSize;
-            }
-            UpdatePageLabel();
+            cmbState.SelectedIndexChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
+            cmbZone.SelectedIndexChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
+            cmbTime.SelectedIndexChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
+            dtpDateStart.ValueChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
+            dtpDateEnd.ValueChanged += (s, e) => { currentPage = 0; RefreshCardList(); };
         }
 
         private void UpdatePageLabel() // 페이지 label 업데이트
         {
-            int totalPages = (alertCards.Count + pageSize - 1) / pageSize;
-            if (totalPages == 0)
-                totalPages = 1;
-            lblPage.Text = $"{currentPage + 1} / {totalPages}";
+            int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            if (totalPages == 0) totalPages = 1;
+            if (currentPage == totalPages) currentPage = totalPages - 1;
+            if (currentPage < 0) currentPage = 1;
 
+            lblPage.Text = $"{currentPage + 1} / {totalPages}";
             lnkPrev.Enabled = (currentPage > 0);
             lnkNext.Enabled = (currentPage + 1 < totalPages);
-            
         }
 
         private void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -61,27 +50,27 @@ namespace PPE_관제_시스템
             if (currentPage > 0)
             {
                 currentPage--;
-                UpdateCardVisibility();
+                RefreshCardList();
             }
         }
 
         private void lnkNext_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            int totalPages = (alertCards.Count + pageSize - 1) / pageSize;
+            int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
             if (currentPage + 1 < totalPages)
             {
                 currentPage++;
-                UpdateCardVisibility();
+                RefreshCardList();
             }
         }
 
         private async void US_ViolationManagementForm_Load(object sender, EventArgs e)
         {
-            SetFilterItems();
-            await LoadViolationData();
-
             dtpDateStart.Value = DateTime.Now.AddDays(-7);
             dtpDateEnd.Value = DateTime.Now;
+
+            SetFilterItems();
+            await LoadViolationData();
         }
 
         private void SetFilterItems()
@@ -122,9 +111,12 @@ namespace PPE_관제_시스템
                 this.Invoke(new Action(RefreshCardList));
                 return;
             }
-            flpViolationList.Controls.Clear();
-            alertCards.Clear();
-            flpViolationList.SuspendLayout();
+            for (int i = flpViolationList.Controls.Count - 1; i >= 0; i--)
+            {
+                var ctrl = flpViolationList.Controls[i];
+                flpViolationList.Controls.Remove(ctrl);
+                ctrl.Dispose();
+            }
 
             string statusFilter = cmbState?.SelectedItem?.ToString().Trim() ?? "전체";
             string zoneFilter = cmbZone?.SelectedItem?.ToString().Trim() ?? "전체";
@@ -151,19 +143,18 @@ namespace PPE_관제_시스템
                 return true;
             }).ToList();
 
+            totalCount = filteredList.Count;
+            var pageItmes = filteredList.Skip(currentPage * pageSize).Take(pageSize).ToList();
 
-            foreach (var data in filteredList)
+            foreach (var data in pageItmes)
             {
                 var card = new US_AlertCard();
-
                 card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, true);
                 card.Width = flpViolationList.Width - 35;
-
-                alertCards.Add(card);
                 flpViolationList.Controls.Add(card);
             }
             flpViolationList.ResumeLayout();
-            UpdateCardVisibility();
+            UpdatePageLabel();
         }
 
         private async Task LoadViolationData()

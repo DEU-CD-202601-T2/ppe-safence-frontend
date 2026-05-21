@@ -12,67 +12,71 @@ namespace PPE_관제_시스템
 {
     public partial class US_UsersSetting : UserControl
     {
+        private List<WorkerControlDto> workerList = new List<WorkerControlDto>();
         public US_UsersSetting()
         {
             InitializeComponent();
-            //DataManager.OnDataChanged += RefreshCardList;
-
-            //if (cmbZone != null)
-            //    cmbZone.SelectedIndexChanged += (s, e) => RefreshCardList();
-            //if (cmbStatus != null)
-            //    cmbStatus.SelectedIndexChanged += (s, e) => RefreshCardList();
+            this.Load += US_UserSetting_Load;
         }
-        //private void US_UsersSettings_Load(object sender, EventArgs e)
-        //{
-        //    if (cmbStatus != null && cmbStatus.Items.Count > 0)
-        //        cmbStatus.SelectedIndex = 0;
-        //    RefreshCardList();
 
-        //    if (cmbZone != null && cmbZone.Items.Count > 0)
-        //        cmbZone.SelectedIndex = 0;
-        //    RefreshCardList();
-        //}
-        //private void RefreshCardList()
-        //{
-        //    if (this.InvokeRequired)
-        //    {
-        //        this.Invoke(new Action(RefreshCardList));
-        //        return;
-        //    }
-        //    flpUserAlerts.Controls.Clear();
-        //    flpUserAlerts.SuspendLayout();
+        private void InitGrid()
+        {
+            dgvUsersSetting.AutoGenerateColumns = false;
+            dgvUsersSetting.AllowUserToAddRows = false;
+            dgvUsersSetting.ReadOnly = true;
+            dgvUsersSetting.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-        //    string statusFilter = cmbStatus.SelectedItem?.ToString() ?? cmbStatus.Text;
-        //    if(statusFilter == "상태" || string.IsNullOrWhiteSpace(statusFilter))
-        //        statusFilter = "전체";
-        //    string zoneFilter = cmbZone.SelectedItem?.ToString() ?? cmbZone.Text;
-        //    if (zoneFilter == "구역" || string.IsNullOrWhiteSpace(zoneFilter))
-        //        zoneFilter = "전체";
+            if (dgvUsersSetting.Columns.Contains("user_name"))
+                dgvUsersSetting.Columns["user_name"].DataPropertyName = "Name";
 
-        //    var filteredList = DataManager.AllAlerts.Where(d =>
-        //    (statusFilter == "전체" || d.Status == statusFilter) &&
-        //    (zoneFilter == "전체" || d.Location.Contains(zoneFilter))
-        //    ).ToList();
+            if (dgvUsersSetting.Columns.Contains("user_id"))
+                dgvUsersSetting.Columns["user_id"].DataPropertyName = "WorkerId";
 
+            if (dgvUsersSetting.Columns.Contains("role"))
+                dgvUsersSetting.Columns["role"].DataPropertyName = "LastViolation";
 
-        //    foreach (var data in filteredList)
-        //    {
-        //        var card = new US_AlertCard();
-        //        card.SetData(data.Type, data.Time, data.Location, data.ID, data.Status, data.Img, true);
-        //        card.HideResolveButton();
+            if (dgvUsersSetting.Columns.Contains("location"))
+                dgvUsersSetting.Columns["location"].DataPropertyName = "Zone";
 
-        //        card.Width = flpUserAlerts.Width - 35;
-        //        flpUserAlerts.Controls.Add(card);
-        //    }
-        //    flpUserAlerts.ResumeLayout();
-        //}
-        //protected override void OnVisibleChanged(EventArgs e)
-        //{
-        //    base.OnVisibleChanged(e);
-        //    if (this.Visible)
-        //    {
-        //        RefreshCardList();
-        //    }
-        //}
+            if (dgvUsersSetting.Columns.Contains("status"))
+                dgvUsersSetting.Columns["status"].DataPropertyName = "Status";
+            
+            if (dgvUsersSetting.Columns.Contains("manage"))
+                dgvUsersSetting.Columns["manage"].DataPropertyName = "Status";
+        }
+
+        private async Task LoadWorkerDataAsync()
+        {
+            try
+            {
+                var data = await ApiService.GetControlWorkerAsync();
+                if(data != null)
+                {
+                    workerList = data;
+                    dgvUsersSetting.DataSource = null;
+                    dgvUsersSetting.DataSource = workerList;
+
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"사용자 데이터 불러오는 중 오류가 발생");
+            }
+        }
+
+        private async void US_UserSetting_Load(object sender, EventArgs e)
+        {
+            InitGrid();
+            await LoadWorkerDataAsync();
+        }
+
+        protected override async void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (this.Visible)
+            {
+                await LoadWorkerDataAsync();
+            }
+        }
     }
 }

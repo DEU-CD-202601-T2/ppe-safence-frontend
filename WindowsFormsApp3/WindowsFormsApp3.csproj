@@ -241,6 +241,7 @@
       <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Violation.cs" />
+    <Compile Include="WorkerControlDto.cs" />
     <Compile Include="ZoneData.cs" />
     <EmbeddedResource Include="AlertResolution.resx">
       <DependentUpon>AlertResolution.cs</DependentUpon>

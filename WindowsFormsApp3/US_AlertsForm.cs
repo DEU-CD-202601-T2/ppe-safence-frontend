@@ -29,8 +29,7 @@ namespace PPE_관제_시스템
         private void UpdatePageLabel(int totalCount) // 페이지 label 업데이트
         {
             int totalPages = (int)Math.Ceiling((double)totalCount / DataManager.PageSize);
-            if (totalPages == 0)
-                totalPages = 1;
+            if (totalPages == 0) totalPages = 1;
             if (DataManager.CurrentPage >= totalPages)
                 DataManager.CurrentPage = totalPages - 1;
             if (DataManager.CurrentPage < 0) DataManager.CurrentPage = 0;
@@ -43,39 +42,17 @@ namespace PPE_관제_시스템
 
         private async void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            try
+            if (DataManager.CurrentPage > 0)
             {
-                var serverData = await ApiService.GetViolationsAsync();
-
-                if (serverData != null)
-                {
-                    DataManager.AllAlerts = serverData;
-                }
-                if (DataManager.CurrentPage > 0)
-                {
-                    DataManager.CurrentPage--;
-                    ApplyFilter();
-                }
-            }
-            catch(Exception ex)
-            {
-               
+                DataManager.CurrentPage--;
+                ApplyFilter();
             }
         }
 
         private void lnkNext_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            string typeFilter = cmbViolation.SelectedItem?.ToString() ?? "전체";
-            string camFilter = cmbCamera.SelectedItem?.ToString() ?? "전체";
-            string zoneFilter = cmbZone.SelectedItem?.ToString() ?? "전체";
-
-            int totalCount = DataManager.AllAlerts.Count(d =>
-            d.Status == "미해결" &&
-            (typeFilter == "전체" || d.Type.Contains(typeFilter)) &&
-            (camFilter == "전체" || d.Cam.Contains(camFilter)) &&
-            (zoneFilter == "전체" || d.Zone.Contains(zoneFilter))
-            );
-            int totalPages = (int)Math.Ceiling((double)totalCount / DataManager.PageSize);
+            var filteredList = GetFilteredList();
+            int totalPages = (int)Math.Ceiling((double)filteredList.Count / DataManager.PageSize);
             if ((DataManager.CurrentPage + 1) < totalPages)
             {
                 DataManager.CurrentPage++;
@@ -83,7 +60,7 @@ namespace PPE_관제_시스템
             }
         }
 
-        private void US_AlertsForm_Load(object sender, EventArgs e)
+        private async void US_AlertsForm_Load(object sender, EventArgs e)
         {
             cmbViolation.Items.Clear();
             cmbViolation.Items.AddRange(new object[]
@@ -116,7 +93,23 @@ namespace PPE_관제_시스템
             });
             cmbZone.SelectedIndex = 0;
 
-            ApplyFilter();
+            await RefreshServerDataAsync();
+        }
+
+        private async Task RefreshServerDataAsync()
+        {
+            try
+            {
+                var data = await ApiService.GetViolationsAsync();
+                if (data != null)
+                {
+                    DataManager.UpdateAlertsFromServer(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"데이터를 불러오는 중 오류가 발생했습니다: {ex.Message}");
+            }
         }
         private void ApplyFilter()
         {
@@ -127,7 +120,7 @@ namespace PPE_관제_시스템
             }
 
             flpAlertsList.SuspendLayout();
-            for(int i = flpAlertsList.Controls.Count - 1; i >= 0; i--)
+            for (int i = flpAlertsList.Controls.Count - 1; i >= 0; i--)
             {
                 var ctrl = flpAlertsList.Controls[i];
                 flpAlertsList.Controls.Remove(ctrl);
@@ -141,42 +134,60 @@ namespace PPE_관제_시스템
                 .Take(DataManager.PageSize)
                 .ToList();
 
-            foreach(var data in pageItems)
+            foreach (var data in pageItems)
             {
                 var card = new US_AlertCard();
                 card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
 
-                card.OnResolveRequested += async (targetCard) =>
+                if (!string.IsNullOrEmpty(data.Id) && data.Img == null)
                 {
-                    using (var frm = new AlertResolution(targetCard.WorkerId))
+                    string targetFilename = $"{data.Id}.jpg";
+                    Task.Run(async () =>
                     {
-                        if(frm.ShowDialog() == DialogResult.OK)
-                        {
-                            bool success = await ApiService.ResolveViolationAsync(targetCard.AlertId, frm.AdminId, frm.Memo);
+                    var serverImg = await ApiService.GetVioationImageAsync(targetFilename);
+                    if (serverImg != null) {
+                        this.Invoke(new Action(() =>
+                        { 
+                        data.Img = serverImg;
+                            card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, serverImg, false);
+                    }));
+                }
+            });
+        }
+        card.OnResolveRequested += async (targetCard) =>
+        {
+            bool isSuccess = false;
+            string saveAdminId = string.Empty;
+            string saveMemo = string.Empty;
 
-                            if (success)
-                            {
-                                MessageBox.Show("해결 처리가 완료되었습니다");
-                                DataManager.ResolveAlert(targetCard.AlertId);
-                                DataManager.NotifyDataChanged();
-                                ApplyFilter();
-                            }
-                        }
+            using (var frm = new AlertResolution(targetCard.WorkerId))
+            { 
+                    if(frm.ShowDialog() == DialogResult.OK)
+                    {
+                    saveAdminId = frm.AdminId;
+                    saveMemo = frm.Memo;
+                    isSuccess = await ApiService.ResolveViolationAsync(targetCard.AlertId, saveAdminId, saveMemo);
                     }
-                };
+            }
+                    if (isSuccess)
+                    {
+                        MessageBox.Show("해결 처리가 완료되었습니다");
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            DataManager.ResolveAlert(targetCard.AlertId, saveAdminId, saveMemo);
+                            ApplyFilter();
+                        }));
+                    }
+            else
+            {
+                MessageBox.Show("네트워크 상태를 다시 확인해주세요");
+            }
+             };
                 card.Width = flpAlertsList.ClientSize.Width - 10;
                 flpAlertsList.Controls.Add(card);
             }
             flpAlertsList.ResumeLayout();
             UpdatePageLabel(filteredList.Count);
-        }
-        private void btnResolve_Click(object sender, EventArgs e)
-        { 
-            var card = (sender as Button)?.Parent as US_AlertCard;
-            if (card == null) return;
-            string targetId = card.AlertId;
-            DataManager.ResolveAlert(targetId);
-            DataManager.NotifyDataChanged();
         }
         private List<AlterDataClass> GetFilteredList()
         {

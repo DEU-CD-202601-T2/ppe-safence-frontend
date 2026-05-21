@@ -17,28 +17,46 @@ namespace PPE_관제_시스템
         {
             OnDataChanged?.Invoke();
         }
-        public static void AddAlert(string type, string zone, string cam, string uid)
+        public static void UpdateAlertsFromServer(List<AlterDataClass> serverAlerts)
         {
-            AllAlerts.Add(new AlterDataClass
+            if (serverAlerts == null) return;
+            AllAlerts = serverAlerts;
+            NotifyDataChanged();
+        }
+        public static void MergeServerAlerts(List<AlterDataClass> serverAletrs)
+        {
+            if (serverAletrs == null) return;
+            bool isChanged = false;
+            foreach(var serverAlert in serverAletrs)
             {
-                    Id = $"ID-{100 + AllAlerts.Count + 1}",
-                    Type = type,
-                    Zone = zone,
-                    Cam = cam,
-                    Uid = uid,
-                    Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                    Status = "미해결"
-                });
-                OnDataChanged?.Invoke();
-                NotifyDataChanged();
+                var localAlerts = AllAlerts.FirstOrDefault(a => a.Id == serverAlert.Id);
+                if(localAlerts == null)
+                {
+                    AllAlerts.Add(serverAlert);
+                    isChanged = true;
+                }
+                else
+                {
+                    if(localAlerts.Status != serverAlert.Status)
+                    {
+                        localAlerts.Status = serverAlert.Status;
+                        localAlerts.AdminId = serverAlert.AdminId;
+                        localAlerts.Memo = serverAlert.Memo;
+                        isChanged = true;
+                    }
+                }
             }
+            if (isChanged) NotifyDataChanged();
+        }
 
-            public static void ResolveAlert(string alertId)
+            public static void ResolveAlert(string alertId, string adminId, string memo)
             {
-                var target = AllAlerts.FirstOrDefault(a => a.Id == alertId);
+                var target = AllAlerts.FirstOrDefault(a => a.Id?.Trim() == alertId.Trim());
                 if (target != null)
                 {
                     target.Status = "해결";
+                    target.AdminId = adminId;
+                    target.Memo = memo;
                     NotifyDataChanged();
                 }
             }

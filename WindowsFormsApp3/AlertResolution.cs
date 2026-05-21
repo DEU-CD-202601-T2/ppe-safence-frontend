@@ -33,9 +33,13 @@ namespace PPE_관제_시스템
                 MessageBox.Show("관리자 Id를 입력해주세요");
                 return;
             }
-            AdminId = txtAdminId.Text;
-            WorkerId = txtWorkerId.Text;
-            Memo = txtMemo.Text;
+            string inadminId = txtAdminId.Text.Trim();
+            string inworkerId = txtWorkerId.Text.Trim();
+            string inMemo= txtMemo.Text.Trim();
+
+            AdminId = txtAdminId.Text.Trim();
+            WorkerId = txtWorkerId.Text.Trim();
+            Memo = txtMemo.Text.Trim();
 
             this.DialogResult = DialogResult.OK;
             this.Close();
