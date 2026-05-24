@@ -98,7 +98,95 @@ namespace PPE_관제_시스템
             }
         }
 
-        public static async Task<List<HistoryDto>> LoadHistoryLog() // 이력 / 로그 데이터를 API에서 불러오는 메서드
+        // ========================================
+        // 대응/제어 관리 API 호출 메서드들
+        // ========================================
+
+        public static async Task<ControlSummary> GetControlSummaryAsync() // 대응/제어 대시보드 통계 데이터 조회 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var response = await client.GetAsync($"{BaseUrl}/api/control/summary");
+
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<ControlSummary>(json)
+                       ?? new ControlSummary();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"대시보드 조회 실패\n{ex.Message}");
+
+                return new ControlSummary();
+            }
+        }
+
+        public static async Task<bool> ResumeWorkersAsync(List<string> workerIds) // 작업자 작업 중지 해제 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var requestBody = new ResumeWorkerRequest
+                {
+                    Status = "작업 중",
+                    WorkerIds = workerIds
+                };
+
+                var json = JsonConvert.SerializeObject(requestBody);
+
+                var content = new StringContent(
+                    json,
+                    Encoding.UTF8,
+                    "application/json");
+
+                var request = new HttpRequestMessage(
+                    new HttpMethod("PATCH"),
+                    $"{BaseUrl}/api/control/workers/resume");
+
+                request.Content = content;
+
+                var response = await client.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"작업 중지 해제 실패\n{ex.Message}");
+                return false;
+            }
+        }
+
+        public static async Task<List<WorkerInfo>> GetWorkerInfosAsync() // 작업자 목록 데이터를 API에서 불러오는 메서드
+        {
+            try
+            {
+                SetAuthHeader();
+                var response = await client.GetAsync($"{BaseUrl}/api/control/workers");
+
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<List<WorkerInfo>>(json)
+                       ?? new List<WorkerInfo>();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"작업자 목록 조회 실패\n{ex.Message}");
+                return new List<WorkerInfo>();
+            }
+        }
+
+        // ========================================
+        // 이력/로그 관리 API 호출 메서드들
+        // ========================================
+
+        public static async Task<List<HistoryDto>> LoadHistoryLog() // 이력/로그 데이터를 API에서 불러오는 메서드
         {
             try
             {
@@ -131,6 +219,9 @@ namespace PPE_관제_시스템
             }
         }
 
+        // ========================================
+        // 분석 대시보드 API 호출 메서드들
+        // ========================================
         public static async Task<AnalysisDashboardStats> GetDashboardStatsAsync(string range) // 대시보드 통계 데이터 조회 API 호출
         {
             try
@@ -233,6 +324,94 @@ namespace PPE_관제_시스템
         // ========================================
         // 알림 관리 API 호출 메서드들
         // ========================================
+
+        public static async Task<List<AlertSettingDto>> GetAlertSettingAsync() // 알림 설정 조회 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var response = await client.GetAsync($"{BaseUrl}/api/alert-settings");
+
+                string json = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return new List<AlertSettingDto> { JsonConvert.DeserializeObject<AlertSettingDto>(json) };
+                }
+                return new List<AlertSettingDto>();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류: {ex.Message}");
+                return new List<AlertSettingDto>();
+            }
+        }
+
+        public static async Task<bool> SaveAlertSettingAsync(AlertSettingDto request) // 알림 설정 저장 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+
+                string json = JsonConvert.SerializeObject(request);
+
+                var content = new StringContent(
+                    json,
+                    Encoding.UTF8,
+                    "application/json");
+
+                HttpResponseMessage response =
+                    await client.PostAsync(
+                        $"{BaseUrl}/api/alert-settings",
+                        content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorMessage =
+                        await response.Content.ReadAsStringAsync();
+
+                    throw new Exception(
+                        $"API 호출 실패 ({(int)response.StatusCode}) : {errorMessage}");
+                }
+
+                return true;
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception(
+                    $"서버 연결에 실패했습니다.\n{ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    $"알림 설정 저장 중 오류가 발생했습니다.\n{ex.Message}", ex);
+            }
+        }
+
+        public static async Task<ResetAlertSettingResponse> ResetAlertSettingsAsync() // 알림 설정 초기화 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+
+                HttpResponseMessage response =
+                    await client.PostAsync(
+                        $"{BaseUrl}/api/alert-settings/reset",
+                        null);
+
+                response.EnsureSuccessStatusCode();
+
+                string json =
+                    await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<ResetAlertSettingResponse>(json);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    $"알림 설정 초기화 실패\n{ex.Message}");
+            }
+        }
 
         // ========================================
         // 사용자 관리 API 호출 메서드들

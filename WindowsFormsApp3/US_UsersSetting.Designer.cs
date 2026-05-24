@@ -57,7 +57,6 @@ namespace PPE_관제_시스템
             this.dgvUsersSetting.AllowUserToAddRows = false;
             this.dgvUsersSetting.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvUsersSetting.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvUsersSetting.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvUsersSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUsersSetting.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.user_name,
@@ -70,6 +69,7 @@ namespace PPE_관제_시스템
             this.dgvUsersSetting.Location = new System.Drawing.Point(0, 0);
             this.dgvUsersSetting.MultiSelect = false;
             this.dgvUsersSetting.Name = "dgvUsersSetting";
+            this.dgvUsersSetting.RowHeadersVisible = false;
             this.dgvUsersSetting.RowHeadersWidth = 51;
             this.dgvUsersSetting.RowTemplate.Height = 27;
             this.dgvUsersSetting.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;

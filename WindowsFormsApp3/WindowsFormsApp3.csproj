@@ -142,11 +142,13 @@
     <Compile Include="AlertResolution.Designer.cs">
       <DependentUpon>AlertResolution.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlertSettingDto.cs" />
     <Compile Include="AlterDataClass.cs" />
     <Compile Include="AnalysisDashboardStats.cs" />
     <Compile Include="ApiService.cs" />
     <Compile Include="CameraInfo.cs" />
     <Compile Include="ChartData.cs" />
+    <Compile Include="ControlSummary.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Globaldata.cs" />
     <Compile Include="HistoryDto.cs" />
@@ -250,6 +252,7 @@
       <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Violation.cs" />
+    <Compile Include="WorkerInfo.cs" />
     <Compile Include="ZoneData.cs" />
     <EmbeddedResource Include="AlertResolution.resx">
       <DependentUpon>AlertResolution.cs</DependentUpon>

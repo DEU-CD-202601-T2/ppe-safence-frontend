@@ -40,6 +40,7 @@
             this.pnlUseAlert = new System.Windows.Forms.Panel();
             this.lblUseAlert = new System.Windows.Forms.Label();
             this.pnlAlertMethod = new System.Windows.Forms.Panel();
+            this.chkSendManager = new System.Windows.Forms.CheckBox();
             this.lblAlertMethod = new System.Windows.Forms.Label();
             this.pnlDetailSetting = new System.Windows.Forms.Panel();
             this.chkStopWork = new System.Windows.Forms.CheckBox();
@@ -50,7 +51,6 @@
             this.lblSeverity = new System.Windows.Forms.Label();
             this.lblInterval = new System.Windows.Forms.Label();
             this.lblDetailSetting = new System.Windows.Forms.Label();
-            this.chkSendManager = new System.Windows.Forms.CheckBox();
             this.pnlAlertType.SuspendLayout();
             this.pnlUseAlert.SuspendLayout();
             this.pnlAlertMethod.SuspendLayout();
@@ -75,6 +75,7 @@
             this.btnAlertSave.TabIndex = 6;
             this.btnAlertSave.Text = "저장";
             this.btnAlertSave.UseVisualStyleBackColor = true;
+            this.btnAlertSave.Click += new System.EventHandler(this.btnAlertSave_Click);
             // 
             // btnAlertReset
             // 
@@ -84,16 +85,22 @@
             this.btnAlertReset.TabIndex = 7;
             this.btnAlertReset.Text = "초기화";
             this.btnAlertReset.UseVisualStyleBackColor = true;
+            this.btnAlertReset.Click += new System.EventHandler(this.btnAlertReset_Click);
             // 
             // cmbAlertType
             // 
             this.cmbAlertType.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cmbAlertType.FormattingEnabled = true;
+            this.cmbAlertType.Items.AddRange(new object[] {
+            "안전모",
+            "장갑",
+            "마스크"});
             this.cmbAlertType.Location = new System.Drawing.Point(18, 58);
             this.cmbAlertType.Name = "cmbAlertType";
             this.cmbAlertType.Size = new System.Drawing.Size(242, 31);
             this.cmbAlertType.TabIndex = 0;
             this.cmbAlertType.Text = "PPE 위반";
+            this.cmbAlertType.SelectedIndexChanged += new System.EventHandler(this.cmbAlertType_SelectedIndexChanged);
             // 
             // chkUseAlert
             // 
@@ -105,6 +112,7 @@
             this.chkUseAlert.TabIndex = 0;
             this.chkUseAlert.Text = "알림 사용";
             this.chkUseAlert.UseVisualStyleBackColor = true;
+            this.chkUseAlert.CheckedChanged += new System.EventHandler(this.chkUseAlert_CheckedChanged);
             // 
             // lblAlertStatus
             // 
@@ -179,6 +187,17 @@
             this.pnlAlertMethod.Size = new System.Drawing.Size(580, 315);
             this.pnlAlertMethod.TabIndex = 10;
             // 
+            // chkSendManager
+            // 
+            this.chkSendManager.AutoSize = true;
+            this.chkSendManager.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSendManager.Location = new System.Drawing.Point(18, 97);
+            this.chkSendManager.Name = "chkSendManager";
+            this.chkSendManager.Size = new System.Drawing.Size(197, 27);
+            this.chkSendManager.TabIndex = 5;
+            this.chkSendManager.Text = "관리자에게 알림 전송";
+            this.chkSendManager.UseVisualStyleBackColor = true;
+            // 
             // lblAlertMethod
             // 
             this.lblAlertMethod.AutoSize = true;
@@ -220,6 +239,10 @@
             // 
             this.cmbSeverity.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cmbSeverity.FormattingEnabled = true;
+            this.cmbSeverity.Items.AddRange(new object[] {
+            "높음",
+            "보통",
+            "낮음"});
             this.cmbSeverity.Location = new System.Drawing.Point(167, 154);
             this.cmbSeverity.Name = "cmbSeverity";
             this.cmbSeverity.Size = new System.Drawing.Size(121, 31);
@@ -283,17 +306,6 @@
             this.lblDetailSetting.TabIndex = 3;
             this.lblDetailSetting.Text = "세부 설정";
             // 
-            // chkSendManager
-            // 
-            this.chkSendManager.AutoSize = true;
-            this.chkSendManager.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSendManager.Location = new System.Drawing.Point(18, 97);
-            this.chkSendManager.Name = "chkSendManager";
-            this.chkSendManager.Size = new System.Drawing.Size(197, 27);
-            this.chkSendManager.TabIndex = 5;
-            this.chkSendManager.Text = "관리자에게 알림 전송";
-            this.chkSendManager.UseVisualStyleBackColor = true;
-            // 
             // US_AlertSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -308,6 +320,7 @@
             this.Controls.Add(this.lblAlertSetting);
             this.Name = "US_AlertSettings";
             this.Size = new System.Drawing.Size(1219, 653);
+            this.Load += new System.EventHandler(this.US_AlertSettings_Load);
             this.pnlAlertType.ResumeLayout(false);
             this.pnlAlertType.PerformLayout();
             this.pnlUseAlert.ResumeLayout(false);
