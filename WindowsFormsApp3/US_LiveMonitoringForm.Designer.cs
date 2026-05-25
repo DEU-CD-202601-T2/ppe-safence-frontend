@@ -138,15 +138,15 @@ namespace PPE_관제_시스템
             // 
             // lblComplianceRate
             // 
-            this.lblComplianceRate.AutoSize = true;
             this.lblComplianceRate.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblComplianceRate.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblComplianceRate.Location = new System.Drawing.Point(234, 105);
+            this.lblComplianceRate.Location = new System.Drawing.Point(206, 105);
             this.lblComplianceRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblComplianceRate.Name = "lblComplianceRate";
-            this.lblComplianceRate.Size = new System.Drawing.Size(58, 38);
+            this.lblComplianceRate.Size = new System.Drawing.Size(87, 38);
             this.lblComplianceRate.TabIndex = 10;
             this.lblComplianceRate.Text = "0%";
+            this.lblComplianceRate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblCompliance
             // 

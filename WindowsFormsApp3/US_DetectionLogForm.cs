@@ -13,127 +13,74 @@ namespace PPE_관제_시스템
     public partial class US_DetectionLogForm : UserControl
     {
         private List<HistoryDto> HistoryLogs = new List<HistoryDto>();
+
         public US_DetectionLogForm()
         {
             InitializeComponent();
-            dgvLog.CellContentClick += dgvLog_CellContentClick;
+
+            this.Load += US_DetectionLogForm_Load;
             btnLogSearch.Click += btnLogSearch_Click;
             txtLogSearch.KeyDown += txtLogSearch_KeyDown;
-            this.Load += US_DetectionLogForm_Load;
+            dgvLog.CellContentClick += dgvLog_CellContentClick;
+
+            dtpStartDate.ValueChanged += dtpStartDate_ValueChanged;
+            dtpEndDate.ValueChanged += dtpEndDate_ValueChanged;
         }
 
         private void InitGrid() // DataGridView 초기 설정 메서드
         {
             dgvLog.AutoGenerateColumns = false;
-
             dgvLog.Columns.Clear();
-
             dgvLog.AllowUserToAddRows = false;
-
             dgvLog.ReadOnly = true;
+            dgvLog.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            dgvLog.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
+            dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "날짜", DataPropertyName = "Timestamp", Width = 150 });
+            dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "발생 내용", DataPropertyName = "LogType", Width = 100 });
+            dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "위치", DataPropertyName = "ZoneName", Width = 100 });
+            dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "상태", DataPropertyName = "StatusText", Width = 100 });
 
-            // 날짜
-            dgvLog.Columns.Add(new DataGridViewTextBoxColumn()
+            DataGridViewButtonColumn btnDetail = new DataGridViewButtonColumn
             {
-                HeaderText = "날짜",
-                DataPropertyName = "Timestamp",
-                Width = 150
-            });
-
-            // 발생 내용
-            dgvLog.Columns.Add(new DataGridViewTextBoxColumn()
-            {
-                HeaderText = "발생 내용",
-                DataPropertyName = "LogType",
+                Name = "btnDetail",
+                HeaderText = "상세",
+                Text = "보기",
+                UseColumnTextForButtonValue = true,
                 Width = 100
-            });
-
-            // 위치
-            dgvLog.Columns.Add(new DataGridViewTextBoxColumn()
-            {
-                HeaderText = "위치",
-                DataPropertyName = "ZoneName",
-                Width = 100
-            });
-
-            // 상태
-            dgvLog.Columns.Add(new DataGridViewTextBoxColumn()
-            {
-                HeaderText = "상태",
-                DataPropertyName = "StatusText",
-                Width = 100
-            });
-
-            // 상세 버튼
-            DataGridViewButtonColumn btnDetail =
-                new DataGridViewButtonColumn();
-
-            btnDetail.Name = "btnDetail";
-
-            btnDetail.HeaderText = "상세";
-
-            btnDetail.Text = "보기";
-
-            btnDetail.UseColumnTextForButtonValue = true;
-
-            btnDetail.Width = 100;
-
+            };
             dgvLog.Columns.Add(btnDetail);
         }
 
         private void FilterLog() // 날짜 범위와 검색어를 기준으로 로그 데이터를 필터링하여 DataGridView에 표시하는 메서드
         {
+            if (HistoryLogs == null) return;
+
             DateTime startDate = dtpStartDate.Value.Date;
             DateTime endDate = dtpEndDate.Value.Date.AddDays(1).AddSeconds(-1);
-
             string keyword = txtLogSearch.Text.Trim().ToLower();
 
             var filteredLogs = HistoryLogs
                 .Where(log =>
                 {
+                    // 날짜 조건 검사
                     DateTime logDate;
+                    bool isDateInRange = DateTime.TryParse(log.Timestamp, out logDate)
+                        ? (logDate >= startDate && logDate <= endDate)
+                        : true;
 
-                    bool isDateValid =
-                        DateTime.TryParse(log.Timestamp, out logDate) &&
-                        logDate >= startDate &&
-                        logDate <= endDate;
+                    // 키워드 조건 검사
+                    bool isKeywordValid = string.IsNullOrEmpty(keyword)
+                        || (log.CameraName != null && log.CameraName.ToLower().Contains(keyword))
+                        || (log.LogType != null && log.LogType.ToLower().Contains(keyword))
+                        || (log.ZoneName != null && log.ZoneName.ToLower().Contains(keyword))
+                        || (log.StatusText != null && log.StatusText.ToLower().Contains(keyword))
+                        || (log.Detail != null && log.Detail.ToLower().Contains(keyword));
 
-                    bool isKeywordValid =
-                        string.IsNullOrEmpty(keyword)
-
-                        ||
-
-                        (log.CameraName?
-                            .ToLower()
-                            .Contains(keyword) ?? false)
-
-                        ||
-
-                        (log.LogType?
-                            .ToLower()
-                            .Contains(keyword) ?? false)
-
-                        ||
-
-                        (log.ZoneName?
-                            .ToLower()
-                            .Contains(keyword) ?? false)
-
-                        ||
-
-                        (log.StatusText?
-                            .ToLower()
-                            .Contains(keyword) ?? false);
-
-                    return isDateValid && isKeywordValid;
+                    return isDateInRange && isKeywordValid;
                 })
                 .OrderByDescending(log =>
                 {
-                    DateTime.TryParse(log.Timestamp, out DateTime dt);
-                    return dt;
+                    return DateTime.TryParse(log.Timestamp, out DateTime dt) ? dt : DateTime.MinValue;
                 })
                 .ToList();
 
@@ -178,35 +125,33 @@ namespace PPE_관제_시스템
         {
             try
             {
-                var LogData =
-                    await ApiService.LoadHistoryLog();
+                var logData = await ApiService.LoadHistoryLog();
 
-                if (LogData != null)
+                if (logData != null)
                 {
-                    HistoryLogs = LogData;
+                    HistoryLogs = logData;
 
-                    dgvLog.DataSource = null;
-
-                    dgvLog.DataSource = HistoryLogs;
+                    FilterLog();
                 }
                 else
                 {
-                    MessageBox.Show("로그 데이터를 불러오는데 실패했습니다.");
+                    MessageBox.Show("로그 데이터를 불러오는데 실패했습니다.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"로그 데이터 로드 중 오류 발생: {ex.Message}");
+                MessageBox.Show($"로그 데이터 로드 중 오류 발생: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private async void US_DetectionLogForm_Load(object sender, EventArgs e) // 폼이 로드될 때 히스토리 로그 데이터를 불러오는 이벤트 핸들러
         {
             InitGrid();
-            await LoadHistoryLog();
 
             dtpStartDate.Value = DateTime.Now.AddDays(-7);
             dtpEndDate.Value = DateTime.Now;
+
+            await LoadHistoryLog();
         }
 
         private void btnLogSearch_Click(object sender, EventArgs e) // 검색 버튼 클릭 이벤트 핸들러
@@ -230,20 +175,6 @@ namespace PPE_관제_시스템
         private void dtpEndDate_ValueChanged(object sender, EventArgs e) // 종료 날짜 변경 이벤트 핸들러
         {
             FilterLog();
-        }
-
-        private async void LoadLogData()
-        {
-            var logs = await ApiService.GetViolationsAsync();
-            if(logs != null && logs.Count > 0)
-            {
-                dgvLog.DataSource = null;
-                dgvLog.DataSource = logs;
-            }
-            else
-            {
-                MessageBox.Show("no");
-            }
         }
     }
 }

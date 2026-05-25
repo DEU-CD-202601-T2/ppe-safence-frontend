@@ -139,6 +139,7 @@ namespace PPE_관제_시스템
             this.btnUserAdd.TabIndex = 3;
             this.btnUserAdd.Text = "사용자 추가";
             this.btnUserAdd.UseVisualStyleBackColor = true;
+            this.btnUserAdd.Click += new System.EventHandler(this.btnUserAdd_Click);
             // 
             // US_UsersSetting
             // 
