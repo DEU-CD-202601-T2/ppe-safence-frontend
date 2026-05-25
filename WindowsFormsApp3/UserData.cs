@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace PPE_관제_시스템
 {
-    internal class UserData
+    public class UserData
     {
-        public string Name { get; set; }
-        public string ID { get; set; }
-        public string Role { get; set; }
-        public string Location { get; set; }
-        public string Status { get; set; }
-        public static string JwtToken { get; set; } // JWT 토큰을 저장하는 정적 속성
+        public string userID { get; set; }
+        public string department { get; set; }
+        public string login_id { get; set; }
+        public string password { get; set; }
+        public string name { get; set; }
+        public string role { get; set; }
+        public string status { get; set; }
     }
 }

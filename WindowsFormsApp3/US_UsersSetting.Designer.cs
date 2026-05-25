@@ -40,6 +40,7 @@ namespace PPE_관제_시스템
             this.manage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblUsersSetting = new System.Windows.Forms.Label();
+            this.btnUserAdd = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsersSetting)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +57,6 @@ namespace PPE_관제_시스템
             this.dgvUsersSetting.AllowUserToAddRows = false;
             this.dgvUsersSetting.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvUsersSetting.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvUsersSetting.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvUsersSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUsersSetting.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.user_name,
@@ -69,10 +69,11 @@ namespace PPE_관제_시스템
             this.dgvUsersSetting.Location = new System.Drawing.Point(0, 0);
             this.dgvUsersSetting.MultiSelect = false;
             this.dgvUsersSetting.Name = "dgvUsersSetting";
+            this.dgvUsersSetting.RowHeadersVisible = false;
             this.dgvUsersSetting.RowHeadersWidth = 51;
             this.dgvUsersSetting.RowTemplate.Height = 27;
             this.dgvUsersSetting.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUsersSetting.Size = new System.Drawing.Size(1219, 602);
+            this.dgvUsersSetting.Size = new System.Drawing.Size(1219, 605);
             this.dgvUsersSetting.TabIndex = 0;
             // 
             // user_name
@@ -114,9 +115,9 @@ namespace PPE_관제_시스템
             // panel1
             // 
             this.panel1.Controls.Add(this.dgvUsersSetting);
-            this.panel1.Location = new System.Drawing.Point(1, 51);
+            this.panel1.Location = new System.Drawing.Point(1, 48);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1219, 602);
+            this.panel1.Size = new System.Drawing.Size(1219, 605);
             this.panel1.TabIndex = 1;
             // 
             // lblUsersSetting
@@ -129,15 +130,28 @@ namespace PPE_관제_시스템
             this.lblUsersSetting.TabIndex = 2;
             this.lblUsersSetting.Text = "사용자 설정";
             // 
+            // btnUserAdd
+            // 
+            this.btnUserAdd.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnUserAdd.Location = new System.Drawing.Point(1068, 3);
+            this.btnUserAdd.Name = "btnUserAdd";
+            this.btnUserAdd.Size = new System.Drawing.Size(129, 39);
+            this.btnUserAdd.TabIndex = 3;
+            this.btnUserAdd.Text = "사용자 추가";
+            this.btnUserAdd.UseVisualStyleBackColor = true;
+            this.btnUserAdd.Click += new System.EventHandler(this.btnUserAdd_Click);
+            // 
             // US_UsersSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.btnUserAdd);
             this.Controls.Add(this.lblUsersSetting);
             this.Controls.Add(this.panel1);
             this.Name = "US_UsersSetting";
             this.Size = new System.Drawing.Size(1219, 653);
+            this.Load += new System.EventHandler(this.US_UsersSetting_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsersSetting)).EndInit();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -156,5 +170,6 @@ namespace PPE_관제_시스템
         private System.Windows.Forms.DataGridViewTextBoxColumn manage;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblUsersSetting;
+        private System.Windows.Forms.Button btnUserAdd;
     }
 }

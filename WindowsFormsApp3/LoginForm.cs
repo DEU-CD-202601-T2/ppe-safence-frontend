@@ -38,7 +38,7 @@ namespace PPE_관제_시스템
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject<dynamic>(responseString);
-                    UserContext.JwtToken = (string)result["토큰"];
+                    UserContext.JwtToken = (string)result["token"];
 
                     ProceedToMain();
                 }
