@@ -325,24 +325,34 @@ namespace PPE_관제_시스템
         // 알림 관리 API 호출 메서드들
         // ========================================
 
-        public static async Task<List<AlertSettingDto>> GetAlertSettingAsync() // 알림 설정 조회 API 호출
+        public static async Task<List<AlertSettingDto>> GetAlertSettingAsync()
         {
             try
             {
                 SetAuthHeader();
                 var response = await client.GetAsync($"{BaseUrl}/api/alert-settings");
-
-                string json = await response.Content.ReadAsStringAsync();
-
                 if (response.IsSuccessStatusCode)
                 {
-                    return new List<AlertSettingDto> { JsonConvert.DeserializeObject<AlertSettingDto>(json) };
+                    var json = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<AlertSettingResponse>(json); // ← AlertSettingResponse로 파싱
+
+                    var list = result.AlertType.Select(x => new AlertSettingDto
+                    {
+                        AlertType = x.Key,
+                        IsEnabled = x.Value.UseAlert,
+                        MinRiskLevel = x.Value.MinRiskLevel,
+                        RepeatInterval = x.Value.RepeatInterval,
+                        SendToAdmin = result.SendToAdmin,
+                        StopWorkOnViolation = result.StopWorkOnViolation
+                    }).ToList();
+
+                    return list;
                 }
                 return new List<AlertSettingDto>();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"오류: {ex.Message}");
+                Console.WriteLine($"알림 설정 로드 실패: {ex.Message}");
                 return new List<AlertSettingDto>();
             }
         }
