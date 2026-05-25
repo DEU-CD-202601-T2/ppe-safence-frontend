@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PPE_관제_시스템
 {
     public partial class US_UsersSetting : UserControl
     {
-        private List<WorkerControlDto> workerList = new List<WorkerControlDto>();
+        private List<WorkerInfo> workerList = new List<WorkerInfo>();
         public US_UsersSetting()
         {
             InitializeComponent();
@@ -20,18 +21,18 @@ namespace PPE_관제_시스템
 
         private async Task LoadUserList() // 사용자 리스트 로드
         {
-            try 
-            { dgvUsersSetting.Rows.Clear(); 
-                var users = await ApiService.GetUsersAsync(); 
-                if (users == null) return; 
-                foreach (var user in users) 
-                { 
-                    dgvUsersSetting.Rows.Add(user.userID, user.name, user.login_id, user.role, user.department, user.status); 
-                } 
-            } 
-            catch (Exception ex) 
-            { 
-                MessageBox.Show($"사용자 목록 로드 실패\n{ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+            try
+            { dgvUsersSetting.Rows.Clear();
+                var users = await ApiService.GetUsersAsync();
+                if (users == null) return;
+                foreach (var user in users)
+                {
+                    dgvUsersSetting.Rows.Add(user.userID, user.name, user.login_id, user.role, user.department, user.status);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"사용자 목록 로드 실패\n{ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -128,38 +129,9 @@ namespace PPE_관제_시스템
                             await ApiService.DeleteUserAsync(
                                 Convert.ToInt32(user.userID)
                             );
-            this.Load += US_UserSetting_Load;
-        }
-
-        private void InitGrid()
-        {
-            dgvUsersSetting.AutoGenerateColumns = false;
-            dgvUsersSetting.AllowUserToAddRows = false;
-            dgvUsersSetting.ReadOnly = true;
-            dgvUsersSetting.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                         if (success)
                         {
-                            MessageBox.Show("삭제 완료");
-
-            if (dgvUsersSetting.Columns.Contains("user_name"))
-                dgvUsersSetting.Columns["user_name"].DataPropertyName = "Name";
-
-            if (dgvUsersSetting.Columns.Contains("user_id"))
-                dgvUsersSetting.Columns["user_id"].DataPropertyName = "WorkerId";
-
-            if (dgvUsersSetting.Columns.Contains("role"))
-                dgvUsersSetting.Columns["role"].DataPropertyName = "LastViolation";
-
-            if (dgvUsersSetting.Columns.Contains("location"))
-                dgvUsersSetting.Columns["location"].DataPropertyName = "Zone";
-
-            if (dgvUsersSetting.Columns.Contains("status"))
-                dgvUsersSetting.Columns["status"].DataPropertyName = "Status";
-            
-            if (dgvUsersSetting.Columns.Contains("manage"))
-                dgvUsersSetting.Columns["manage"].DataPropertyName = "Status";
-        }
-                            await LoadUserList();
+                            this.Load += US_UserSetting_Load;
                         }
                         else
                         {
@@ -167,8 +139,6 @@ namespace PPE_관제_시스템
                         }
                     }
                 });
-
-                menu.Show(Cursor.Position);
             }
         }
         private async Task LoadWorkerDataAsync()
@@ -176,19 +146,26 @@ namespace PPE_관제_시스템
             try
             {
                 var data = await ApiService.GetControlWorkerAsync();
-                if(data != null)
+                if (data != null)
                 {
                     workerList = data;
                     dgvUsersSetting.DataSource = null;
                     dgvUsersSetting.DataSource = workerList;
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show($"작업자 데이터 불러오는 중 오류가 발생\n{ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private async void US_UsersSetting_Load(object sender, EventArgs e)
         {
-            InitGrid();
-            await LoadUserList();
-        }
+            try { 
+                InitGrid();
+                await LoadUserList();
                 }
-            }
+                
+      
             catch(Exception ex)
             {
                 MessageBox.Show($"사용자 데이터 불러오는 중 오류가 발생");

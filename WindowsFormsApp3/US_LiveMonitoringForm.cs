@@ -222,7 +222,7 @@ namespace PPE_관제_시스템
             {
                 string selectedZone = cmbZone.SelectedItem?.ToString() ?? "A구역";
                 var allData = DataManager.AllAlerts ?? new List<AlterDataClass>();
-                var zoneData = allData.Where(d => d.Zone == selectedZone).ToList();
+                var zoneData = allData.Where(d => (d.Zone ?? "").Trim() == selectedZone.Trim()).ToList();
 
                 lblNoPPECount.Text = zoneData.Count.ToString();
 

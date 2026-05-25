@@ -41,7 +41,7 @@ namespace PPE_관제_시스템
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync($"{BaseUrl}/api/login", content);
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     string responseJson = await response.Content.ReadAsStringAsync();
                     var result = JObject.Parse(responseJson);
@@ -57,7 +57,7 @@ namespace PPE_관제_시스템
                 return false;
             }
         }
-        
+
         //스트리밍 URL 조회와 카메라 수 조회API
         public static async Task<CameraInfo> GetCameraStreamInfoAsync() // 카메라 스트리밍 URL과 카메라 수 조회
         {
@@ -112,10 +112,11 @@ namespace PPE_관제_시스템
                 string url = $"{BaseUrl}/api/alarms/{alertId}";
                 SetAuthHeader();
 
-                var data = new { 
+                var data = new
+                {
                     status = "해결",
                 };
-                
+
                 string json = JsonConvert.SerializeObject(data);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -134,7 +135,7 @@ namespace PPE_관제_시스템
             }
         }
 
-        public static async Task<List<WorkerControlDto>> GetControlWorkerAsync()
+        public static async Task<List<WorkerInfo>> GetControlWorkerAsync()
         {
             try
             {
@@ -144,20 +145,20 @@ namespace PPE_관제_시스템
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<WorkerControlDto>>(json) ?? new List<WorkerControlDto>();
+                    return JsonConvert.DeserializeObject<List<WorkerInfo>>(json) ?? new List<WorkerInfo>();
                 }
-                return new List<WorkerControlDto>();
+                return new List<WorkerInfo>();
 
             }
             catch (Exception ex)
             {
-                return new List<WorkerControlDto>();
+                return new List<WorkerInfo>();
             }
         }
 
-        public static async Task<bool>ResumeWorkerAsync(List<string> workerIds)
+        public static async Task<bool> ResumeWorkerAsync(List<string> workerIds)
         {
-            if(workerIds == null || workerIds.Count == 0) return false;
+            if (workerIds == null || workerIds.Count == 0) return false;
             try
             {
                 SetAuthHeader();
@@ -695,7 +696,7 @@ namespace PPE_관제_시스템
                 var response = await client.GetAsync($"{BaseUrl}/api/areas");
                 if (response.IsSuccessStatusCode)
                 {
-                    string json = await response.Content.ReadAsStringAsync();   
+                    string json = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<List<string>>(json) ?? new List<string>();
                 }
                 return new List<string>();
@@ -726,7 +727,27 @@ namespace PPE_관제_시스템
                 Console.WriteLine($"로그아웃 실패: {ex.Message}");
                 return false;
             }
-        } 
-       
+        }
+
+        public static async Task<dynamic> GetControlSummaryAsync() // 관제 요약 정보 조회 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+
+                var response = await client.GetAsync($"{BaseUrl}/api/control/summary");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<dynamic>(json);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"관제 요약 정보 조회 실패: {ex.Message}");
+                return null;
+            }
+        }
     }
 }
