@@ -17,7 +17,6 @@ using System.Windows.Forms;
 
 namespace PPE_관제_시스템
 {
-    
     public partial class US_LiveMonitoringForm : UserControl
     {
         private VideoCapture capture;
@@ -30,14 +29,14 @@ namespace PPE_관제_시스템
         public US_LiveMonitoringForm()
         {
             InitializeComponent();
-            
+
             picZoneView.Dock = DockStyle.None; // PictureBox의 Dock 속성을 None으로 설정하여 위치와 크기를 직접 제어
 
             picZoneView.BringToFront(); // PictureBox가 다른 컨트롤보다 앞에 오도록 설정
 
             picZoneView.SizeMode = PictureBoxSizeMode.Zoom; // PictureBox의 SizeMode를 Zoom으로 설정하여 영상이 PictureBox 크기에 맞게 조절되도록 함
 
-            picZoneView.BackColor = Color.Black; 
+            picZoneView.BackColor = Color.Black;
 
             this.Load += US_LiveMonitoringForm_Load;
 
@@ -116,7 +115,7 @@ namespace PPE_관제_시스템
 
         private void CaptureCameraCallback() // 카메라 스트림을 읽고 PictureBox에 표시하는 백그라운드 스레드 메서드
         {
-   
+
             while (isCameraRunning)
             {
                 try
@@ -129,9 +128,9 @@ namespace PPE_관제_시스템
                         Thread.Sleep(3000);
 
                         this.BeginInvoke(new Action(async () =>
-                            {
-                                await StartCamera();
-                            }));
+                        {
+                            await StartCamera();
+                        }));
 
                         break;
                     }
@@ -150,22 +149,22 @@ namespace PPE_관제_시스템
                         Bitmap bitmap = BitmapConverter.ToBitmap(frame);
 
                         this.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            try
                             {
-                                try
-                                {
-                                    var oldImage = picZoneView.Image;
+                                var oldImage = picZoneView.Image;
 
-                                    picZoneView.Image = (Bitmap)bitmap.Clone();
+                                picZoneView.Image = (Bitmap)bitmap.Clone();
 
-                                    oldImage?.Dispose();
+                                oldImage?.Dispose();
 
-                                    bitmap.Dispose();
-                                }
-                                catch
-                                {
-                                    
-                                }
-                            }));
+                                bitmap.Dispose();
+                            }
+                            catch
+                            {
+
+                            }
+                        }));
                     }
 
                     Thread.Sleep(33);
@@ -224,11 +223,16 @@ namespace PPE_관제_시스템
                 var allData = DataManager.AllAlerts ?? new List<AlterDataClass>();
                 var zoneData = allData.Where(d => d.Zone == selectedZone).ToList();
 
-                lblNoPPECount.Text = zoneData.Count.ToString();
+                int unresolvedCount = zoneData.Count(d => d.Status != null && d.Status.Trim() == "미해결");
+                lblNoPPECount.Text = unresolvedCount.ToString();
 
-                int warningCount = zoneData.Count(d => d.Status != null && d.Status.Trim() =="미해결");
-                lblActiveWorkersCount.Text = warningCount.ToString();
+                int activeWorkerCount = zoneData
+                    .Where(d => !string.IsNullOrEmpty(d.Uid))
+                    .Select(d => d.Uid.Trim())
+                    .Distinct()
+                    .Count();
 
+                lblActiveWorkersCount.Text = activeWorkerCount.ToString();
                 double complianceRate = 100.0;
                 if (zoneData.Count > 0)
                 {
@@ -239,14 +243,14 @@ namespace PPE_관제_시스템
                 lblComplianceRate.Text = $"{complianceRate:F0}%";
 
 
-                if (warningCount > 0)
+                if (unresolvedCount > 0)
                 {
                     SetCameraStatus("위험", Color.Red);
                 }
                 else
                 {
                     SetCameraStatus("안전", Color.Green);
-                }    
+                }
             }
             catch (Exception ex)
             {
@@ -293,7 +297,7 @@ namespace PPE_관제_시스템
         {
             try
             {
-                if(cmbZone.Items.Count > 0)
+                if (cmbZone.Items.Count > 0)
                 {
                     cmbZone.SelectedIndex = 0;
                 }
@@ -308,13 +312,20 @@ namespace PPE_관제_시스템
         {
             dataUpdateTimer = new System.Windows.Forms.Timer();
             dataUpdateTimer.Interval = 5000;
-            dataUpdateTimer.Tick += async(s, e) =>{
-                string selectedZone = cmbZone.SelectedItem.ToString();
-                var newData = await ApiService.GetViolationsAsync(selectedZone, "미해결"); ;
-                if(newData != null && newData.Count > 0)
+            dataUpdateTimer.Tick += async (s, e) => {
+                try
                 {
-                    DataManager.AllAlerts = newData;
-                    DataManager.NotifyDataChanged();
+                    string selectedZone = cmbZone.SelectedItem.ToString() ?? "A구역";
+                    var newData = await ApiService.GetViolationsAsync(selectedZone, "미해결"); ;
+                    if (newData != null && newData.Count > 0)
+                    {
+                        DataManager.AllAlerts = newData;
+                        DataManager.NotifyDataChanged();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"데이터 업데이트 타이머 오류: {ex.Message}");
                 }
             };
             dataUpdateTimer.Start();

@@ -86,9 +86,9 @@ namespace PPE_관제_시스템
 
                 var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{BaseUrl}/api/alarms/{alertId}")
                 {
-                    Content = content
+                    Content = new StringContent(json, Encoding.UTF8, "application/json")
                 };
-                var response = await client.SendAsync(request);
+                var response = await client.SendAsync(request).ConfigureAwait(false);
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -504,22 +504,19 @@ namespace PPE_관제_시스템
         // ========================================
         // 구역 관리 API 호출 메서드들
         // ========================================
-        public static async Task<List<ZoneData>> GetZonesAsync() // 구역 목록 조회 API 호출
+        public static async Task<List<ZoneData>> GetZonesAsync(bool includeInactive = true) // 구역 목록 조회 API 호출
         {
             try
             {
                 SetAuthHeader();
-                var response = await client.GetAsync($"{BaseUrl}/api/areas?include_inactive=true");
+                string url = $"{BaseUrl}/api/areas?include_inactive={includeInactive.ToString().ToLower()}";
+
+                var response = await client.GetAsync(url).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var result = Newtonsoft.Json.Linq.JObject.Parse(json);
-                    var areasJson = result["areas"]?.ToString();
 
-                    if (!string.IsNullOrEmpty(areasJson))
-                    {
-                        return JsonConvert.DeserializeObject<List<ZoneData>>(areasJson);
-                    }
+                    string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    return JsonConvert.DeserializeObject<List<ZoneData>>(json) ?? new List<ZoneData>();
                 }
                 return new List<ZoneData>();
             }

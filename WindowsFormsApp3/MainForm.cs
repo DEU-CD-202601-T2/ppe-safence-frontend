@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Security;
+using System.Drawing.Text;
 
 namespace PPE_관제_시스템
 {
