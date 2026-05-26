@@ -37,12 +37,14 @@ namespace PPE_관제_시스템
             _ = UpdateAlertsFromServer();
         }
 
-            public static void ResolveAlert(string alertId)
+            public static void ResolveAlert(string alertId, string adminId, string memo)
             {
-                var target = AllAlerts.FirstOrDefault(a => a.Id == alertId);
+                var target = AllAlerts.FirstOrDefault(a => a.Id?.Trim() == alertId.Trim());
                 if (target != null)
                 {
                     target.Status = "해결";
+                    target.AdminId = adminId;
+                    target.Memo = memo;
                     NotifyDataChanged();
                 }
             }

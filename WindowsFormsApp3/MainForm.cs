@@ -23,7 +23,6 @@ namespace PPE_관제_시스템
         {
             InitializeComponent();
             this.Load += MainForm_Load; // 폼 로드 이벤트 핸들러 등록
-            DataManager.InitTestData(); // 테스트 데이터 초기화
         }
 
         private void MainForm_Load(object sender, EventArgs e)

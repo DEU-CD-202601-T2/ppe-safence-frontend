@@ -107,7 +107,6 @@ namespace PPE_관제_시스템
             foreach (var data in pageData)
             {
                 var card = new US_AlertCard();
-
                 card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, true);
                 card.Width = flpViolationList.Width - 25;
                 flpViolationList.Controls.Add(card);

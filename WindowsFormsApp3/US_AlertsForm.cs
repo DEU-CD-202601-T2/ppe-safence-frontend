@@ -84,8 +84,7 @@ namespace PPE_관제_시스템
         private void UpdatePageLabel(int totalCount) // 페이지 label 업데이트
         {
             int totalPages = (int)Math.Ceiling((double)totalCount / DataManager.PageSize);
-            if (totalPages == 0)
-                totalPages = 1;
+            if (totalPages == 0) totalPages = 1;
             if (DataManager.CurrentPage >= totalPages)
                 DataManager.CurrentPage = totalPages - 1;
             if (DataManager.CurrentPage < 0) DataManager.CurrentPage = 0;
@@ -129,7 +128,7 @@ namespace PPE_관제_시스템
             }
 
             flpAlertsList.SuspendLayout();
-            for(int i = flpAlertsList.Controls.Count - 1; i >= 0; i--)
+            for (int i = flpAlertsList.Controls.Count - 1; i >= 0; i--)
             {
                 var ctrl = flpAlertsList.Controls[i];
                 flpAlertsList.Controls.Remove(ctrl);
@@ -143,7 +142,7 @@ namespace PPE_관제_시스템
                 .Take(DataManager.PageSize)
                 .ToList();
 
-            foreach(var data in pageItems)
+            foreach (var data in pageItems)
             {
                 var card = new US_AlertCard();
                 card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
@@ -171,14 +170,6 @@ namespace PPE_관제_시스템
             }
             flpAlertsList.ResumeLayout();
             UpdatePageLabel(filteredList.Count);
-        }
-        private void btnResolve_Click(object sender, EventArgs e)
-        { 
-            var card = (sender as Button)?.Parent as US_AlertCard;
-            if (card == null) return;
-            string targetId = card.AlertId;
-            DataManager.ResolveAlert(targetId);
-            DataManager.NotifyDataChanged();
         }
         private List<AlterDataClass> GetFilteredList()
         {

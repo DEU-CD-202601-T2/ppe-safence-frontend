@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -39,6 +40,8 @@ namespace PPE_관제_시스템
             Time = time;
             Area = area;
             Status = status;
+            AdminId = adminId;
+            Memo = memo;
             Img = img;
         }
     }

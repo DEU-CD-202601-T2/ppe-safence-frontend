@@ -125,7 +125,6 @@ namespace PPE_관제_시스템
                     await LoadZonesList();
                 }
             }
-
             await LoadZonesList();
         }
 

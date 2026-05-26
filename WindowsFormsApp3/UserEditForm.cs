@@ -29,7 +29,7 @@ namespace PPE_관제_시스템
             LoadUserData();
         }
 
-        private void LoadUserData()
+        private void LoadUserData() // 수정 모드로 폼이 열릴 때 사용자 데이터를 폼의 입력 필드에 로드하는 메서드
         {
             if (editUser == null)
                 return;
@@ -46,7 +46,7 @@ namespace PPE_관제_시스템
             txtId.Enabled = false;
         }
 
-        private async void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e) // 저장 버튼 클릭 이벤트 핸들러로, 추가 모드와 수정 모드 모두에서 사용자 데이터를 API를 통해 저장하는 기능을 수행
         {
             try
             {

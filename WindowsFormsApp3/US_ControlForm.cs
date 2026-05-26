@@ -93,8 +93,8 @@ namespace PPE_관제_시스템
 
             // PPE 미착용자 수, 경고 건수, 센서 상태 표시
             lblPersonCount.Text = $"{summary.PpeNotWearingCount}명";
-            dgvActiveWorkers.Text = $"{summary.WarningCount}건";
-            lblSensorStatus.Text = summary.SensorStatus;
+            lblAlertCount.Text = $"{summary.WarningCount}건";
+            lblStatus.Text = summary.SensorStatus;
 
             // DataGridView 컬럼과 WorkerInfo 속성 매핑
             dgvActiveWorkers.Columns["colWorkerId"].DataPropertyName = "workerId";

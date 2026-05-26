@@ -1,14 +1,19 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PPE_관제_시스템;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Runtime.Remoting.Contexts;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PPE_관제_시스템;
 
 namespace PPE_관제_시스템
 {
@@ -26,7 +31,33 @@ namespace PPE_관제_시스템
                 );
         }
 
-        //스트리밍 URL 조회
+        public static async Task<bool> LoginAsync(string id, string password)
+        {
+            try
+            {
+                var loginData = new { login_id = id, password = password };
+                string json = JsonConvert.SerializeObject(loginData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync($"{BaseUrl}/api/login", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseJson = await response.Content.ReadAsStringAsync();
+                    var result = JObject.Parse(responseJson);
+
+                    UserContext.JwtToken = result["token"]?.ToString();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" 실패: {ex.Message}");
+                return false;
+            }
+        }
+
+        //스트리밍 URL 조회와 카메라 수 조회API
         public static async Task<CameraInfo> GetCameraStreamInfoAsync() // 카메라 스트리밍 URL과 카메라 수 조회
         {
             try
@@ -69,22 +100,27 @@ namespace PPE_관제_시스템
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"알람 목록 조회 실패 : {ex.Message}");
                 return new List<AlterDataClass>();
             }
         }
+
         public static async Task<bool> ResolveViolationAsync(string alertId, string adminId, string memo)
         {
             try
             {
+                string url = $"{BaseUrl}/api/alarms/{alertId}";
                 SetAuthHeader();
-                var data = new { status = "해결",
-                    admin_id = adminId,
-                    memo = memo };
-                var json = JsonConvert.SerializeObject(data);
+
+                var data = new
+                {
+                    status = "해결",
+                };
+
+                string json = JsonConvert.SerializeObject(data);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{BaseUrl}/api/alarms/{alertId}")
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
                 {
                     Content = new StringContent(json, Encoding.UTF8, "application/json")
                 };
@@ -98,29 +134,128 @@ namespace PPE_관제_시스템
             }
         }
 
-        // ========================================
-        // 대응/제어 관리 API 호출 메서드들
-        // ========================================
+        //public static async Task<List<WorkerInfo>> GetControlWorkerAsync() // 관제 작업자 목록 조회 API 호출
+        //{
+        //    try
+        //    {
+        //        SetAuthHeader();
+        //        var response = await client.GetAsync($"{BaseUrl}/api/control/workers");
 
-        public static async Task<ControlSummary> GetControlSummaryAsync() // 대응/제어 대시보드 통계 데이터 조회 API 호출
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            string json = await response.Content.ReadAsStringAsync();
+        //            return JsonConvert.DeserializeObject<List<WorkerInfo>>(json) ?? new List<WorkerInfo>();
+        //        }
+        //        return new List<WorkerInfo>();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new List<WorkerInfo>();
+        //    }
+        //}
+
+        //public static async Task<bool> ResumeWorkerAsync(List<string> workerIds) // 작업자 작업 중지 해제 API 호출
+        //{
+        //    if (workerIds == null || workerIds.Count == 0) return false;
+        //    try
+        //    {
+        //        SetAuthHeader();
+        //        string url = $"{BaseUrl}/api/control/workers/resume";
+
+        //        var requestBody = new { workerIds = workerIds };
+        //        string json = JsonConvert.SerializeObject(requestBody);
+        //        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        //        var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
+        //        {
+        //            Content = content
+        //        };
+        //        HttpResponseMessage response = await client.SendAsync(request);
+        //        return response.IsSuccessStatusCode;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"워커 재개 실패: {ex.Message}");
+        //        return false;
+        //    }
+        //}
+
+        //위반 관리 구역 필터 api
+        public static async Task<List<AlterDataClass>> GetViolationsAsync(string area = null, string status = null)
         {
             try
             {
                 SetAuthHeader();
-                var response = await client.GetAsync($"{BaseUrl}/api/control/summary");
-
-                response.EnsureSuccessStatusCode();
-
-                var json = await response.Content.ReadAsStringAsync();
-
-                return JsonConvert.DeserializeObject<ControlSummary>(json)
-                       ?? new ControlSummary();
+                string url = $"{BaseUrl}/api/violations";
+                List<string> queryParams = new List<string>();
+                if (!string.IsNullOrEmpty(area) && area != "전체") queryParams.Add($"area={Uri.EscapeDataString(area)}");
+                if (!string.IsNullOrEmpty(status) && status != "전체") queryParams.Add($"status={Uri.EscapeDataString(status)}");
+                if (queryParams.Count > 0)
+                {
+                    url += "?" + string.Join("&", queryParams);
+                }
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<List<AlterDataClass>>(json) ?? new List<AlterDataClass>();
+                }
+                return new List<AlterDataClass>();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"대시보드 조회 실패\n{ex.Message}");
+                Console.WriteLine($"위반 내역 조회 실패: {ex.Message}");
+                return new List<AlterDataClass>();
+            }
+        }
 
-                return new ControlSummary();
+        //위반 이미지 조회 API
+        public static async Task<Image> GetVioationImageAsync(string filename)
+        {
+            try
+            {
+                SetAuthHeader();
+                string url = $"{BaseUrl}/api/violations/images/{filename}";
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        return Image.FromStream(stream);
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"카메라 이미지 조회 실패: {ex.Message}");
+                return null;
+            }
+        }
+
+        // ========================================
+        // 대응/제어 관리 API 호출 메서드들
+        // ========================================
+
+        public static async Task<ControlSummary> GetControlSummaryAsync() // 대응/제어 요약 정보 조회 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+
+                var response = await client.GetAsync($"{BaseUrl}/api/control/summary");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<ControlSummary>(json);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"관제 요약 정보 조회 실패: {ex.Message}");
+                return null;
             }
         }
 
@@ -192,11 +327,9 @@ namespace PPE_관제_시스템
             {
                 SetAuthHeader();
 
-                var response =
-                    await client.GetAsync($"{BaseUrl}/api/logs");
+                var response = await client.GetAsync($"{BaseUrl}/api/logs");
 
-                var json =
-                    await response.Content.ReadAsStringAsync();
+                var json = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -296,7 +429,6 @@ namespace PPE_관제_시스템
         {
             SetAuthHeader();
 
-            // 이제 화면에 있는 모든 구역의 상태가 담긴 배열 JSON이 생성됩니다.
             string json = JsonConvert.SerializeObject(requestList);
 
             StringContent content =
@@ -568,38 +700,55 @@ namespace PPE_관제_시스템
             try
             {
                 SetAuthHeader();
-                var response = await client.DeleteAsync($"{BaseUrl}/api/areas/{zoneId}?hard=true");
+                var response = await client.DeleteAsync($"{BaseUrl}/api/areas/{zoneId}");
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"구역 삭제 실패: {ex.Message}");
-                return false;
+                throw;
             }
         }
 
-        public static async Task<List<AlterDataClass>> GetViolationsAsync(string area = null, string status = null)
+        public static async Task<List<string>> GetAreaAsync()
         {
             try
             {
                 SetAuthHeader();
-                string url = $"{BaseUrl}/api/violations?";
-                if (!string.IsNullOrEmpty(area)) url += $"area={Uri.EscapeDataString(area)}&";
-                if (!string.IsNullOrEmpty(status)) url += $"status={Uri.EscapeDataString(status)}&";
-
-                var response = await client.GetAsync(url);
+                var response = await client.GetAsync($"{BaseUrl}/api/areas");
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<AlterDataClass>>(json) ?? new List<AlterDataClass>();
+                    return JsonConvert.DeserializeObject<List<string>>(json) ?? new List<string>();
                 }
-                return new List<AlterDataClass>();
+                return new List<string>();
             }
-            catch (Exception ex) { 
-                Console.WriteLine(ex.Message);
-                return new List<AlterDataClass>();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"구역 목록 로드 실패: {ex.Message}");
+                return new List<string>();
             }
-            
+        }
+
+
+        public static async Task<bool> LogoutAsync()
+        {
+            try
+            {
+                SetAuthHeader();
+                var response = await client.GetAsync($"{BaseUrl}/api/logout");
+                if (response.IsSuccessStatusCode)
+                {
+                    client.DefaultRequestHeaders.Authorization = null;
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"로그아웃 실패: {ex.Message}");
+                return false;
+            }
         }
     }
 }
