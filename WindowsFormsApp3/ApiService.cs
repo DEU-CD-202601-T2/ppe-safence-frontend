@@ -105,7 +105,7 @@ namespace PPE_관제_시스템
             }
         }
 
-        public static async Task<bool> ResolveViolationAsync(string alertId, string adminId, string memo)
+        public static async Task<bool> ResolveViolationAsync(string alertId, string adminId, string memo, int isChecked = 1)
         {
             try
             {
@@ -115,6 +115,7 @@ namespace PPE_관제_시스템
                 var data = new
                 {
                     status = "해결",
+                    is_checked = isChecked
                 };
 
                 string json = JsonConvert.SerializeObject(data);
@@ -134,52 +135,52 @@ namespace PPE_관제_시스템
             }
         }
 
-        //public static async Task<List<WorkerInfo>> GetControlWorkerAsync() // 관제 작업자 목록 조회 API 호출
-        //{
-        //    try
-        //    {
-        //        SetAuthHeader();
-        //        var response = await client.GetAsync($"{BaseUrl}/api/control/workers");
+        public static async Task<List<WorkerInfo>> GetControlWorkerAsync() // 관제 작업자 목록 조회 API 호출
+        {
+            try
+            {
+                SetAuthHeader();
+                var response = await client.GetAsync($"{BaseUrl}/api/control/workers");
 
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            string json = await response.Content.ReadAsStringAsync();
-        //            return JsonConvert.DeserializeObject<List<WorkerInfo>>(json) ?? new List<WorkerInfo>();
-        //        }
-        //        return new List<WorkerInfo>();
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<List<WorkerInfo>>(json) ?? new List<WorkerInfo>();
+                }
+                return new List<WorkerInfo>();
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new List<WorkerInfo>();
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                return new List<WorkerInfo>();
+            }
+        }
 
-        //public static async Task<bool> ResumeWorkerAsync(List<string> workerIds) // 작업자 작업 중지 해제 API 호출
-        //{
-        //    if (workerIds == null || workerIds.Count == 0) return false;
-        //    try
-        //    {
-        //        SetAuthHeader();
-        //        string url = $"{BaseUrl}/api/control/workers/resume";
+        public static async Task<bool> ResumeWorkerAsync(List<string> workerIds) // 작업자 작업 중지 해제 API 호출
+        {
+            if (workerIds == null || workerIds.Count == 0) return false;
+            try
+            {
+                SetAuthHeader();
+              string url = $"{BaseUrl}/api/control/workers/resume";
 
-        //        var requestBody = new { workerIds = workerIds };
-        //        string json = JsonConvert.SerializeObject(requestBody);
-        //        var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var requestBody = new { workerIds = workerIds };
+                string json = JsonConvert.SerializeObject(requestBody);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        //        var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
-        //        {
-        //            Content = content
-        //        };
-        //        HttpResponseMessage response = await client.SendAsync(request);
-        //        return response.IsSuccessStatusCode;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"워커 재개 실패: {ex.Message}");
-        //        return false;
-        //    }
-        //}
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
+                {
+                    Content = content
+                };
+                HttpResponseMessage response = await client.SendAsync(request);
+                return response.IsSuccessStatusCode;
+            }
+           catch (Exception ex)
+            {
+                Console.WriteLine($"워커 재개 실패: {ex.Message}");
+                return false;
+            }
+        }
 
         //위반 관리 구역 필터 api
         public static async Task<List<AlterDataClass>> GetViolationsAsync(string area = null, string status = null)
@@ -213,6 +214,7 @@ namespace PPE_관제_시스템
         //위반 이미지 조회 API
         public static async Task<Image> GetVioationImageAsync(string filename)
         {
+            if(string.IsNullOrEmpty(filename)) return null;
             try
             {
                 SetAuthHeader();
@@ -220,12 +222,17 @@ namespace PPE_관제_시스템
                 var response = await client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
-                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
+                    using (MemoryStream ms = new MemoryStream(imageBytes))
                     {
-                        return Image.FromStream(stream);
+                        return Image.FromStream(ms);
                     }
                 }
-                return null;
+                else
+                {
+                    Console.WriteLine($"이미지 조회 실패: {(int)response.StatusCode} {response.ReasonPhrase}");
+                    return null;
+                }
             }
             catch (Exception ex)
             {

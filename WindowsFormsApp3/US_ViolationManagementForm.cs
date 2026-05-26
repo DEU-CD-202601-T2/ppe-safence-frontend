@@ -112,6 +112,21 @@ namespace PPE_관제_시스템
                 flpViolationList.Controls.Add(card);
 
                 alertCards.Add(card);
+
+                if (!string.IsNullOrEmpty(data.Id))
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        Image downloadImg = await ApiService.GetVioationImageAsync(data.Id);
+                        if (downloadImg != null)
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, downloadImg, true);
+                            }));
+                        }
+                    });
+                }
             }
             flpViolationList.ResumeLayout();
 

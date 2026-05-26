@@ -20,7 +20,6 @@ namespace PPE_관제_시스템
         public US_AlertsForm()
         {
             InitializeComponent();
-
         }
 
         private async void US_AlertsForm_Load(object sender, EventArgs e)
@@ -33,13 +32,13 @@ namespace PPE_관제_시스템
         private void InitializeFilterItems()
         {
             cmbViolation.Items.Clear();
-            cmbViolation.Items.AddRange(new object[] { "전체", "마스크 미착용", "침입", "군중" });
+            cmbViolation.Items.AddRange(new object[] { "전체", "마스크 미착용", "안전모 미착용", "왼쪽 장갑 미착용", "오른쪽 장갑 미착용" });
             cmbViolation.SelectedIndex = 0;
             cmbCamera.Items.Clear();
-            cmbCamera.Items.AddRange(new object[] { "전체", "카메라1", "카메라2", "카메라3" });
+            cmbCamera.Items.AddRange(new object[] { "전체", "Camera01", "Camera02", "Camera03" });
             cmbCamera.SelectedIndex = 0;
             cmbZone.Items.Clear();
-            cmbZone.Items.AddRange(new object[] { "전체", "A구역", "B구역" });
+            cmbZone.Items.AddRange(new object[] { "전체", "A구역", "B구역", "C구역" });
             cmbZone.SelectedIndex = 0;
         }
 
@@ -68,9 +67,8 @@ namespace PPE_관제_시스템
               
                 if (serverData != null)
                 {
+                    DataManager.AllAlerts = serverData;
                     localAlerts = serverData;
-
-                    
                     ApplyFilter();
                 }
             }
@@ -147,13 +145,26 @@ namespace PPE_관제_시스템
                 var card = new US_AlertCard();
                 card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
 
-                card.OnResolveRequested += async (targetCard) =>
+                if (!string.IsNullOrEmpty(data.Id))
                 {
+                    _ = Task.Run(async () =>
+                    {
+                        Image serverImg = await ApiService.GetVioationImageAsync(data.Id);
+                        if (serverImg != null)
+                        {
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
+                            }));
+                        }
+                    });
+                }
+                card.OnResolveRequested += async (targetCard) => { 
                     using (var frm = new AlertResolution(targetCard.WorkerId))
                     {
-                        if(frm.ShowDialog() == DialogResult.OK)
+                        if (frm.ShowDialog() == DialogResult.OK)
                         {
-                            bool success = await ApiService.ResolveViolationAsync(targetCard.AlertId, frm.AdminId, frm.Memo);
+                            bool success = await ApiService.ResolveViolationAsync(targetCard.AlertId, frm.AdminId, frm.Memo, 1);
 
                             if (success)
                             {
@@ -161,6 +172,10 @@ namespace PPE_관제_시스템
                                 DataManager.ResolveAlert(targetCard.AlertId, frm.AdminId, frm.Memo);
                                 DataManager.NotifyDataChanged();
                                 await RefreshAlarmsFromServer();
+                            }
+                            else
+                            {
+                                MessageBox.Show("서버 통신에 실패했습니다", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -177,7 +192,8 @@ namespace PPE_관제_시스템
             string camFilter = cmbCamera.SelectedItem?.ToString() ?? "전체";
             string zoneFilter = cmbZone.SelectedItem?.ToString() ?? "전체";
 
-            var filteredList = DataManager.AllAlerts.Where(d =>
+            var filteredList = localAlerts.Where(d =>
+            d.IsChecked == false &&
             (string.IsNullOrEmpty(d.Status) || d.Status.Trim() == "미해결") &&
                 (typeFilter == "전체" || d.Type.Contains(typeFilter)) &&
                 (camFilter == "전체" || d.Cam.Contains(camFilter)) &&
