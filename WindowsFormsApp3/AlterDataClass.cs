@@ -23,16 +23,21 @@ namespace PPE_관제_시스템
             public string Time { get; set; }
             [JsonProperty("area")]
             public AreaInfo Area { get; set; }
+
+            [JsonProperty("admin_id")]
+            public string AdminId { get; set; }
+            [JsonProperty("memo")]
+            public string Memo { get; set; }
             [JsonIgnore]
-            public string Zone => Area?.AreaName ?? "알 수 없음";
+                public string Zone => Area?.AreaName ?? "알 수 없음";
             [JsonIgnore]
-            public string Cam => "Camera 01";
+                public string Cam => "Camera 01";
             [JsonIgnore]
-            public Image Img { get; set; }
+                public Image Img { get; set; }
 
             public AlterDataClass() { }
 
-        public AlterDataClass(string id, string uid, string type, string time, AreaInfo area, string status, Image img = null)
+        public AlterDataClass(string id, string uid, string type, string time, AreaInfo area, string status, Image img = null, string adminId = null, string memo = null)
         {
             Id = id;
             Uid = uid;

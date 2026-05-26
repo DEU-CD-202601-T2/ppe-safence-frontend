@@ -9,6 +9,7 @@ namespace PPE_관제_시스템
 {
     public class DataManager
     {
+        private static readonly object _lock = new object();
         public static List<AlterDataClass> AllAlerts = new List<AlterDataClass>();
         public static event Action OnDataChanged;
         public static int CurrentPage = 0;
@@ -24,20 +25,32 @@ namespace PPE_관제_시스템
                 List<AlterDataClass> serverData = await ApiService.GetViolationsAsync();
                 if (serverData != null)
                 {
-                    AllAlerts = serverData;
+                    lock (_lock)
+                    {
+
+                        AllAlerts = serverData;
+                    }
                     NotifyDataChanged();
                 }   
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine("서버 데이터 동기화 중 오류 발생");
             }
         }
         public static void AddAlert(string type, string zone, string cam, string uid)
         {
-            _ = UpdateAlertsFromServer();
+            Task.Run(async () => await UpdateAlertsFromServer());
         }
 
-            public static void ResolveAlert(string alertId, string adminId, string memo)
+        public static void AddAlert(string alertId)
+        {
+            ResolveAlert(alertId, "admin", "빠른 해결 조치");
+        }
+
+        public static void ResolveAlert(string alertId, string adminId, string memo)
+        {
+            lock (_lock)
             {
                 var target = AllAlerts.FirstOrDefault(a => a.Id?.Trim() == alertId.Trim());
                 if (target != null)
@@ -48,6 +61,7 @@ namespace PPE_관제_시스템
                     NotifyDataChanged();
                 }
             }
+        }
             public static void InitTestData()
             {
                 _ = UpdateAlertsFromServer();

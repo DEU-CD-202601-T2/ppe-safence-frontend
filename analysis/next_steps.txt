@@ -1,0 +1,1 @@
+We found ApiService.cs in project. User asked whether external API integration code exists. Next step: open ApiService.cs, DataManager.cs, Globaldata.cs, US_ViolationManagementForm.cs, AlterDataClass.cs to inspect where data fetched and how localViolations filled. Use tools to fetch these files.

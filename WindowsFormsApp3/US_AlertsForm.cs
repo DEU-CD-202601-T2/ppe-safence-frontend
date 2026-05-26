@@ -158,7 +158,7 @@ namespace PPE_관제_시스템
                             if (success)
                             {
                                 MessageBox.Show("해결 처리가 완료되었습니다", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                DataManager.ResolveAlert(targetCard.AlertId);
+                                DataManager.ResolveAlert(targetCard.AlertId, frm.AdminId, frm.Memo);
                                 DataManager.NotifyDataChanged();
                                 await RefreshAlarmsFromServer();
                             }
