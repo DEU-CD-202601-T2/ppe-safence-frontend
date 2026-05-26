@@ -143,7 +143,10 @@ namespace PPE_관제_시스템
             foreach (var data in pageItems)
             {
                 var card = new US_AlertCard();
-                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
+
+                string displayUid = string.IsNullOrEmpty(data.Uid) ? "미지정" : data.Uid;
+                string displayZone = string.IsNullOrEmpty(data.Zone) ? "알 수 없음" : data.Zone;
+                card.SetData(data.Type, data.Time, displayZone, data.Cam, data.Id, displayUid, data.Status, data.Img, false);
 
                 if (!string.IsNullOrEmpty(data.Id))
                 {
@@ -154,7 +157,7 @@ namespace PPE_관제_시스템
                         {
                             this.BeginInvoke(new Action(() =>
                             {
-                                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, false);
+                                card.SetData(data.Type, data.Time, displayZone, data.Cam, data.Id, displayUid, data.Status, serverImg, false);
                             }));
                         }
                     });
@@ -192,15 +195,17 @@ namespace PPE_관제_시스템
             string camFilter = cmbCamera.SelectedItem?.ToString() ?? "전체";
             string zoneFilter = cmbZone.SelectedItem?.ToString() ?? "전체";
 
-            var filteredList = localAlerts.Where(d =>
-            d.IsChecked == false &&
-            (string.IsNullOrEmpty(d.Status) || d.Status.Trim() == "미해결") &&
-                (typeFilter == "전체" || d.Type.Contains(typeFilter)) &&
-                (camFilter == "전체" || d.Cam.Contains(camFilter)) &&
-                (zoneFilter == "전체" || d.Zone.Contains(zoneFilter))
-            ).ToList();
+            var filterQuery = localAlerts.Where(d =>
+                d.IsChecked == 0 &&
+                (string.IsNullOrEmpty(d.Status) || d.Status.Trim() == "미해결") &&
+                (typeFilter == "전체" || (d.Type != null && d.Type.Contains(typeFilter))) &&
+                (camFilter == "전체" || (d.Cam != null && d.Cam.Contains(camFilter))) &&
+                (zoneFilter == "전체" || (d.Zone != null && d.Zone.Contains(zoneFilter)))
+            );
 
-            return filteredList;
+            var distinctList = filterQuery.GroupBy(d => d.Id).Select(g => g.First()).ToList();
+
+            return distinctList;
         }
     }
 }

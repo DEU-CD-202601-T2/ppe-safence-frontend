@@ -20,7 +20,7 @@ namespace PPE_관제_시스템
             [JsonProperty("status")]
             public string Status { get; set; }
             [JsonProperty("is_checked")]
-            public bool IsChecked { get; set; }
+            public int IsChecked { get; set; }
             [JsonProperty("time")]
             public string Time { get; set; }
             [JsonProperty("area")]
