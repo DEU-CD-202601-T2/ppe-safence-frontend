@@ -30,8 +30,6 @@ namespace PPE_관제_시스템
         {
             InitializeComponent();
 
-            picZoneView.Dock = DockStyle.None; // PictureBox의 Dock 속성을 None으로 설정하여 위치와 크기를 직접 제어
-
             picZoneView.BringToFront(); // PictureBox가 다른 컨트롤보다 앞에 오도록 설정
 
             picZoneView.SizeMode = PictureBoxSizeMode.Zoom; // PictureBox의 SizeMode를 Zoom으로 설정하여 영상이 PictureBox 크기에 맞게 조절되도록 함
@@ -64,54 +62,54 @@ namespace PPE_관제_시스템
             _ = InitUpdateTimer();
         }
 
-        private async Task StartCamera() // 카메라 스트림을 시작하는 메서드, API에서 스트림 URL을 받아 OpenCV로 연결 시도
-        {
-            try
-            {
-                if (isCameraRunning) return;
-
-                StopCamera();
-
-                SetCameraStatus("카메라 연결 중...", Color.Orange);
-
-                var streamData = await ApiService.GetCameraStreamInfoAsync();
-
-                if (streamData == null)
-                {
-                    SetCameraStatus("카메라 정보 불러오기 실패", Color.Red);
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(streamData.Url))
-                {
-                    SetCameraStatus("유효한 카메라 URL 없음", Color.Red);
-                    return;
-                }
-
-                lblCameraCount.Text = $"카메라 {streamData.Count}대";
-
-                capture = new VideoCapture(streamData.Url);
-
-                capture.Set(VideoCaptureProperties.BufferSize, 1);
-
-                if (!capture.IsOpened())
-                {
-                    SetCameraStatus("연결 실패", Color.Red);
-                    return;
-                }
-
-                isCameraRunning = true;
-                cameraThread = new Thread(CaptureCameraCallback);
-                cameraThread.Start();
-                SetCameraStatus("연결됨", Color.Green);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"카메라 시작 오류: {ex.Message}");
-                SetCameraStatus("연결 오류", Color.Red);
-            }
-
-        }
+        // private async Task StartCamera() // 카메라 스트림을 시작하는 메서드, API에서 스트림 URL을 받아 OpenCV로 연결 시도
+        // {
+        //     try
+        //     {
+        //         if (isCameraRunning) return;
+        //
+        //         StopCamera();
+        //
+        //         SetCameraStatus("카메라 연결 중...", Color.Orange);
+        //
+        //         var streamData = await ApiService.GetStreamUrlsAsync();
+        //
+        //         if (streamData == null)
+        //         {
+        //             SetCameraStatus("카메라 정보 불러오기 실패", Color.Red);
+        //             return;
+        //         }
+        //
+        //         if (string.IsNullOrEmpty(streamData.Url))
+        //         {
+        //             SetCameraStatus("유효한 카메라 URL 없음", Color.Red);
+        //             return;
+        //         }
+        //
+        //         lblCameraCount.Text = $"카메라 {streamData.Count}대";
+        //
+        //         capture = new VideoCapture(streamData.Url);
+        //
+        //         capture.Set(VideoCaptureProperties.BufferSize, 1);
+        //
+        //         if (!capture.IsOpened())
+        //         {
+        //             SetCameraStatus("연결 실패", Color.Red);
+        //             return;
+        //         }
+        //
+        //         isCameraRunning = true;
+        //         cameraThread = new Thread(CaptureCameraCallback);
+        //         cameraThread.Start();
+        //         SetCameraStatus("연결됨", Color.Green);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"카메라 시작 오류: {ex.Message}");
+        //         SetCameraStatus("연결 오류", Color.Red);
+        //     }
+        //
+        // }
 
         private void CaptureCameraCallback() // 카메라 스트림을 읽고 PictureBox에 표시하는 백그라운드 스레드 메서드
         {
@@ -129,7 +127,7 @@ namespace PPE_관제_시스템
 
                         this.BeginInvoke(new Action(async () =>
                         {
-                            await StartCamera();
+                            // await StartCamera();
                         }));
 
                         break;
@@ -285,7 +283,7 @@ namespace PPE_관제_시스템
 
                 UpdateDashboard();
 
-                await StartCamera();
+                // await StartCamera();
             }
             catch (Exception ex)
             {
