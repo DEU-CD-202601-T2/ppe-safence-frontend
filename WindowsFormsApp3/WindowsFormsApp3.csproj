@@ -149,6 +149,7 @@
     <Compile Include="AlterDataClass.cs" />
     <Compile Include="AnalysisDashboardStats.cs" />
     <Compile Include="ApiService.cs" />
+    <Compile Include="AppColors.cs" />
     <Compile Include="CameraData.cs" />
     <Compile Include="ChartData.cs" />
     <Compile Include="ControlSummary.cs" />
@@ -331,6 +332,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

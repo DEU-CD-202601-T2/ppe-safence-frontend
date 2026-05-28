@@ -56,7 +56,6 @@ namespace PPE_관제_시스템
                 return false;
             }
         }
-
         //스트리밍 URL 조회와 카메라 수 조회API
         public static async Task<StreamUrlsResponse> GetStreamUrlsAsync()
         {
@@ -70,12 +69,21 @@ namespace PPE_관제_시스템
                 Console.WriteLine($"stream-urls 응답 코드: {(int)response.StatusCode}");
                 Console.WriteLine(json);
 
-                if (response.IsSuccessStatusCode)
+                // 503 등 비정상 응답은 호출 화면에서 오프라인 처리하도록 null 반환
+                if (!response.IsSuccessStatusCode)
                 {
-                    return JsonConvert.DeserializeObject<StreamUrlsResponse>(json);
+                    return null;
                 }
 
-                return null;
+                // offline_areas가 객체 배열로 내려와도 전체 역직렬화가 실패하지 않도록
+                // 실시간 모니터링에 필요한 cameras, online_count만 안전하게 직접 파싱
+                JObject root = JObject.Parse(json);
+
+                return new StreamUrlsResponse
+                {
+                    cameras = root["cameras"]?.ToObject<List<CameraData>>() ?? new List<CameraData>(),
+                    online_count = root["online_count"]?.Value<int>() ?? 0
+                };
             }
             catch (Exception ex)
             {

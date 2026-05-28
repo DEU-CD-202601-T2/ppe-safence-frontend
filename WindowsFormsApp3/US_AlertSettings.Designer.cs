@@ -2,15 +2,8 @@
 {
     partial class US_AlertSettings
     {
-        /// <summary> 
-        /// 필수 디자이너 변수입니다.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// 사용 중인 모든 리소스를 정리합니다.
-        /// </summary>
-        /// <param name="disposing">관리되는 리소스를 삭제해야 하면 true이고, 그렇지 않으면 false입니다.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,93 +15,100 @@
 
         #region 구성 요소 디자이너에서 생성한 코드
 
-        /// <summary> 
-        /// 디자이너 지원에 필요한 메서드입니다. 
-        /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
-        /// </summary>
         private void InitializeComponent()
         {
             this.lblAlertSetting = new System.Windows.Forms.Label();
-            this.btnAlertSave = new System.Windows.Forms.Button();
-            this.btnAlertReset = new System.Windows.Forms.Button();
+            this.grpAlertType = new System.Windows.Forms.GroupBox();
             this.cmbAlertType = new System.Windows.Forms.ComboBox();
+            this.grpUseAlert = new System.Windows.Forms.GroupBox();
             this.chkUseAlert = new System.Windows.Forms.CheckBox();
             this.lblAlertStatus = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.pnlAlertType = new System.Windows.Forms.Panel();
-            this.lblAlertType = new System.Windows.Forms.Label();
-            this.pnlUseAlert = new System.Windows.Forms.Panel();
-            this.lblUseAlert = new System.Windows.Forms.Label();
-            this.pnlAlertMethod = new System.Windows.Forms.Panel();
+            this.grpAlertMethod = new System.Windows.Forms.GroupBox();
             this.chkSendManager = new System.Windows.Forms.CheckBox();
-            this.lblAlertMethod = new System.Windows.Forms.Label();
-            this.pnlDetailSetting = new System.Windows.Forms.Panel();
-            this.chkStopWork = new System.Windows.Forms.CheckBox();
-            this.cmbSeverity = new System.Windows.Forms.ComboBox();
-            this.lblSecond = new System.Windows.Forms.Label();
-            this.txtInterval = new System.Windows.Forms.TextBox();
-            this.lblStopWork = new System.Windows.Forms.Label();
-            this.lblSeverity = new System.Windows.Forms.Label();
+            this.grpDetailSetting = new System.Windows.Forms.GroupBox();
             this.lblInterval = new System.Windows.Forms.Label();
-            this.lblDetailSetting = new System.Windows.Forms.Label();
-            this.pnlAlertType.SuspendLayout();
-            this.pnlUseAlert.SuspendLayout();
-            this.pnlAlertMethod.SuspendLayout();
-            this.pnlDetailSetting.SuspendLayout();
+            this.txtInterval = new System.Windows.Forms.TextBox();
+            this.lblSecond = new System.Windows.Forms.Label();
+            this.lblSeverity = new System.Windows.Forms.Label();
+            this.cmbSeverity = new System.Windows.Forms.ComboBox();
+            this.lblStopWork = new System.Windows.Forms.Label();
+            this.chkStopWork = new System.Windows.Forms.CheckBox();
+            this.pnlButtons = new System.Windows.Forms.Panel();
+            this.btnAlertReset = new System.Windows.Forms.Button();
+            this.btnAlertSave = new System.Windows.Forms.Button();
+            this.grpAlertType.SuspendLayout();
+            this.grpUseAlert.SuspendLayout();
+            this.grpAlertMethod.SuspendLayout();
+            this.grpDetailSetting.SuspendLayout();
+            this.pnlButtons.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblAlertSetting
             // 
             this.lblAlertSetting.AutoSize = true;
-            this.lblAlertSetting.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAlertSetting.Location = new System.Drawing.Point(3, 3);
+            this.lblAlertSetting.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblAlertSetting.ForeColor = AppColors.Text;
+            this.lblAlertSetting.Location = new System.Drawing.Point(20, 10);
             this.lblAlertSetting.Name = "lblAlertSetting";
-            this.lblAlertSetting.Size = new System.Drawing.Size(114, 31);
-            this.lblAlertSetting.TabIndex = 5;
+            this.lblAlertSetting.Size = new System.Drawing.Size(116, 31);
+            this.lblAlertSetting.TabIndex = 0;
             this.lblAlertSetting.Text = "알림 설정";
             // 
-            // btnAlertSave
+            // grpAlertType
             // 
-            this.btnAlertSave.Location = new System.Drawing.Point(1050, 608);
-            this.btnAlertSave.Name = "btnAlertSave";
-            this.btnAlertSave.Size = new System.Drawing.Size(149, 42);
-            this.btnAlertSave.TabIndex = 6;
-            this.btnAlertSave.Text = "저장";
-            this.btnAlertSave.UseVisualStyleBackColor = true;
-            this.btnAlertSave.Click += new System.EventHandler(this.btnAlertSave_Click);
-            // 
-            // btnAlertReset
-            // 
-            this.btnAlertReset.Location = new System.Drawing.Point(895, 608);
-            this.btnAlertReset.Name = "btnAlertReset";
-            this.btnAlertReset.Size = new System.Drawing.Size(149, 42);
-            this.btnAlertReset.TabIndex = 7;
-            this.btnAlertReset.Text = "초기화";
-            this.btnAlertReset.UseVisualStyleBackColor = true;
-            this.btnAlertReset.Click += new System.EventHandler(this.btnAlertReset_Click);
+            this.grpAlertType.BackColor = AppColors.Surface;
+            this.grpAlertType.Controls.Add(this.cmbAlertType);
+            this.grpAlertType.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.grpAlertType.ForeColor = AppColors.PrimaryDark;
+            this.grpAlertType.Location = new System.Drawing.Point(20, 55);
+            this.grpAlertType.Name = "grpAlertType";
+            this.grpAlertType.Size = new System.Drawing.Size(580, 180);
+            this.grpAlertType.TabIndex = 1;
+            this.grpAlertType.TabStop = false;
+            this.grpAlertType.Text = "알림 유형";
             // 
             // cmbAlertType
             // 
-            this.cmbAlertType.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbAlertType.BackColor = AppColors.Surface;
+            this.cmbAlertType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbAlertType.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular);
+            this.cmbAlertType.ForeColor = AppColors.Text;
             this.cmbAlertType.FormattingEnabled = true;
             this.cmbAlertType.Items.AddRange(new object[] {
             "안전모",
             "장갑",
             "마스크"});
-            this.cmbAlertType.Location = new System.Drawing.Point(18, 58);
+            this.cmbAlertType.Location = new System.Drawing.Point(25, 65);
             this.cmbAlertType.Name = "cmbAlertType";
-            this.cmbAlertType.Size = new System.Drawing.Size(242, 31);
+            this.cmbAlertType.Size = new System.Drawing.Size(280, 31);
             this.cmbAlertType.TabIndex = 0;
             this.cmbAlertType.Text = "PPE 위반";
             this.cmbAlertType.SelectedIndexChanged += new System.EventHandler(this.cmbAlertType_SelectedIndexChanged);
             // 
+            // grpUseAlert
+            // 
+            this.grpUseAlert.BackColor = AppColors.Surface;
+            this.grpUseAlert.Controls.Add(this.chkUseAlert);
+            this.grpUseAlert.Controls.Add(this.lblAlertStatus);
+            this.grpUseAlert.Controls.Add(this.lblStatus);
+            this.grpUseAlert.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.grpUseAlert.ForeColor = AppColors.PrimaryDark;
+            this.grpUseAlert.Location = new System.Drawing.Point(615, 55);
+            this.grpUseAlert.Name = "grpUseAlert";
+            this.grpUseAlert.Size = new System.Drawing.Size(580, 180);
+            this.grpUseAlert.TabIndex = 2;
+            this.grpUseAlert.TabStop = false;
+            this.grpUseAlert.Text = "알림 사용";
+            // 
             // chkUseAlert
             // 
             this.chkUseAlert.AutoSize = true;
-            this.chkUseAlert.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkUseAlert.Location = new System.Drawing.Point(21, 58);
+            this.chkUseAlert.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular);
+            this.chkUseAlert.ForeColor = AppColors.Text;
+            this.chkUseAlert.Location = new System.Drawing.Point(25, 65);
             this.chkUseAlert.Name = "chkUseAlert";
-            this.chkUseAlert.Size = new System.Drawing.Size(106, 27);
+            this.chkUseAlert.Size = new System.Drawing.Size(112, 28);
             this.chkUseAlert.TabIndex = 0;
             this.chkUseAlert.Text = "알림 사용";
             this.chkUseAlert.UseVisualStyleBackColor = true;
@@ -117,246 +117,246 @@
             // lblAlertStatus
             // 
             this.lblAlertStatus.AutoSize = true;
-            this.lblAlertStatus.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAlertStatus.Location = new System.Drawing.Point(16, 119);
+            this.lblAlertStatus.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular);
+            this.lblAlertStatus.ForeColor = AppColors.Text;
+            this.lblAlertStatus.Location = new System.Drawing.Point(25, 115);
             this.lblAlertStatus.Name = "lblAlertStatus";
-            this.lblAlertStatus.Size = new System.Drawing.Size(54, 23);
-            this.lblAlertStatus.TabIndex = 10;
-            this.lblAlertStatus.Text = "상태: ";
+            this.lblAlertStatus.Size = new System.Drawing.Size(56, 25);
+            this.lblAlertStatus.TabIndex = 1;
+            this.lblAlertStatus.Text = "상태:";
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblStatus.Location = new System.Drawing.Point(69, 119);
+            this.lblStatus.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblStatus.ForeColor = AppColors.Danger;
+            this.lblStatus.Location = new System.Drawing.Point(85, 115);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(78, 23);
-            this.lblStatus.TabIndex = 11;
+            this.lblStatus.Size = new System.Drawing.Size(83, 25);
+            this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "비활성화";
             // 
-            // pnlAlertType
+            // grpAlertMethod
             // 
-            this.pnlAlertType.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlAlertType.Controls.Add(this.lblAlertType);
-            this.pnlAlertType.Controls.Add(this.cmbAlertType);
-            this.pnlAlertType.Location = new System.Drawing.Point(9, 69);
-            this.pnlAlertType.Name = "pnlAlertType";
-            this.pnlAlertType.Size = new System.Drawing.Size(367, 169);
-            this.pnlAlertType.TabIndex = 8;
-            // 
-            // lblAlertType
-            // 
-            this.lblAlertType.AutoSize = true;
-            this.lblAlertType.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAlertType.Location = new System.Drawing.Point(14, 5);
-            this.lblAlertType.Name = "lblAlertType";
-            this.lblAlertType.Size = new System.Drawing.Size(84, 23);
-            this.lblAlertType.TabIndex = 1;
-            this.lblAlertType.Text = "알림 유형";
-            // 
-            // pnlUseAlert
-            // 
-            this.pnlUseAlert.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlUseAlert.Controls.Add(this.lblUseAlert);
-            this.pnlUseAlert.Controls.Add(this.lblStatus);
-            this.pnlUseAlert.Controls.Add(this.chkUseAlert);
-            this.pnlUseAlert.Controls.Add(this.lblAlertStatus);
-            this.pnlUseAlert.Location = new System.Drawing.Point(396, 69);
-            this.pnlUseAlert.Name = "pnlUseAlert";
-            this.pnlUseAlert.Size = new System.Drawing.Size(361, 169);
-            this.pnlUseAlert.TabIndex = 9;
-            // 
-            // lblUseAlert
-            // 
-            this.lblUseAlert.AutoSize = true;
-            this.lblUseAlert.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblUseAlert.Location = new System.Drawing.Point(17, 5);
-            this.lblUseAlert.Name = "lblUseAlert";
-            this.lblUseAlert.Size = new System.Drawing.Size(84, 23);
-            this.lblUseAlert.TabIndex = 12;
-            this.lblUseAlert.Text = "알림 사용";
-            // 
-            // pnlAlertMethod
-            // 
-            this.pnlAlertMethod.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlAlertMethod.Controls.Add(this.chkSendManager);
-            this.pnlAlertMethod.Controls.Add(this.lblAlertMethod);
-            this.pnlAlertMethod.Location = new System.Drawing.Point(9, 268);
-            this.pnlAlertMethod.Name = "pnlAlertMethod";
-            this.pnlAlertMethod.Size = new System.Drawing.Size(580, 315);
-            this.pnlAlertMethod.TabIndex = 10;
+            this.grpAlertMethod.BackColor = AppColors.Surface;
+            this.grpAlertMethod.Controls.Add(this.chkSendManager);
+            this.grpAlertMethod.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.grpAlertMethod.ForeColor = AppColors.PrimaryDark;
+            this.grpAlertMethod.Location = new System.Drawing.Point(20, 250);
+            this.grpAlertMethod.Name = "grpAlertMethod";
+            this.grpAlertMethod.Size = new System.Drawing.Size(580, 280);
+            this.grpAlertMethod.TabIndex = 3;
+            this.grpAlertMethod.TabStop = false;
+            this.grpAlertMethod.Text = "알림 방식";
             // 
             // chkSendManager
             // 
             this.chkSendManager.AutoSize = true;
-            this.chkSendManager.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSendManager.Location = new System.Drawing.Point(18, 97);
+            this.chkSendManager.Font = new System.Drawing.Font("맑은 고딕", 11F);
+            this.chkSendManager.ForeColor = AppColors.Text;
+            this.chkSendManager.Location = new System.Drawing.Point(25, 70);
             this.chkSendManager.Name = "chkSendManager";
-            this.chkSendManager.Size = new System.Drawing.Size(197, 27);
-            this.chkSendManager.TabIndex = 5;
+            this.chkSendManager.Size = new System.Drawing.Size(207, 28);
+            this.chkSendManager.TabIndex = 0;
             this.chkSendManager.Text = "관리자에게 알림 전송";
             this.chkSendManager.UseVisualStyleBackColor = true;
             // 
-            // lblAlertMethod
+            // grpDetailSetting
             // 
-            this.lblAlertMethod.AutoSize = true;
-            this.lblAlertMethod.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAlertMethod.Location = new System.Drawing.Point(14, 12);
-            this.lblAlertMethod.Name = "lblAlertMethod";
-            this.lblAlertMethod.Size = new System.Drawing.Size(84, 23);
-            this.lblAlertMethod.TabIndex = 2;
-            this.lblAlertMethod.Text = "알림 방식";
+            this.grpDetailSetting.BackColor = AppColors.Surface;
+            this.grpDetailSetting.Controls.Add(this.lblInterval);
+            this.grpDetailSetting.Controls.Add(this.txtInterval);
+            this.grpDetailSetting.Controls.Add(this.lblSecond);
+            this.grpDetailSetting.Controls.Add(this.lblSeverity);
+            this.grpDetailSetting.Controls.Add(this.cmbSeverity);
+            this.grpDetailSetting.Controls.Add(this.lblStopWork);
+            this.grpDetailSetting.Controls.Add(this.chkStopWork);
+            this.grpDetailSetting.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.grpDetailSetting.ForeColor = AppColors.PrimaryDark;
+            this.grpDetailSetting.Location = new System.Drawing.Point(615, 250);
+            this.grpDetailSetting.Name = "grpDetailSetting";
+            this.grpDetailSetting.Size = new System.Drawing.Size(580, 280);
+            this.grpDetailSetting.TabIndex = 4;
+            this.grpDetailSetting.TabStop = false;
+            this.grpDetailSetting.Text = "세부 설정";
             // 
-            // pnlDetailSetting
+            // lblInterval
             // 
-            this.pnlDetailSetting.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlDetailSetting.Controls.Add(this.chkStopWork);
-            this.pnlDetailSetting.Controls.Add(this.cmbSeverity);
-            this.pnlDetailSetting.Controls.Add(this.lblSecond);
-            this.pnlDetailSetting.Controls.Add(this.txtInterval);
-            this.pnlDetailSetting.Controls.Add(this.lblStopWork);
-            this.pnlDetailSetting.Controls.Add(this.lblSeverity);
-            this.pnlDetailSetting.Controls.Add(this.lblInterval);
-            this.pnlDetailSetting.Controls.Add(this.lblDetailSetting);
-            this.pnlDetailSetting.Location = new System.Drawing.Point(608, 268);
-            this.pnlDetailSetting.Name = "pnlDetailSetting";
-            this.pnlDetailSetting.Size = new System.Drawing.Size(580, 315);
-            this.pnlDetailSetting.TabIndex = 11;
+            this.lblInterval.AutoSize = true;
+            this.lblInterval.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.lblInterval.ForeColor = AppColors.Text;
+            this.lblInterval.Location = new System.Drawing.Point(25, 60);
+            this.lblInterval.Name = "lblInterval";
+            this.lblInterval.Size = new System.Drawing.Size(127, 23);
+            this.lblInterval.TabIndex = 0;
+            this.lblInterval.Text = "반복 알림 간격:";
             // 
-            // chkStopWork
+            // txtInterval
             // 
-            this.chkStopWork.AutoSize = true;
-            this.chkStopWork.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkStopWork.Location = new System.Drawing.Point(167, 210);
-            this.chkStopWork.Name = "chkStopWork";
-            this.chkStopWork.Size = new System.Drawing.Size(209, 27);
-            this.chkStopWork.TabIndex = 10;
-            this.chkStopWork.Text = "위반 발생 시 작업 중지";
-            this.chkStopWork.UseVisualStyleBackColor = true;
+            this.txtInterval.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtInterval.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.txtInterval.ForeColor = AppColors.Text;
+            this.txtInterval.Location = new System.Drawing.Point(180, 57);
+            this.txtInterval.Name = "txtInterval";
+            this.txtInterval.Size = new System.Drawing.Size(120, 30);
+            this.txtInterval.TabIndex = 1;
+            // 
+            // lblSecond
+            // 
+            this.lblSecond.AutoSize = true;
+            this.lblSecond.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.lblSecond.ForeColor = AppColors.Text;
+            this.lblSecond.Location = new System.Drawing.Point(306, 60);
+            this.lblSecond.Name = "lblSecond";
+            this.lblSecond.Size = new System.Drawing.Size(28, 23);
+            this.lblSecond.TabIndex = 2;
+            this.lblSecond.Text = "초";
+            // 
+            // lblSeverity
+            // 
+            this.lblSeverity.AutoSize = true;
+            this.lblSeverity.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.lblSeverity.ForeColor = AppColors.Text;
+            this.lblSeverity.Location = new System.Drawing.Point(25, 115);
+            this.lblSeverity.Name = "lblSeverity";
+            this.lblSeverity.Size = new System.Drawing.Size(105, 23);
+            this.lblSeverity.TabIndex = 3;
+            this.lblSeverity.Text = "최소 위험도:";
             // 
             // cmbSeverity
             // 
-            this.cmbSeverity.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbSeverity.BackColor = AppColors.Surface;
+            this.cmbSeverity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbSeverity.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.cmbSeverity.ForeColor = AppColors.Text;
             this.cmbSeverity.FormattingEnabled = true;
             this.cmbSeverity.Items.AddRange(new object[] {
             "높음",
             "보통",
             "낮음"});
-            this.cmbSeverity.Location = new System.Drawing.Point(167, 154);
+            this.cmbSeverity.Location = new System.Drawing.Point(180, 112);
             this.cmbSeverity.Name = "cmbSeverity";
-            this.cmbSeverity.Size = new System.Drawing.Size(121, 31);
-            this.cmbSeverity.TabIndex = 9;
+            this.cmbSeverity.Size = new System.Drawing.Size(120, 31);
+            this.cmbSeverity.TabIndex = 4;
             this.cmbSeverity.Text = "보통";
-            // 
-            // lblSecond
-            // 
-            this.lblSecond.AutoSize = true;
-            this.lblSecond.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSecond.Location = new System.Drawing.Point(296, 97);
-            this.lblSecond.Name = "lblSecond";
-            this.lblSecond.Size = new System.Drawing.Size(27, 23);
-            this.lblSecond.TabIndex = 8;
-            this.lblSecond.Text = "초";
-            // 
-            // txtInterval
-            // 
-            this.txtInterval.Location = new System.Drawing.Point(167, 97);
-            this.txtInterval.Name = "txtInterval";
-            this.txtInterval.Size = new System.Drawing.Size(123, 25);
-            this.txtInterval.TabIndex = 7;
             // 
             // lblStopWork
             // 
             this.lblStopWork.AutoSize = true;
-            this.lblStopWork.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblStopWork.Location = new System.Drawing.Point(18, 210);
+            this.lblStopWork.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.lblStopWork.ForeColor = AppColors.Text;
+            this.lblStopWork.Location = new System.Drawing.Point(25, 175);
             this.lblStopWork.Name = "lblStopWork";
-            this.lblStopWork.Size = new System.Drawing.Size(134, 23);
-            this.lblStopWork.TabIndex = 6;
-            this.lblStopWork.Text = "작업 중지 연동: ";
+            this.lblStopWork.Size = new System.Drawing.Size(123, 23);
+            this.lblStopWork.TabIndex = 5;
+            this.lblStopWork.Text = "작업 중지 연동:";
             // 
-            // lblSeverity
+            // chkStopWork
             // 
-            this.lblSeverity.AutoSize = true;
-            this.lblSeverity.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSeverity.Location = new System.Drawing.Point(18, 157);
-            this.lblSeverity.Name = "lblSeverity";
-            this.lblSeverity.Size = new System.Drawing.Size(111, 23);
-            this.lblSeverity.TabIndex = 5;
-            this.lblSeverity.Text = "최소 위험도: ";
+            this.chkStopWork.AutoSize = true;
+            this.chkStopWork.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.chkStopWork.ForeColor = AppColors.Text;
+            this.chkStopWork.Location = new System.Drawing.Point(180, 175);
+            this.chkStopWork.Name = "chkStopWork";
+            this.chkStopWork.Size = new System.Drawing.Size(202, 27);
+            this.chkStopWork.TabIndex = 6;
+            this.chkStopWork.Text = "위반 발생 시 작업 중지";
+            this.chkStopWork.UseVisualStyleBackColor = true;
             // 
-            // lblInterval
+            // pnlButtons
             // 
-            this.lblInterval.AutoSize = true;
-            this.lblInterval.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblInterval.Location = new System.Drawing.Point(17, 97);
-            this.lblInterval.Name = "lblInterval";
-            this.lblInterval.Size = new System.Drawing.Size(134, 23);
-            this.lblInterval.TabIndex = 4;
-            this.lblInterval.Text = "반복 알림 간격: ";
+            this.pnlButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlButtons.BackColor = AppColors.Background;
+            this.pnlButtons.Controls.Add(this.btnAlertReset);
+            this.pnlButtons.Controls.Add(this.btnAlertSave);
+            this.pnlButtons.Location = new System.Drawing.Point(20, 580);
+            this.pnlButtons.Name = "pnlButtons";
+            this.pnlButtons.Size = new System.Drawing.Size(1175, 55);
+            this.pnlButtons.TabIndex = 5;
             // 
-            // lblDetailSetting
+            // btnAlertReset
             // 
-            this.lblDetailSetting.AutoSize = true;
-            this.lblDetailSetting.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblDetailSetting.Location = new System.Drawing.Point(18, 13);
-            this.lblDetailSetting.Name = "lblDetailSetting";
-            this.lblDetailSetting.Size = new System.Drawing.Size(84, 23);
-            this.lblDetailSetting.TabIndex = 3;
-            this.lblDetailSetting.Text = "세부 설정";
+            this.btnAlertReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAlertReset.BackColor = AppColors.Surface;
+            this.btnAlertReset.FlatAppearance.BorderColor = AppColors.Primary;
+            this.btnAlertReset.FlatAppearance.BorderSize = 1;
+            this.btnAlertReset.FlatAppearance.MouseOverBackColor = AppColors.PrimaryLight;
+            this.btnAlertReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAlertReset.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.btnAlertReset.ForeColor = AppColors.PrimaryDark;
+            this.btnAlertReset.Location = new System.Drawing.Point(875, 5);
+            this.btnAlertReset.Name = "btnAlertReset";
+            this.btnAlertReset.Size = new System.Drawing.Size(140, 45);
+            this.btnAlertReset.TabIndex = 0;
+            this.btnAlertReset.Text = "초기화";
+            this.btnAlertReset.UseVisualStyleBackColor = false;
+            this.btnAlertReset.Click += new System.EventHandler(this.btnAlertReset_Click);
+            // 
+            // btnAlertSave
+            // 
+            this.btnAlertSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAlertSave.BackColor = AppColors.Primary;
+            this.btnAlertSave.FlatAppearance.BorderSize = 0;
+            this.btnAlertSave.FlatAppearance.MouseOverBackColor = AppColors.PrimaryDark;
+            this.btnAlertSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAlertSave.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAlertSave.ForeColor = AppColors.TextOnPrimary;
+            this.btnAlertSave.Location = new System.Drawing.Point(1025, 5);
+            this.btnAlertSave.Name = "btnAlertSave";
+            this.btnAlertSave.Size = new System.Drawing.Size(140, 45);
+            this.btnAlertSave.TabIndex = 1;
+            this.btnAlertSave.Text = "저장";
+            this.btnAlertSave.UseVisualStyleBackColor = false;
+            this.btnAlertSave.Click += new System.EventHandler(this.btnAlertSave_Click);
             // 
             // US_AlertSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Controls.Add(this.pnlDetailSetting);
-            this.Controls.Add(this.pnlAlertMethod);
-            this.Controls.Add(this.pnlUseAlert);
-            this.Controls.Add(this.pnlAlertType);
-            this.Controls.Add(this.btnAlertReset);
-            this.Controls.Add(this.btnAlertSave);
+            this.BackColor = AppColors.Background;
+            this.Controls.Add(this.pnlButtons);
+            this.Controls.Add(this.grpDetailSetting);
+            this.Controls.Add(this.grpAlertMethod);
+            this.Controls.Add(this.grpUseAlert);
+            this.Controls.Add(this.grpAlertType);
             this.Controls.Add(this.lblAlertSetting);
             this.Name = "US_AlertSettings";
             this.Size = new System.Drawing.Size(1219, 653);
             this.Load += new System.EventHandler(this.US_AlertSettings_Load);
-            this.pnlAlertType.ResumeLayout(false);
-            this.pnlAlertType.PerformLayout();
-            this.pnlUseAlert.ResumeLayout(false);
-            this.pnlUseAlert.PerformLayout();
-            this.pnlAlertMethod.ResumeLayout(false);
-            this.pnlAlertMethod.PerformLayout();
-            this.pnlDetailSetting.ResumeLayout(false);
-            this.pnlDetailSetting.PerformLayout();
+            this.grpAlertType.ResumeLayout(false);
+            this.grpUseAlert.ResumeLayout(false);
+            this.grpUseAlert.PerformLayout();
+            this.grpAlertMethod.ResumeLayout(false);
+            this.grpAlertMethod.PerformLayout();
+            this.grpDetailSetting.ResumeLayout(false);
+            this.grpDetailSetting.PerformLayout();
+            this.pnlButtons.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
+
         private System.Windows.Forms.Label lblAlertSetting;
-        private System.Windows.Forms.Button btnAlertSave;
-        private System.Windows.Forms.Button btnAlertReset;
+        private System.Windows.Forms.GroupBox grpAlertType;
         private System.Windows.Forms.ComboBox cmbAlertType;
+        private System.Windows.Forms.GroupBox grpUseAlert;
         private System.Windows.Forms.CheckBox chkUseAlert;
         private System.Windows.Forms.Label lblAlertStatus;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Panel pnlAlertType;
-        private System.Windows.Forms.Label lblAlertType;
-        private System.Windows.Forms.Panel pnlUseAlert;
-        private System.Windows.Forms.Label lblUseAlert;
-        private System.Windows.Forms.Panel pnlAlertMethod;
-        private System.Windows.Forms.Panel pnlDetailSetting;
-        private System.Windows.Forms.Label lblAlertMethod;
-        private System.Windows.Forms.Label lblDetailSetting;
-        private System.Windows.Forms.Label lblStopWork;
-        private System.Windows.Forms.Label lblSeverity;
-        private System.Windows.Forms.Label lblInterval;
-        private System.Windows.Forms.Label lblSecond;
-        private System.Windows.Forms.TextBox txtInterval;
-        private System.Windows.Forms.ComboBox cmbSeverity;
-        private System.Windows.Forms.CheckBox chkStopWork;
+        private System.Windows.Forms.GroupBox grpAlertMethod;
         private System.Windows.Forms.CheckBox chkSendManager;
+        private System.Windows.Forms.GroupBox grpDetailSetting;
+        private System.Windows.Forms.Label lblInterval;
+        private System.Windows.Forms.TextBox txtInterval;
+        private System.Windows.Forms.Label lblSecond;
+        private System.Windows.Forms.Label lblSeverity;
+        private System.Windows.Forms.ComboBox cmbSeverity;
+        private System.Windows.Forms.Label lblStopWork;
+        private System.Windows.Forms.CheckBox chkStopWork;
+        private System.Windows.Forms.Panel pnlButtons;
+        private System.Windows.Forms.Button btnAlertReset;
+        private System.Windows.Forms.Button btnAlertSave;
     }
 }

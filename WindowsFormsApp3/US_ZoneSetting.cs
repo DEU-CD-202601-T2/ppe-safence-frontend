@@ -66,7 +66,7 @@ namespace PPE_관제_시스템
         {
             try
             {
-                zones = await ApiService.GetZonesAsync() ?? new List<ZoneData>();
+                zones = await ApiService.GetZonesAsync(includeInactive: true);
             }
             catch (Exception ex)
             {
@@ -78,9 +78,19 @@ namespace PPE_관제_시스템
         // 두 리스트박스 동시 갱신
         private void RefreshLists()
         {
+            /*
+             * 중요:
+             * 비활성 구역도 삭제된 것이 아니므로 카메라 점유 상태로 처리한다.
+             * 따라서 z.is_active 조건을 넣으면 안 된다.
+             */
             var usedCameraTokens = new HashSet<string>(
                 zones.Where(z => !string.IsNullOrEmpty(z.camera_key))
                     .Select(z => $"{z.camera_key}|{z.camera_name}")
+            );
+
+            var usedCameraKeys = new HashSet<string>(
+                zones.Where(z => !string.IsNullOrEmpty(z.camera_key))
+                    .Select(z => z.camera_key)
             );
 
             lstAvailableCameras.Items.Clear();
@@ -91,7 +101,8 @@ namespace PPE_관제_시스템
 
                 bool inUse =
                     cam.area != null ||
-                    usedCameraTokens.Contains(camToken);
+                    usedCameraTokens.Contains(camToken) ||
+                    usedCameraKeys.Contains(cam.key);
 
                 if (!inUse)
                 {
@@ -199,6 +210,7 @@ namespace PPE_관제_시스템
                 risk_level = cmbZoneRiskLevel.SelectedItem?.ToString() ?? "낮음",
                 is_active = chkUseZone.Checked,
 
+                // 새 카메라를 선택하지 않았다면 기존 연결 유지
                 camera_key = selectedCamera?.key ?? originalZone?.camera_key,
                 camera_name = selectedCamera?.name ?? originalZone?.camera_name
             };
