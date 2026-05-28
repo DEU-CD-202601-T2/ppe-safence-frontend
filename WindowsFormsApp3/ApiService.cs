@@ -56,30 +56,38 @@ namespace PPE_관제_시스템
                 return false;
             }
         }
-
         //스트리밍 URL 조회와 카메라 수 조회API
-        public static async Task<CameraInfo> GetCameraStreamInfoAsync() // 카메라 스트리밍 URL과 카메라 수 조회
+        public static async Task<StreamUrlsResponse> GetStreamUrlsAsync()
         {
             try
             {
                 SetAuthHeader();
-                var response =
-                await client.GetAsync($"{BaseUrl}/stream-urls");
-                if (response.IsSuccessStatusCode)
+
+                var response = await client.GetAsync($"{BaseUrl}/api/stream-urls").ConfigureAwait(false);
+                string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                Console.WriteLine($"stream-urls 응답 코드: {(int)response.StatusCode}");
+                Console.WriteLine(json);
+
+                // 503 등 비정상 응답은 호출 화면에서 오프라인 처리하도록 null 반환
+                if (!response.IsSuccessStatusCode)
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    var result = JObject.Parse(json);
-                    return new CameraInfo
-                    {
-                        Url = result["url"]?.ToString(),
-                        Count = result["count"]?.ToObject<int>() ?? 1
-                    };
+                    return null;
                 }
-                return null;
+
+                // offline_areas가 객체 배열로 내려와도 전체 역직렬화가 실패하지 않도록
+                // 실시간 모니터링에 필요한 cameras, online_count만 안전하게 직접 파싱
+                JObject root = JObject.Parse(json);
+
+                return new StreamUrlsResponse
+                {
+                    cameras = root["cameras"]?.ToObject<List<CameraData>>() ?? new List<CameraData>(),
+                    online_count = root["online_count"]?.Value<int>() ?? 0
+                };
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"카메라 정보 조회 실패: {ex.Message}");
+                Console.WriteLine($"스트림 URL 조회 실패: {ex.Message}");
                 return null;
             }
         }
@@ -643,20 +651,35 @@ namespace PPE_관제_시스템
         // ========================================
         // 구역 관리 API 호출 메서드들
         // ========================================
-        public static async Task<List<ZoneData>> GetZonesAsync(bool includeInactive = true) // 구역 목록 조회 API 호출
+        public static async Task<List<ZoneData>> GetZonesAsync(bool includeInactive = true)
         {
             try
             {
                 SetAuthHeader();
+
                 string url = $"{BaseUrl}/api/areas?include_inactive={includeInactive.ToString().ToLower()}";
 
                 var response = await client.GetAsync(url).ConfigureAwait(false);
+                string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
                 if (response.IsSuccessStatusCode)
                 {
+                    var token = JToken.Parse(json);
 
-                    string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    return JsonConvert.DeserializeObject<List<ZoneData>>(json) ?? new List<ZoneData>();
+                    if (token.Type == JTokenType.Object && token["areas"] != null)
+                    {
+                        return token["areas"].ToObject<List<ZoneData>>() ?? new List<ZoneData>();
+                    }
+
+                    if (token.Type == JTokenType.Array)
+                    {
+                        return token.ToObject<List<ZoneData>>() ?? new List<ZoneData>();
+                    }
                 }
+
+                Console.WriteLine($"구역 목록 조회 실패: {(int)response.StatusCode}");
+                Console.WriteLine(json);
+
                 return new List<ZoneData>();
             }
             catch (Exception ex)
@@ -666,15 +689,34 @@ namespace PPE_관제_시스템
             }
         }
 
-        public static async Task<bool> AddZoneAsync(ZoneData zone) // 구역 추가 API 호출
+        public static async Task<bool> AddZoneAsync(ZoneData zone)
         {
             try
             {
                 SetAuthHeader();
-                var json = JsonConvert.SerializeObject(zone);
+
+                var requestBody = new
+                {
+                    area_name = zone.name,
+                    description = zone.description,
+                    risk_level = zone.risk_level,
+                    is_active = zone.is_active,
+                    camera_key = zone.camera_key,
+                    camera_name = zone.camera_name
+                };
+
+                string json = JsonConvert.SerializeObject(requestBody);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync($"{BaseUrl}/api/areas", content);
+                var response = await client.PostAsync($"{BaseUrl}/api/areas", content).ConfigureAwait(false);
+                string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"구역 추가 실패: {(int)response.StatusCode}");
+                    Console.WriteLine(result);
+                }
+
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -684,15 +726,34 @@ namespace PPE_관제_시스템
             }
         }
 
-        public static async Task<bool> UpdateZoneAsync(int zoneId, ZoneData zone) // 구역 수정 API 호출
+        public static async Task<bool> UpdateZoneAsync(int zoneId, ZoneData zone)
         {
             try
             {
                 SetAuthHeader();
-                var json = JsonConvert.SerializeObject(zone);
+
+                var requestBody = new
+                {
+                    area_name = zone.name,
+                    description = zone.description,
+                    risk_level = zone.risk_level,
+                    is_active = zone.is_active,
+                    camera_key = zone.camera_key,
+                    camera_name = zone.camera_name
+                };
+
+                string json = JsonConvert.SerializeObject(requestBody);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PutAsync($"{BaseUrl}/api/areas/{zoneId}", content);
+                var response = await client.PutAsync($"{BaseUrl}/api/areas/{zoneId}", content).ConfigureAwait(false);
+                string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"구역 수정 실패: {(int)response.StatusCode}");
+                    Console.WriteLine(result);
+                }
+
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -702,18 +763,29 @@ namespace PPE_관제_시스템
             }
         }
 
-        public static async Task<bool> DeleteZoneAsync(int zoneId) // 구역 삭제 API 호출
+        public static async Task<bool> DeleteZoneAsync(int zoneId, bool hard = true)
         {
             try
             {
                 SetAuthHeader();
-                var response = await client.DeleteAsync($"{BaseUrl}/api/areas/{zoneId}");
+
+                string url = $"{BaseUrl}/api/areas/{zoneId}?hard={hard.ToString().ToLower()}";
+
+                var response = await client.DeleteAsync(url).ConfigureAwait(false);
+                string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"구역 삭제 실패: {(int)response.StatusCode}");
+                    Console.WriteLine(result);
+                }
+
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"구역 삭제 실패: {ex.Message}");
-                throw;
+                return false;
             }
         }
 

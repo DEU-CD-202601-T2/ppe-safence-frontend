@@ -2,15 +2,8 @@
 {
     partial class US_PPEStandard
     {
-        /// <summary> 
-        /// 필수 디자이너 변수입니다.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// 사용 중인 모든 리소스를 정리합니다.
-        /// </summary>
-        /// <param name="disposing">관리되는 리소스를 삭제해야 하면 true이고, 그렇지 않으면 false입니다.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,181 +15,230 @@
 
         #region 구성 요소 디자이너에서 생성한 코드
 
-        /// <summary> 
-        /// 디자이너 지원에 필요한 메서드입니다. 
-        /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.btnPPESave = new System.Windows.Forms.Button();
-            this.btnPPEReset = new System.Windows.Forms.Button();
-            this.lblZoneList = new System.Windows.Forms.Label();
             this.lblPPESetting = new System.Windows.Forms.Label();
-            this.pnlZoneList = new System.Windows.Forms.Panel();
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.grpZoneList = new System.Windows.Forms.GroupBox();
             this.lstPPE_ZoneList = new System.Windows.Forms.ListBox();
-            this.pnlPPESetting = new System.Windows.Forms.Panel();
-            this.lblSetting = new System.Windows.Forms.Label();
+            this.grpPPESetting = new System.Windows.Forms.GroupBox();
+            this.lblSettingHint = new System.Windows.Forms.Label();
             this.chkSafetyHelmet = new System.Windows.Forms.CheckBox();
-            this.chkSafetyMask = new System.Windows.Forms.CheckBox();
             this.chkSafetyGloves = new System.Windows.Forms.CheckBox();
-            this.pnlZoneList.SuspendLayout();
-            this.pnlPPESetting.SuspendLayout();
+            this.chkSafetyMask = new System.Windows.Forms.CheckBox();
+            this.pnlPPEButtons = new System.Windows.Forms.Panel();
+            this.btnPPEReset = new System.Windows.Forms.Button();
+            this.btnPPESave = new System.Windows.Forms.Button();
+            this.tlpMain.SuspendLayout();
+            this.grpZoneList.SuspendLayout();
+            this.grpPPESetting.SuspendLayout();
+            this.pnlPPEButtons.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnPPESave
-            // 
-            this.btnPPESave.Location = new System.Drawing.Point(1096, 610);
-            this.btnPPESave.Name = "btnPPESave";
-            this.btnPPESave.Size = new System.Drawing.Size(120, 40);
-            this.btnPPESave.TabIndex = 0;
-            this.btnPPESave.Text = "저장";
-            this.btnPPESave.UseVisualStyleBackColor = true;
-            this.btnPPESave.Click += new System.EventHandler(this.btnPPESave_Click);
-            // 
-            // btnPPEReset
-            // 
-            this.btnPPEReset.Location = new System.Drawing.Point(970, 610);
-            this.btnPPEReset.Name = "btnPPEReset";
-            this.btnPPEReset.Size = new System.Drawing.Size(120, 40);
-            this.btnPPEReset.TabIndex = 1;
-            this.btnPPEReset.Text = "초기화";
-            this.btnPPEReset.UseVisualStyleBackColor = true;
-            this.btnPPEReset.Click += new System.EventHandler(this.btnPPEReset_Click);
-            // 
-            // lblZoneList
-            // 
-            this.lblZoneList.AutoSize = true;
-            this.lblZoneList.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblZoneList.Location = new System.Drawing.Point(200, 24);
-            this.lblZoneList.Name = "lblZoneList";
-            this.lblZoneList.Size = new System.Drawing.Size(139, 38);
-            this.lblZoneList.TabIndex = 2;
-            this.lblZoneList.Text = "구역 목록";
             // 
             // lblPPESetting
             // 
             this.lblPPESetting.AutoSize = true;
-            this.lblPPESetting.Font = new System.Drawing.Font("맑은 고딕", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblPPESetting.Location = new System.Drawing.Point(3, 3);
+            this.lblPPESetting.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblPPESetting.ForeColor = AppColors.Text;
+            this.lblPPESetting.Location = new System.Drawing.Point(20, 10);
             this.lblPPESetting.Name = "lblPPESetting";
-            this.lblPPESetting.Size = new System.Drawing.Size(162, 31);
-            this.lblPPESetting.TabIndex = 11;
+            this.lblPPESetting.Size = new System.Drawing.Size(170, 31);
+            this.lblPPESetting.TabIndex = 0;
             this.lblPPESetting.Text = "PPE 기준 설정";
             // 
-            // pnlZoneList
+            // tlpMain
             // 
-            this.pnlZoneList.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlZoneList.Controls.Add(this.lstPPE_ZoneList);
-            this.pnlZoneList.Controls.Add(this.lblZoneList);
-            this.pnlZoneList.Location = new System.Drawing.Point(39, 117);
-            this.pnlZoneList.Name = "pnlZoneList";
-            this.pnlZoneList.Size = new System.Drawing.Size(551, 445);
-            this.pnlZoneList.TabIndex = 12;
+            this.tlpMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpMain.BackColor = AppColors.Background;
+            this.tlpMain.ColumnCount = 2;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMain.Controls.Add(this.grpZoneList, 0, 0);
+            this.tlpMain.Controls.Add(this.grpPPESetting, 1, 0);
+            this.tlpMain.Location = new System.Drawing.Point(20, 50);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.RowCount = 1;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.Size = new System.Drawing.Size(1179, 593);
+            this.tlpMain.TabIndex = 1;
+            // 
+            // grpZoneList
+            // 
+            this.grpZoneList.BackColor = AppColors.Surface;
+            this.grpZoneList.Controls.Add(this.lstPPE_ZoneList);
+            this.grpZoneList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpZoneList.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.grpZoneList.ForeColor = AppColors.PrimaryDark;
+            this.grpZoneList.Location = new System.Drawing.Point(3, 3);
+            this.grpZoneList.Margin = new System.Windows.Forms.Padding(3, 3, 8, 3);
+            this.grpZoneList.Name = "grpZoneList";
+            this.grpZoneList.Size = new System.Drawing.Size(578, 587);
+            this.grpZoneList.TabIndex = 0;
+            this.grpZoneList.TabStop = false;
+            this.grpZoneList.Text = "구역 목록";
             // 
             // lstPPE_ZoneList
             // 
+            this.lstPPE_ZoneList.BackColor = AppColors.Surface;
+            this.lstPPE_ZoneList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstPPE_ZoneList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstPPE_ZoneList.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lstPPE_ZoneList.ForeColor = AppColors.Text;
             this.lstPPE_ZoneList.FormattingEnabled = true;
             this.lstPPE_ZoneList.ItemHeight = 28;
-            this.lstPPE_ZoneList.Items.AddRange(new object[] {
-            "A구역 | 위험도 높음",
-            "B구역 | 위험도 보통",
-            "C구역 | 위험도 낮음"});
-            this.lstPPE_ZoneList.Location = new System.Drawing.Point(21, 102);
+            this.lstPPE_ZoneList.Location = new System.Drawing.Point(3, 30);
             this.lstPPE_ZoneList.Name = "lstPPE_ZoneList";
-            this.lstPPE_ZoneList.Size = new System.Drawing.Size(505, 228);
-            this.lstPPE_ZoneList.TabIndex = 6;
+            this.lstPPE_ZoneList.Padding = new System.Windows.Forms.Padding(15);
+            this.lstPPE_ZoneList.Size = new System.Drawing.Size(572, 554);
+            this.lstPPE_ZoneList.TabIndex = 0;
             this.lstPPE_ZoneList.SelectedIndexChanged += new System.EventHandler(this.lstPPE_ZoneList_SelectedIndexChanged);
             // 
-            // pnlPPESetting
+            // grpPPESetting
             // 
-            this.pnlPPESetting.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlPPESetting.Controls.Add(this.lblSetting);
-            this.pnlPPESetting.Controls.Add(this.chkSafetyHelmet);
-            this.pnlPPESetting.Controls.Add(this.chkSafetyMask);
-            this.pnlPPESetting.Controls.Add(this.chkSafetyGloves);
-            this.pnlPPESetting.Location = new System.Drawing.Point(631, 117);
-            this.pnlPPESetting.Name = "pnlPPESetting";
-            this.pnlPPESetting.Size = new System.Drawing.Size(551, 445);
-            this.pnlPPESetting.TabIndex = 13;
+            this.grpPPESetting.BackColor = AppColors.Surface;
+            this.grpPPESetting.Controls.Add(this.lblSettingHint);
+            this.grpPPESetting.Controls.Add(this.chkSafetyHelmet);
+            this.grpPPESetting.Controls.Add(this.chkSafetyGloves);
+            this.grpPPESetting.Controls.Add(this.chkSafetyMask);
+            this.grpPPESetting.Controls.Add(this.pnlPPEButtons);
+            this.grpPPESetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpPPESetting.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.grpPPESetting.ForeColor = AppColors.PrimaryDark;
+            this.grpPPESetting.Location = new System.Drawing.Point(592, 3);
+            this.grpPPESetting.Margin = new System.Windows.Forms.Padding(8, 3, 3, 3);
+            this.grpPPESetting.Name = "grpPPESetting";
+            this.grpPPESetting.Size = new System.Drawing.Size(584, 587);
+            this.grpPPESetting.TabIndex = 1;
+            this.grpPPESetting.TabStop = false;
+            this.grpPPESetting.Text = "PPE 기준 설정";
             // 
-            // lblSetting
+            // lblSettingHint
             // 
-            this.lblSetting.AutoSize = true;
-            this.lblSetting.Font = new System.Drawing.Font("맑은 고딕", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSetting.Location = new System.Drawing.Point(244, 24);
-            this.lblSetting.Name = "lblSetting";
-            this.lblSetting.Size = new System.Drawing.Size(73, 38);
-            this.lblSetting.TabIndex = 5;
-            this.lblSetting.Text = "설정";
+            this.lblSettingHint.AutoSize = true;
+            this.lblSettingHint.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSettingHint.ForeColor = AppColors.TextSecondary;
+            this.lblSettingHint.Location = new System.Drawing.Point(30, 45);
+            this.lblSettingHint.Name = "lblSettingHint";
+            this.lblSettingHint.Size = new System.Drawing.Size(316, 23);
+            this.lblSettingHint.TabIndex = 0;
+            this.lblSettingHint.Text = "이 구역에서 필수로 착용해야 할 장비를 선택하세요.";
             // 
             // chkSafetyHelmet
             // 
             this.chkSafetyHelmet.AutoSize = true;
-            this.chkSafetyHelmet.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSafetyHelmet.Location = new System.Drawing.Point(100, 102);
+            this.chkSafetyHelmet.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSafetyHelmet.ForeColor = AppColors.Text;
+            this.chkSafetyHelmet.Location = new System.Drawing.Point(40, 110);
             this.chkSafetyHelmet.Name = "chkSafetyHelmet";
-            this.chkSafetyHelmet.Size = new System.Drawing.Size(83, 27);
-            this.chkSafetyHelmet.TabIndex = 6;
+            this.chkSafetyHelmet.Size = new System.Drawing.Size(87, 28);
+            this.chkSafetyHelmet.TabIndex = 1;
             this.chkSafetyHelmet.Text = "안전모";
             this.chkSafetyHelmet.UseVisualStyleBackColor = true;
-            // 
-            // chkSafetyMask
-            // 
-            this.chkSafetyMask.AutoSize = true;
-            this.chkSafetyMask.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSafetyMask.Location = new System.Drawing.Point(100, 190);
-            this.chkSafetyMask.Name = "chkSafetyMask";
-            this.chkSafetyMask.Size = new System.Drawing.Size(83, 27);
-            this.chkSafetyMask.TabIndex = 8;
-            this.chkSafetyMask.Text = "마스크";
-            this.chkSafetyMask.UseVisualStyleBackColor = true;
             // 
             // chkSafetyGloves
             // 
             this.chkSafetyGloves.AutoSize = true;
-            this.chkSafetyGloves.Font = new System.Drawing.Font("맑은 고딕", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSafetyGloves.Location = new System.Drawing.Point(100, 146);
+            this.chkSafetyGloves.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSafetyGloves.ForeColor = AppColors.Text;
+            this.chkSafetyGloves.Location = new System.Drawing.Point(40, 165);
             this.chkSafetyGloves.Name = "chkSafetyGloves";
-            this.chkSafetyGloves.Size = new System.Drawing.Size(66, 27);
-            this.chkSafetyGloves.TabIndex = 7;
+            this.chkSafetyGloves.Size = new System.Drawing.Size(70, 28);
+            this.chkSafetyGloves.TabIndex = 2;
             this.chkSafetyGloves.Text = "장갑";
             this.chkSafetyGloves.UseVisualStyleBackColor = true;
+            // 
+            // chkSafetyMask
+            // 
+            this.chkSafetyMask.AutoSize = true;
+            this.chkSafetyMask.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkSafetyMask.ForeColor = AppColors.Text;
+            this.chkSafetyMask.Location = new System.Drawing.Point(40, 220);
+            this.chkSafetyMask.Name = "chkSafetyMask";
+            this.chkSafetyMask.Size = new System.Drawing.Size(87, 28);
+            this.chkSafetyMask.TabIndex = 3;
+            this.chkSafetyMask.Text = "마스크";
+            this.chkSafetyMask.UseVisualStyleBackColor = true;
+            // 
+            // pnlPPEButtons
+            // 
+            this.pnlPPEButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlPPEButtons.BackColor = AppColors.Surface;
+            this.pnlPPEButtons.Controls.Add(this.btnPPEReset);
+            this.pnlPPEButtons.Controls.Add(this.btnPPESave);
+            this.pnlPPEButtons.Location = new System.Drawing.Point(20, 520);
+            this.pnlPPEButtons.Name = "pnlPPEButtons";
+            this.pnlPPEButtons.Size = new System.Drawing.Size(544, 55);
+            this.pnlPPEButtons.TabIndex = 4;
+            // 
+            // btnPPEReset
+            // 
+            this.btnPPEReset.BackColor = AppColors.Surface;
+            this.btnPPEReset.FlatAppearance.BorderColor = AppColors.Primary;
+            this.btnPPEReset.FlatAppearance.BorderSize = 1;
+            this.btnPPEReset.FlatAppearance.MouseOverBackColor = AppColors.PrimaryLight;
+            this.btnPPEReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPPEReset.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular);
+            this.btnPPEReset.ForeColor = AppColors.PrimaryDark;
+            this.btnPPEReset.Location = new System.Drawing.Point(248, 5);
+            this.btnPPEReset.Name = "btnPPEReset";
+            this.btnPPEReset.Size = new System.Drawing.Size(140, 45);
+            this.btnPPEReset.TabIndex = 0;
+            this.btnPPEReset.Text = "초기화";
+            this.btnPPEReset.UseVisualStyleBackColor = false;
+            this.btnPPEReset.Click += new System.EventHandler(this.btnPPEReset_Click);
+            // 
+            // btnPPESave
+            // 
+            this.btnPPESave.BackColor = AppColors.Primary;
+            this.btnPPESave.FlatAppearance.BorderSize = 0;
+            this.btnPPESave.FlatAppearance.MouseOverBackColor = AppColors.PrimaryDark;
+            this.btnPPESave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPPESave.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.btnPPESave.ForeColor = AppColors.TextOnPrimary;
+            this.btnPPESave.Location = new System.Drawing.Point(398, 5);
+            this.btnPPESave.Name = "btnPPESave";
+            this.btnPPESave.Size = new System.Drawing.Size(140, 45);
+            this.btnPPESave.TabIndex = 1;
+            this.btnPPESave.Text = "저장";
+            this.btnPPESave.UseVisualStyleBackColor = false;
+            this.btnPPESave.Click += new System.EventHandler(this.btnPPESave_Click);
             // 
             // US_PPEStandard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Controls.Add(this.pnlPPESetting);
-            this.Controls.Add(this.pnlZoneList);
+            this.BackColor = AppColors.Background;
+            this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.lblPPESetting);
-            this.Controls.Add(this.btnPPEReset);
-            this.Controls.Add(this.btnPPESave);
             this.Name = "US_PPEStandard";
+            this.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
             this.Size = new System.Drawing.Size(1219, 653);
             this.Load += new System.EventHandler(this.US_PPEStandard_Load);
-            this.pnlZoneList.ResumeLayout(false);
-            this.pnlZoneList.PerformLayout();
-            this.pnlPPESetting.ResumeLayout(false);
-            this.pnlPPESetting.PerformLayout();
+            this.tlpMain.ResumeLayout(false);
+            this.grpZoneList.ResumeLayout(false);
+            this.grpPPESetting.ResumeLayout(false);
+            this.grpPPESetting.PerformLayout();
+            this.pnlPPEButtons.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnPPESave;
-        private System.Windows.Forms.Button btnPPEReset;
-        private System.Windows.Forms.Label lblZoneList;
         private System.Windows.Forms.Label lblPPESetting;
-        private System.Windows.Forms.Panel pnlZoneList;
-        private System.Windows.Forms.Panel pnlPPESetting;
-        private System.Windows.Forms.Label lblSetting;
-        private System.Windows.Forms.CheckBox chkSafetyHelmet;
-        private System.Windows.Forms.CheckBox chkSafetyMask;
-        private System.Windows.Forms.CheckBox chkSafetyGloves;
+        private System.Windows.Forms.TableLayoutPanel tlpMain;
+        private System.Windows.Forms.GroupBox grpZoneList;
         private System.Windows.Forms.ListBox lstPPE_ZoneList;
+        private System.Windows.Forms.GroupBox grpPPESetting;
+        private System.Windows.Forms.Label lblSettingHint;
+        private System.Windows.Forms.CheckBox chkSafetyHelmet;
+        private System.Windows.Forms.CheckBox chkSafetyGloves;
+        private System.Windows.Forms.CheckBox chkSafetyMask;
+        private System.Windows.Forms.Panel pnlPPEButtons;
+        private System.Windows.Forms.Button btnPPEReset;
+        private System.Windows.Forms.Button btnPPESave;
     }
 }
