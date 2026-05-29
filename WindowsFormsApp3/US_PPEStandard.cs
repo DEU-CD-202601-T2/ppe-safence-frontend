@@ -13,6 +13,12 @@ namespace PPE_관제_시스템
 {
     public partial class US_PPEStandard : UserControl
     {
+        private const string PPE_HELMET = "안전모";
+        private const string PPE_MASK = "마스크";
+        private const string PPE_LEFT_GLOVE = "왼손 장갑";
+        private const string PPE_RIGHT_GLOVE = "오른손 장갑";
+        private const string PPE_LEGACY_GLOVE = "장갑";
+
         private List<ZoneItem> zones = new List<ZoneItem>();
 
         public US_PPEStandard()
@@ -67,14 +73,12 @@ namespace PPE_관제_시스템
 
                 List<string> requiredPPE = result.RequiredPPE ?? new List<string>();
 
-                if (requiredPPE.Contains("안전모"))
-                    chkSafetyHelmet.Checked = true;
+                chkSafetyHelmet.Checked = requiredPPE.Contains(PPE_HELMET);
+                chkSafetyMask.Checked = requiredPPE.Contains(PPE_MASK);
 
-                if (requiredPPE.Contains("장갑"))
-                    chkSafetyGloves.Checked = true;
-
-                if (requiredPPE.Contains("마스크"))
-                    chkSafetyMask.Checked = true;
+                // 기존 "장갑" 단일 값이 남아 있어도 좌/우 장갑을 모두 체크 처리한다.
+                chkLeftGlove.Checked = requiredPPE.Contains(PPE_LEFT_GLOVE) || requiredPPE.Contains(PPE_LEGACY_GLOVE);
+                chkRightGlove.Checked = requiredPPE.Contains(PPE_RIGHT_GLOVE) || requiredPPE.Contains(PPE_LEGACY_GLOVE);
             }
             catch (Exception ex)
             {
@@ -84,9 +88,11 @@ namespace PPE_관제_시스템
 
         private void ResetPPECheckBox()
         {
-            chkSafetyHelmet.Checked = false;
-            chkSafetyGloves.Checked = false;
-            chkSafetyMask.Checked = false;
+            // 신규 구역 기본값과 동일하게 전체 단속 상태로 초기화
+            chkSafetyHelmet.Checked = true;
+            chkSafetyMask.Checked = true;
+            chkLeftGlove.Checked = true;
+            chkRightGlove.Checked = true;
         }
 
         private void btnPPEReset_Click(object sender, EventArgs e)
@@ -107,9 +113,10 @@ namespace PPE_관제_시스템
                 int zoneId = zones[lstPPE_ZoneList.SelectedIndex].ZoneID;
 
                 List<string> ppeList = new List<string>();
-                if (chkSafetyHelmet.Checked) ppeList.Add("안전모");
-                if (chkSafetyGloves.Checked) ppeList.Add("장갑");
-                if (chkSafetyMask.Checked) ppeList.Add("마스크");
+                if (chkSafetyHelmet.Checked) ppeList.Add(PPE_HELMET);
+                if (chkSafetyMask.Checked) ppeList.Add(PPE_MASK);
+                if (chkLeftGlove.Checked) ppeList.Add(PPE_LEFT_GLOVE);
+                if (chkRightGlove.Checked) ppeList.Add(PPE_RIGHT_GLOVE);
 
                 List<PPESetting> currentAllSettings = await ApiService.GetPpeSettingAsync();
 
@@ -128,6 +135,7 @@ namespace PPE_관제_시스템
                         RequiredPPE = ppeList
                     });
                 }
+
                 List<PpeSettingRequest> requestsToSend = currentAllSettings.Select(x => new PpeSettingRequest
                 {
                     ZoneID = x.ZoneID,
