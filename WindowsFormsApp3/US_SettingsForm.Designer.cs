@@ -49,7 +49,6 @@
             this.pnlSettingsMenu.Controls.Add(this.pnlSettingsMenuDivider);
             this.pnlSettingsMenu.Controls.Add(this.btnZoneSettings);
             this.pnlSettingsMenu.Controls.Add(this.btnUserSettings);
-            this.pnlSettingsMenu.Controls.Add(this.btnAlertSettings);
             this.pnlSettingsMenu.Controls.Add(this.btnPPEStandard);
             this.pnlSettingsMenu.Location = new System.Drawing.Point(3, 3);
             this.pnlSettingsMenu.Name = "pnlSettingsMenu";
@@ -89,10 +88,12 @@
             this.btnAlertSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAlertSettings.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnAlertSettings.ForeColor = AppColors.Text;
-            this.btnAlertSettings.Location = new System.Drawing.Point(169, 3);
+            this.btnAlertSettings.Location = new System.Drawing.Point(501, 3);
             this.btnAlertSettings.Name = "btnAlertSettings";
             this.btnAlertSettings.Size = new System.Drawing.Size(160, 70);
-            this.btnAlertSettings.TabIndex = 1;
+            this.btnAlertSettings.TabIndex = 99;
+            this.btnAlertSettings.TabStop = false;
+            this.btnAlertSettings.Visible = false;
             this.btnAlertSettings.Text = "알림 설정";
             this.btnAlertSettings.UseVisualStyleBackColor = false;
             this.btnAlertSettings.Click += new System.EventHandler(this.btnAlertSettings_Click);
@@ -121,10 +122,10 @@
             this.btnZoneSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZoneSettings.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnZoneSettings.ForeColor = AppColors.Text;
-            this.btnZoneSettings.Location = new System.Drawing.Point(501, 3);
+            this.btnZoneSettings.Location = new System.Drawing.Point(169, 3);
             this.btnZoneSettings.Name = "btnZoneSettings";
             this.btnZoneSettings.Size = new System.Drawing.Size(160, 70);
-            this.btnZoneSettings.TabIndex = 3;
+            this.btnZoneSettings.TabIndex = 1;
             this.btnZoneSettings.Text = "구역 설정";
             this.btnZoneSettings.UseVisualStyleBackColor = false;
             this.btnZoneSettings.Click += new System.EventHandler(this.btnZoneSettings_Click);

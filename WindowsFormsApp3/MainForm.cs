@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Security;
 using System.Drawing.Text;
+using System.IO;
 
 namespace PPE_관제_시스템
 {
@@ -22,6 +23,15 @@ namespace PPE_관제_시스템
         public MainForm()
         {
             InitializeComponent();
+            
+            this.Text = "PPE 관제 시스템";
+            
+            string iconPath = Path.Combine(Application.StartupPath, "Resources", "PPE_Icon.ico");
+            if (File.Exists(iconPath))
+            {
+                this.Icon = new Icon(iconPath);
+            }
+            
             this.Load += MainForm_Load; // 폼 로드 이벤트 핸들러 등록
         }
 
@@ -48,6 +58,12 @@ namespace PPE_관제_시스템
 
                 // 선택한 폼만 보이게 하기
                 userControls[formName].Show();
+
+                // 실시간 모니터링 화면은 다시 접속할 때마다 구역 목록/금일 위반 현황을 API로 재조회
+                if (formName == "LiveMonitoringForm" && userControls[formName] is US_LiveMonitoringForm liveForm)
+                {
+                    _ = liveForm.RefreshPageAsync();
+                }
             }
             else
             {

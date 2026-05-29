@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,15 @@ namespace PPE_관제_시스템
         public LoginForm()
         {
             InitializeComponent();
+            
+            this.Text = "PPE 관제 시스템";
+            
+            string iconPath = Path.Combine(Application.StartupPath, "Resources", "PPE_Icon.ico");
+            if (File.Exists(iconPath))
+            {
+                this.Icon = new Icon(iconPath);
+            }
+            
             txtPwd.PasswordChar = '*';
         }
 
