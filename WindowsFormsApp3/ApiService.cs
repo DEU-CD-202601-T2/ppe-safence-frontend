@@ -229,37 +229,99 @@ namespace PPE_관제_시스템
             }
         }
 
-        //위반 관리 구역 및 상태 필터 조회 (GET)
-        public static async Task<List<AlterDataClass>> GetViolationsAsync(string startDate = null, string endDate=null,string areaId = null, string violationType = null)
+        // 위반 관리 화면: 기간/구역/유형/상태 서버 사이드 필터 조회 (GET)
+        public static async Task<List<AlterDataClass>> GetViolationsAsync(
+            string startDate = null,
+            string endDate = null,
+            string areaId = null,
+            string violationType = null,
+            string status = null)
         {
             try
             {
                 SetAuthHeader();
                 string url = $"{BaseUrl}/api/violations";
+ 
                 List<string> queryParams = new List<string>();
-                if (!string.IsNullOrEmpty(startDate)) queryParams.Add($"start_date={startDate}");
-                if (!string.IsNullOrEmpty(endDate)) queryParams.Add($"end_date={endDate}");
-                if (!string.IsNullOrEmpty(areaId) && areaId != "전체") queryParams.Add($"area_id={areaId}");
-                if (!string.IsNullOrEmpty(violationType) && violationType != "전체") queryParams.Add($"violation_type={violationType}");
+                if (!string.IsNullOrEmpty(startDate)) queryParams.Add($"start_date={Uri.EscapeDataString(startDate)}");
+                if (!string.IsNullOrEmpty(endDate)) queryParams.Add($"end_date={Uri.EscapeDataString(endDate)}");
+                if (!string.IsNullOrEmpty(areaId) && areaId != "전체") queryParams.Add($"area_id={Uri.EscapeDataString(areaId)}");
+                if (!string.IsNullOrEmpty(violationType) && violationType != "전체") queryParams.Add($"violation_type={Uri.EscapeDataString(violationType)}");
+                if (!string.IsNullOrEmpty(status) && status != "전체") queryParams.Add($"status={Uri.EscapeDataString(status)}");
+ 
                 if (queryParams.Count > 0)
-                {
                     url += "?" + string.Join("&", queryParams);
-                }
-
+ 
                 HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
                 string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
+ 
                 if (response.IsSuccessStatusCode)
                 {
                     var result = JsonConvert.DeserializeObject<List<AlterDataClass>>(jsonResponse);
                     return result ?? new List<AlterDataClass>();
                 }
+ 
+                Console.WriteLine($"위반 내역 필터 조회 실패 코드: {(int)response.StatusCode}");
                 return new List<AlterDataClass>();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"위반 내역 필터 조회 실패: {ex.Message}");
                 return new List<AlterDataClass>();
+            }
+        }
+        
+        // ----- [2-1] 위반 해결/미해결 토글 (PATCH) ----------------------------------
+// isChecked: true=해결, false=미해결
+        public static async Task<bool> UpdateViolationCheckedAsync(string violationId, bool isChecked)
+        {
+            try
+            {
+                SetAuthHeader();
+                string url = $"{BaseUrl}/api/violations/{violationId}";
+ 
+                var body = new { is_checked = isChecked };
+                var content = new StringContent(
+                    JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+ 
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), url) { Content = content };
+                HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+ 
+                if (!response.IsSuccessStatusCode)
+                {
+                    string err = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    Console.WriteLine($"위반 상태 변경 실패({(int)response.StatusCode}): {err}");
+                }
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"위반 상태 변경 오류: {ex.Message}");
+                return false;
+            }
+        }
+        
+        // ----- [2-2] 위반 삭제 (DELETE) ---------------------------------------------
+        public static async Task<bool> DeleteViolationAsync(string violationId)
+        {
+            try
+            {
+                SetAuthHeader();
+                string url = $"{BaseUrl}/api/violations/{violationId}";
+ 
+                HttpResponseMessage response = await client.DeleteAsync(url).ConfigureAwait(false);
+ 
+                if (!response.IsSuccessStatusCode)
+                {
+                    string err = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    Console.WriteLine($"위반 삭제 실패({(int)response.StatusCode}): {err}");
+                }
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"위반 삭제 오류: {ex.Message}");
+                return false;
             }
         }
 
@@ -916,28 +978,79 @@ namespace PPE_관제_시스템
 
     public class LiveViolationRecord
     {
+        // --- 새 응답 키에 직접 매핑되는 원본 필드 ---
         [JsonProperty("id")]
-        public int id { get; set; }
-
-        [JsonProperty("area_id")]
-        public int? area_id { get; set; }
-
-        [JsonProperty("area_name")]
-        public string area_name { get; set; }
-
-        [JsonProperty("camera_key")]
-        public string camera_key { get; set; }
-
-        [JsonProperty("detected_at")]
-        public string detected_at { get; set; }
-
-        [JsonProperty("person_id")]
-        public int? person_id { get; set; }
-
+        public string id_raw { get; set; }
+ 
+        [JsonProperty("time")]
+        public string time { get; set; }
+ 
+        [JsonProperty("worker_id")]
+        public string worker_id { get; set; }
+ 
+        [JsonProperty("type")]
+        public string type { get; set; }
+ 
+        [JsonProperty("camera_name")]
+        public string camera_name { get; set; }
+ 
         [JsonProperty("status")]
         public string status { get; set; }
-
-        [JsonProperty("violation_type")]
-        public string violation_type { get; set; }
+ 
+        [JsonProperty("is_checked")]
+        public int is_checked { get; set; }
+ 
+        [JsonProperty("area")]
+        public LiveAreaInfo area { get; set; }
+ 
+        // --- 기존 코드(US_LiveMonitoringForm)가 쓰던 이름으로 노출하는 호환 프로퍼티 ---
+        [JsonIgnore]
+        public int id
+        {
+            get { return int.TryParse(id_raw, out int v) ? v : 0; }
+        }
+ 
+        [JsonIgnore]
+        public string detected_at => time;
+ 
+        [JsonIgnore]
+        public string violation_type => type;
+ 
+        [JsonIgnore]
+        public int? person_id
+        {
+            get { return int.TryParse(worker_id, out int v) ? (int?)v : null; }
+        }
+ 
+        [JsonIgnore]
+        public int? area_id
+        {
+            get
+            {
+                if (area != null && int.TryParse(area.area_id, out int v)) return v;
+                return null;
+            }
+        }
+ 
+        [JsonIgnore]
+        public string area_name => area?.area_name;
+ 
+        [JsonIgnore]
+        public string camera_key => area?.camera_key ?? camera_name;
+    }
+    
+    public class LiveAreaInfo
+    {
+        [JsonProperty("area_id")]
+        public string area_id { get; set; }
+ 
+        [JsonProperty("area_name")]
+        public string area_name { get; set; }
+ 
+        [JsonProperty("area_code")]
+        public string area_code { get; set; }
+ 
+        [JsonProperty("camera_key")]
+        public string camera_key { get; set; }
     }
 }

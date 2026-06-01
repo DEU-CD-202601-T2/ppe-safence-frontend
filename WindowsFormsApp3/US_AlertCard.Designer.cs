@@ -34,10 +34,10 @@
             // 
             this.picPPEImage.BackColor = AppColors.SurfaceAlt;
             this.picPPEImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPPEImage.Location = new System.Drawing.Point(15, 15);
+            this.picPPEImage.Location = new System.Drawing.Point(22, 18);
             this.picPPEImage.Margin = new System.Windows.Forms.Padding(4);
             this.picPPEImage.Name = "picPPEImage";
-            this.picPPEImage.Size = new System.Drawing.Size(160, 150);
+            this.picPPEImage.Size = new System.Drawing.Size(160, 148);
             this.picPPEImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picPPEImage.TabIndex = 0;
             this.picPPEImage.TabStop = false;
@@ -47,7 +47,7 @@
             this.lblViolation.AutoSize = true;
             this.lblViolation.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.lblViolation.ForeColor = AppColors.Danger;
-            this.lblViolation.Location = new System.Drawing.Point(200, 18);
+            this.lblViolation.Location = new System.Drawing.Point(206, 20);
             this.lblViolation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblViolation.Name = "lblViolation";
             this.lblViolation.Size = new System.Drawing.Size(116, 31);
@@ -59,7 +59,7 @@
             this.lblDate.AutoSize = true;
             this.lblDate.Font = new System.Drawing.Font("맑은 고딕", 10F);
             this.lblDate.ForeColor = AppColors.TextSecondary;
-            this.lblDate.Location = new System.Drawing.Point(200, 65);
+            this.lblDate.Location = new System.Drawing.Point(206, 64);
             this.lblDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDate.Name = "lblDate";
             this.lblDate.Size = new System.Drawing.Size(45, 23);
@@ -71,7 +71,7 @@
             this.lblCam.AutoSize = true;
             this.lblCam.Font = new System.Drawing.Font("맑은 고딕", 10F);
             this.lblCam.ForeColor = AppColors.TextSecondary;
-            this.lblCam.Location = new System.Drawing.Point(200, 95);
+            this.lblCam.Location = new System.Drawing.Point(206, 92);
             this.lblCam.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCam.Name = "lblCam";
             this.lblCam.Size = new System.Drawing.Size(58, 23);
@@ -83,7 +83,7 @@
             this.lblZone.AutoSize = true;
             this.lblZone.Font = new System.Drawing.Font("맑은 고딕", 10F);
             this.lblZone.ForeColor = AppColors.TextSecondary;
-            this.lblZone.Location = new System.Drawing.Point(200, 125);
+            this.lblZone.Location = new System.Drawing.Point(206, 120);
             this.lblZone.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblZone.Name = "lblZone";
             this.lblZone.Size = new System.Drawing.Size(45, 23);
@@ -95,7 +95,7 @@
             this.lblTargetID.AutoSize = true;
             this.lblTargetID.Font = new System.Drawing.Font("맑은 고딕", 10F);
             this.lblTargetID.ForeColor = AppColors.TextSecondary;
-            this.lblTargetID.Location = new System.Drawing.Point(200, 155);
+            this.lblTargetID.Location = new System.Drawing.Point(206, 148);
             this.lblTargetID.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTargetID.Name = "lblTargetID";
             this.lblTargetID.Size = new System.Drawing.Size(72, 23);
@@ -108,7 +108,7 @@
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.lblStatus.ForeColor = AppColors.Accent;
-            this.lblStatus.Location = new System.Drawing.Point(950, 20);
+            this.lblStatus.Location = new System.Drawing.Point(944, 22);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(110, 40);
@@ -125,7 +125,7 @@
             this.btnResolve.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResolve.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
             this.btnResolve.ForeColor = AppColors.TextOnPrimary;
-            this.btnResolve.Location = new System.Drawing.Point(950, 130);
+            this.btnResolve.Location = new System.Drawing.Point(944, 36);
             this.btnResolve.Margin = new System.Windows.Forms.Padding(4);
             this.btnResolve.Name = "btnResolve";
             this.btnResolve.Size = new System.Drawing.Size(110, 40);
@@ -157,7 +157,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = AppColors.Surface;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Controls.Add(this.btnResolve);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblTargetID);
@@ -171,7 +171,7 @@
             this.ForeColor = AppColors.Text;
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 8);
             this.Name = "US_AlertCard";
-            this.Size = new System.Drawing.Size(1080, 185);
+            this.Size = new System.Drawing.Size(1080, 250);
             ((System.ComponentModel.ISupportInitialize)(this.picPPEImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

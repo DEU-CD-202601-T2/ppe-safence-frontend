@@ -39,5 +39,13 @@ namespace PPE_관제_시스템
         public static readonly Color Success = Color.FromArgb(56, 142, 60);
         public static readonly Color Warning = Color.FromArgb(255, 152, 0);
         public static readonly Color Danger = Color.FromArgb(211, 47, 47);
+        
+        // ===== 그림자 / 입체감 =====
+        public static readonly Color Shadow = Color.FromArgb(28, 33, 56);       // 카드 그림자 베이스(알파는 코드에서 조절)
+ 
+        // ===== 상태 배경 틴트 (카드 좌측 띠 / 뱃지 배경) =====
+        public static readonly Color DangerTint = Color.FromArgb(253, 237, 237);  // 미해결 연한 빨강 배경
+        public static readonly Color SuccessTint = Color.FromArgb(237, 247, 237); // 해결 연한 초록 배경
+        public static readonly Color PrimaryTint = Color.FromArgb(232, 242, 254); // 정보 연한 파랑 배경
     }
 }

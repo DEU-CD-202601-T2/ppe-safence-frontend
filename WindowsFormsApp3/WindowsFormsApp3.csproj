@@ -151,12 +151,14 @@
     <Compile Include="AnalysisDashboardStats.cs" />
     <Compile Include="ApiService.cs" />
     <Compile Include="AppColors.cs" />
+    <Compile Include="AppStyle.cs" />
     <Compile Include="CameraData.cs" />
     <Compile Include="ChartData.cs" />
     <Compile Include="ControlSummary.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Globaldata.cs" />
     <Compile Include="HistoryDto.cs" />
+    <Compile Include="ImageViewerForm.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -257,6 +259,8 @@
       <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Violation.cs" />
+    <Compile Include="ViolationDetailForm.cs" />
+    <Compile Include="ViolationGroup.cs" />
     <Compile Include="WorkerInfo.cs" />
     <Compile Include="ZoneData.cs" />
     <EmbeddedResource Include="AlertResolution.resx">
