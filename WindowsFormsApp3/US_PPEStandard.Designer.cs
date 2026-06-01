@@ -24,7 +24,8 @@
             this.grpPPESetting = new System.Windows.Forms.GroupBox();
             this.lblSettingHint = new System.Windows.Forms.Label();
             this.chkSafetyHelmet = new System.Windows.Forms.CheckBox();
-            this.chkSafetyGloves = new System.Windows.Forms.CheckBox();
+            this.chkLeftGlove = new System.Windows.Forms.CheckBox();
+            this.chkRightGlove = new System.Windows.Forms.CheckBox();
             this.chkSafetyMask = new System.Windows.Forms.CheckBox();
             this.pnlPPEButtons = new System.Windows.Forms.Panel();
             this.btnPPEReset = new System.Windows.Forms.Button();
@@ -100,8 +101,9 @@
             this.grpPPESetting.BackColor = AppColors.Surface;
             this.grpPPESetting.Controls.Add(this.lblSettingHint);
             this.grpPPESetting.Controls.Add(this.chkSafetyHelmet);
-            this.grpPPESetting.Controls.Add(this.chkSafetyGloves);
             this.grpPPESetting.Controls.Add(this.chkSafetyMask);
+            this.grpPPESetting.Controls.Add(this.chkLeftGlove);
+            this.grpPPESetting.Controls.Add(this.chkRightGlove);
             this.grpPPESetting.Controls.Add(this.pnlPPEButtons);
             this.grpPPESetting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpPPESetting.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -137,27 +139,39 @@
             this.chkSafetyHelmet.Text = "안전모";
             this.chkSafetyHelmet.UseVisualStyleBackColor = true;
             // 
-            // chkSafetyGloves
+            // chkLeftGlove
             // 
-            this.chkSafetyGloves.AutoSize = true;
-            this.chkSafetyGloves.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.chkSafetyGloves.ForeColor = AppColors.Text;
-            this.chkSafetyGloves.Location = new System.Drawing.Point(40, 165);
-            this.chkSafetyGloves.Name = "chkSafetyGloves";
-            this.chkSafetyGloves.Size = new System.Drawing.Size(70, 28);
-            this.chkSafetyGloves.TabIndex = 2;
-            this.chkSafetyGloves.Text = "장갑";
-            this.chkSafetyGloves.UseVisualStyleBackColor = true;
+            this.chkLeftGlove.AutoSize = true;
+            this.chkLeftGlove.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkLeftGlove.ForeColor = AppColors.Text;
+            this.chkLeftGlove.Location = new System.Drawing.Point(40, 220);
+            this.chkLeftGlove.Name = "chkLeftGlove";
+            this.chkLeftGlove.Size = new System.Drawing.Size(116, 29);
+            this.chkLeftGlove.TabIndex = 3;
+            this.chkLeftGlove.Text = "왼손 장갑";
+            this.chkLeftGlove.UseVisualStyleBackColor = true;
+            // 
+            // chkRightGlove
+            // 
+            this.chkRightGlove.AutoSize = true;
+            this.chkRightGlove.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chkRightGlove.ForeColor = AppColors.Text;
+            this.chkRightGlove.Location = new System.Drawing.Point(40, 275);
+            this.chkRightGlove.Name = "chkRightGlove";
+            this.chkRightGlove.Size = new System.Drawing.Size(133, 29);
+            this.chkRightGlove.TabIndex = 4;
+            this.chkRightGlove.Text = "오른손 장갑";
+            this.chkRightGlove.UseVisualStyleBackColor = true;
             // 
             // chkSafetyMask
             // 
             this.chkSafetyMask.AutoSize = true;
             this.chkSafetyMask.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.chkSafetyMask.ForeColor = AppColors.Text;
-            this.chkSafetyMask.Location = new System.Drawing.Point(40, 220);
+            this.chkSafetyMask.Location = new System.Drawing.Point(40, 165);
             this.chkSafetyMask.Name = "chkSafetyMask";
             this.chkSafetyMask.Size = new System.Drawing.Size(87, 28);
-            this.chkSafetyMask.TabIndex = 3;
+            this.chkSafetyMask.TabIndex = 2;
             this.chkSafetyMask.Text = "마스크";
             this.chkSafetyMask.UseVisualStyleBackColor = true;
             // 
@@ -235,8 +249,9 @@
         private System.Windows.Forms.GroupBox grpPPESetting;
         private System.Windows.Forms.Label lblSettingHint;
         private System.Windows.Forms.CheckBox chkSafetyHelmet;
-        private System.Windows.Forms.CheckBox chkSafetyGloves;
         private System.Windows.Forms.CheckBox chkSafetyMask;
+        private System.Windows.Forms.CheckBox chkLeftGlove;
+        private System.Windows.Forms.CheckBox chkRightGlove;
         private System.Windows.Forms.Panel pnlPPEButtons;
         private System.Windows.Forms.Button btnPPEReset;
         private System.Windows.Forms.Button btnPPESave;

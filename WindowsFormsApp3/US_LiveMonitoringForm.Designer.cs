@@ -18,6 +18,7 @@ namespace PPE_관제_시스템
                     _refreshTimer.Dispose();
                 }
                 if (_refreshPen != null) _refreshPen.Dispose();
+                if (_cameraOfflineIcon != null) _cameraOfflineIcon.Dispose();
                 if (_refreshIcon != null) _refreshIcon.Dispose();
                 if (components != null)
                 {
@@ -132,16 +133,16 @@ namespace PPE_관제_시스템
             // 
             // lblNoPPECount
             // 
-            this.lblNoPPECount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNoPPECount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNoPPECount.AutoSize = false;
             this.lblNoPPECount.BackColor = System.Drawing.Color.Transparent;
             this.lblNoPPECount.Font = new System.Drawing.Font("맑은 고딕", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblNoPPECount.ForeColor = AppColors.Danger;
-            this.lblNoPPECount.Location = new System.Drawing.Point(18, 73);
+            this.lblNoPPECount.Location = new System.Drawing.Point(78, 73);
             this.lblNoPPECount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNoPPECount.Padding = new System.Windows.Forms.Padding(0, 0, 24, 0);
             this.lblNoPPECount.Name = "lblNoPPECount";
-            this.lblNoPPECount.Size = new System.Drawing.Size(253, 62);
+            this.lblNoPPECount.Size = new System.Drawing.Size(204, 62);
             this.lblNoPPECount.TabIndex = 0;
             this.lblNoPPECount.Text = "0";
             this.lblNoPPECount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -178,22 +179,22 @@ namespace PPE_관제_시스템
             this.lblActiveWorkers.Name = "lblActiveWorkers";
             this.lblActiveWorkers.Size = new System.Drawing.Size(125, 25);
             this.lblActiveWorkers.TabIndex = 0;
-            this.lblActiveWorkers.Text = "현재 작업자 수";
+            this.lblActiveWorkers.Text = "금일 작업자 수";
             // 
             // lblActiveWorkersCount
             // 
-            this.lblActiveWorkersCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblActiveWorkersCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblActiveWorkersCount.AutoSize = false;
             this.lblActiveWorkersCount.BackColor = System.Drawing.Color.Transparent;
             this.lblActiveWorkersCount.Font = new System.Drawing.Font("맑은 고딕", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblActiveWorkersCount.ForeColor = AppColors.Text;
-            this.lblActiveWorkersCount.Location = new System.Drawing.Point(18, 73);
+            this.lblActiveWorkersCount.Location = new System.Drawing.Point(78, 73);
             this.lblActiveWorkersCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblActiveWorkersCount.Padding = new System.Windows.Forms.Padding(0, 0, 24, 0);
             this.lblActiveWorkersCount.Name = "lblActiveWorkersCount";
-            this.lblActiveWorkersCount.Size = new System.Drawing.Size(253, 62);
+            this.lblActiveWorkersCount.Size = new System.Drawing.Size(204, 62);
             this.lblActiveWorkersCount.TabIndex = 0;
-            this.lblActiveWorkersCount.Text = "0";
+            this.lblActiveWorkersCount.Text = "0명";
             this.lblActiveWorkersCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pnlCompliance
@@ -223,18 +224,18 @@ namespace PPE_관제_시스템
             // 
             // lblComplianceRate
             // 
-            this.lblComplianceRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblComplianceRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblComplianceRate.AutoSize = false;
             this.lblComplianceRate.BackColor = System.Drawing.Color.Transparent;
             this.lblComplianceRate.Font = new System.Drawing.Font("맑은 고딕", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblComplianceRate.ForeColor = AppColors.Success;
-            this.lblComplianceRate.Location = new System.Drawing.Point(18, 73);
+            this.lblComplianceRate.Location = new System.Drawing.Point(78, 73);
             this.lblComplianceRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblComplianceRate.Padding = new System.Windows.Forms.Padding(0, 0, 24, 0);
             this.lblComplianceRate.Name = "lblComplianceRate";
-            this.lblComplianceRate.Size = new System.Drawing.Size(253, 62);
+            this.lblComplianceRate.Size = new System.Drawing.Size(204, 62);
             this.lblComplianceRate.TabIndex = 0;
-            this.lblComplianceRate.Text = "0%";
+            this.lblComplianceRate.Text = "100%";
             this.lblComplianceRate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pnlCamera
@@ -273,23 +274,23 @@ namespace PPE_관제_시스템
             this.picRefresh.Size = new System.Drawing.Size(26, 26);
             this.picRefresh.TabIndex = 1;
             this.picRefresh.TabStop = false;
-            this.picRefresh.Paint += new System.Windows.Forms.PaintEventHandler(this.picRefresh_Paint);
+            this.picRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picRefresh.Click += new System.EventHandler(this.picRefresh_Click);
             // 
             // lblCameraCount
             // 
-            this.lblCameraCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCameraCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCameraCount.AutoSize = false;
             this.lblCameraCount.BackColor = System.Drawing.Color.Transparent;
             this.lblCameraCount.Font = new System.Drawing.Font("맑은 고딕", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblCameraCount.ForeColor = AppColors.Text;
-            this.lblCameraCount.Location = new System.Drawing.Point(18, 73);
+            this.lblCameraCount.Location = new System.Drawing.Point(38, 73);
             this.lblCameraCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCameraCount.Padding = new System.Windows.Forms.Padding(0, 0, 24, 0);
             this.lblCameraCount.Name = "lblCameraCount";
-            this.lblCameraCount.Size = new System.Drawing.Size(253, 62);
+            this.lblCameraCount.Size = new System.Drawing.Size(244, 62);
             this.lblCameraCount.TabIndex = 0;
-            this.lblCameraCount.Text = "0대";
+            this.lblCameraCount.Text = "카메라 0대";
             this.lblCameraCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pnlComboRow
@@ -335,15 +336,10 @@ namespace PPE_관제_시스템
             this.cmbZone.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cmbZone.ForeColor = AppColors.Text;
             this.cmbZone.FormattingEnabled = true;
-            this.cmbZone.Items.AddRange(new object[] {
-            "A구역",
-            "B구역",
-            "C구역"});
             this.cmbZone.Location = new System.Drawing.Point(1, 1);
             this.cmbZone.Name = "cmbZone";
             this.cmbZone.Size = new System.Drawing.Size(125, 31);
             this.cmbZone.TabIndex = 0;
-            this.cmbZone.Text = "A구역";
             this.cmbZone.SelectedIndexChanged += new System.EventHandler(this.cmbZone_SelectedIndexChanged);
             // 
             // pnlVideoContainer

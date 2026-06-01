@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PPE_관제_시스템;
 using System;
@@ -57,6 +58,7 @@ namespace PPE_관제_시스템
                 return false;
             }
         }
+
         //스트리밍 URL 조회와 카메라 수 조회API
         public static async Task<StreamUrlsResponse> GetStreamUrlsAsync()
         {
@@ -70,14 +72,13 @@ namespace PPE_관제_시스템
                 Console.WriteLine($"stream-urls 응답 코드: {(int)response.StatusCode}");
                 Console.WriteLine(json);
 
-                // 503 등 비정상 응답은 호출 화면에서 오프라인 처리하도록 null 반환
                 if (!response.IsSuccessStatusCode)
                 {
                     return null;
                 }
 
                 // offline_areas가 객체 배열로 내려와도 전체 역직렬화가 실패하지 않도록
-                // 실시간 모니터링에 필요한 cameras, online_count만 안전하게 직접 파싱
+                // 화면 표시와 스트리밍에 필요한 cameras, online_count만 안전하게 직접 파싱한다.
                 JObject root = JObject.Parse(json);
 
                 return new StreamUrlsResponse
@@ -259,6 +260,33 @@ namespace PPE_관제_시스템
             {
                 Console.WriteLine($"위반 내역 필터 조회 실패: {ex.Message}");
                 return new List<AlterDataClass>();
+            }
+        }
+
+        //실시간 모니터링 대시보드용 위반 기록 조회 API
+        public static async Task<List<LiveViolationRecord>> GetLiveViolationsAsync()
+        {
+            try
+            {
+                SetAuthHeader();
+
+                var response = await client.GetAsync($"{BaseUrl}/api/violations").ConfigureAwait(false);
+                string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                Console.WriteLine($"violations 응답 코드: {(int)response.StatusCode}");
+                Console.WriteLine(json);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new List<LiveViolationRecord>();
+                }
+
+                return JsonConvert.DeserializeObject<List<LiveViolationRecord>>(json) ?? new List<LiveViolationRecord>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"실시간 모니터링 위반 기록 조회 실패: {ex.Message}");
+                return new List<LiveViolationRecord>();
             }
         }
 
@@ -481,17 +509,25 @@ namespace PPE_관제_시스템
             return JsonConvert.DeserializeObject<List<PPESetting>>(json);
         }
 
-        public static async Task<bool> SavePpeSettingAsync(List<PpeSettingRequest> requestList) // PPE 기준 설정 저장 API 호출
+        public static async Task<bool> SavePpeSettingAsync(List<PpeSettingRequest> requestList)
         {
             SetAuthHeader();
 
-            string json = JsonConvert.SerializeObject(requestList);
+            string json = JsonConvert.SerializeObject(requestList, Formatting.Indented);
+
+            Debug.WriteLine("[PPE-SAVE-REQ]");
+            Debug.WriteLine(json);
 
             StringContent content =
                 new StringContent(json, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response =
                 await client.PostAsync($"{BaseUrl}/api/ppe-standards", content);
+
+            string body = await response.Content.ReadAsStringAsync();
+
+            Debug.WriteLine($"[PPE-SAVE-RES] {(int)response.StatusCode}");
+            Debug.WriteLine(body);
 
             return response.IsSuccessStatusCode;
         }
@@ -876,5 +912,32 @@ namespace PPE_관제_시스템
                 return false;
             }
         }
+    }
+
+    public class LiveViolationRecord
+    {
+        [JsonProperty("id")]
+        public int id { get; set; }
+
+        [JsonProperty("area_id")]
+        public int? area_id { get; set; }
+
+        [JsonProperty("area_name")]
+        public string area_name { get; set; }
+
+        [JsonProperty("camera_key")]
+        public string camera_key { get; set; }
+
+        [JsonProperty("detected_at")]
+        public string detected_at { get; set; }
+
+        [JsonProperty("person_id")]
+        public int? person_id { get; set; }
+
+        [JsonProperty("status")]
+        public string status { get; set; }
+
+        [JsonProperty("violation_type")]
+        public string violation_type { get; set; }
     }
 }
