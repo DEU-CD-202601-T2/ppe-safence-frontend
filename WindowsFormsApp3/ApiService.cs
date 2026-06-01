@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace PPE_관제_시스템
 {
     public static class ApiService
@@ -92,48 +93,63 @@ namespace PPE_관제_시스템
             }
         }
 
-        //알람 목록 조회
-        public static async Task<List<AlterDataClass>> GetViolationsAsync()
+        //실시간 알람 목록 전체 조회
+        public static async Task<List<AlterDataClass>> GetAlarmsAsync()
         {
             try
             {
                 SetAuthHeader();
-                var response = await client.GetAsync($"{BaseUrl}/api/alarms?");
+                string url = $"{BaseUrl}/api/alarms";
+
+                HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
+                string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                // ==========================================================
+                // 🔥 [여기 추가]: 알람 API가 주는 날것의 원본을 무조건 팝업으로 띄웁니다!
+                System.Windows.Forms.MessageBox.Show(
+                    $"상태 코드: {(int)response.StatusCode}\n\n" +
+                    $"[알람 데이터 원본 구조]:\n{jsonResponse}",
+                    "알람 세션 리얼 데이터 확인"
+                );
+                // ==========================================================
                 if (response.IsSuccessStatusCode)
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<AlterDataClass>>(json) ?? new List<AlterDataClass>();
+                    var result = JsonConvert.DeserializeObject<List<AlterDataClass>>(jsonResponse);
+                    return result ?? new List<AlterDataClass>();
                 }
+                Console.WriteLine((int)response.StatusCode);
                 return new List<AlterDataClass>();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"알람 목록 조회 실패 : {ex.Message}");
+                Console.WriteLine($"알람 처리 실패: {ex.Message}");
                 return new List<AlterDataClass>();
             }
         }
 
-        public static async Task<bool> ResolveViolationAsync(string alertId, string adminId, string memo, int isChecked = 1)
+        public static async Task<bool> ResolveViolationAsync(string alarmId, string adminId, string memo, int isChecked)
         {
             try
             {
-                string url = $"{BaseUrl}/api/alarms/{alertId}";
                 SetAuthHeader();
+                string url = $"{BaseUrl}/api/alarms/{alarmId}";
 
-                var data = new
+                var patchData = new
                 {
-                    status = "해결",
-                    is_checked = isChecked
+                    is_checked = isChecked,
+                    admin_id = adminId,
+                    resolution_memo = memo,
+                    status = "해결"
                 };
 
-                string json = JsonConvert.SerializeObject(data);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                string jsonPayload = JsonConvert.SerializeObject(patchData);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
                 var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
                 {
-                    Content = new StringContent(json, Encoding.UTF8, "application/json")
+                    Content = content
                 };
-                var response = await client.SendAsync(request).ConfigureAwait(false);
+                HttpResponseMessage response = await client.SendAsync(request);
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -189,26 +205,19 @@ namespace PPE_관제_시스템
                 return false;
             }
         }
-
-        //위반 관리 구역 필터 api
-        public static async Task<List<AlterDataClass>> GetViolationsAsync(string area = null, string status = null)
+        //기간별 이력 검색 목록 조회(GET)
+        public static async Task<List<AlterDataClass>> GetViolationsAsync()
         {
             try
             {
                 SetAuthHeader();
                 string url = $"{BaseUrl}/api/violations";
-                List<string> queryParams = new List<string>();
-                if (!string.IsNullOrEmpty(area) && area != "전체") queryParams.Add($"area={Uri.EscapeDataString(area)}");
-                if (!string.IsNullOrEmpty(status) && status != "전체") queryParams.Add($"status={Uri.EscapeDataString(status)}");
-                if (queryParams.Count > 0)
-                {
-                    url += "?" + string.Join("&", queryParams);
-                }
-                var response = await client.GetAsync(url);
+                HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
+                string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<AlterDataClass>>(json) ?? new List<AlterDataClass>();
+                    var result = JsonConvert.DeserializeObject<List<AlterDataClass>>(jsonResponse);
+                    return result ?? new List<AlterDataClass>();
                 }
                 return new List<AlterDataClass>();
             }
@@ -219,32 +228,64 @@ namespace PPE_관제_시스템
             }
         }
 
-        //위반 이미지 조회 API
-        public static async Task<Image> GetVioationImageAsync(string filename)
+        //위반 관리 구역 및 상태 필터 조회 (GET)
+        public static async Task<List<AlterDataClass>> GetViolationsAsync(string startDate = null, string endDate=null,string areaId = null, string violationType = null)
         {
-            if(string.IsNullOrEmpty(filename)) return null;
             try
             {
                 SetAuthHeader();
-                string url = $"{BaseUrl}/api/violations/images/{filename}";
-                var response = await client.GetAsync(url);
+                string url = $"{BaseUrl}/api/violations";
+                List<string> queryParams = new List<string>();
+                if (!string.IsNullOrEmpty(startDate)) queryParams.Add($"start_date={startDate}");
+                if (!string.IsNullOrEmpty(endDate)) queryParams.Add($"end_date={endDate}");
+                if (!string.IsNullOrEmpty(areaId) && areaId != "전체") queryParams.Add($"area_id={areaId}");
+                if (!string.IsNullOrEmpty(violationType) && violationType != "전체") queryParams.Add($"violation_type={violationType}");
+                if (queryParams.Count > 0)
+                {
+                    url += "?" + string.Join("&", queryParams);
+                }
+
+                HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
+                string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
                 if (response.IsSuccessStatusCode)
                 {
-                    byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
-                    using (MemoryStream ms = new MemoryStream(imageBytes))
-                    {
-                        return Image.FromStream(ms);
-                    }
+                    var result = JsonConvert.DeserializeObject<List<AlterDataClass>>(jsonResponse);
+                    return result ?? new List<AlterDataClass>();
                 }
-                else
-                {
-                    Console.WriteLine($"이미지 조회 실패: {(int)response.StatusCode} {response.ReasonPhrase}");
-                    return null;
-                }
+                return new List<AlterDataClass>();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"카메라 이미지 조회 실패: {ex.Message}");
+                Console.WriteLine($"위반 내역 필터 조회 실패: {ex.Message}");
+                return new List<AlterDataClass>();
+            }
+        }
+
+        //위반 이미지 조회 API(GET)   
+        public static async Task<Image> GetViolationImageAsync(string violationId)
+        {
+            try
+            {
+                SetAuthHeader();
+                string url = $"{BaseUrl}/api/violations/{violationId}/image";
+                HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
+                if (response.IsSuccessStatusCode)
+                {
+                    byte[] imageBytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        using (MemoryStream ms = new MemoryStream(imageBytes))
+                        {
+                            return Image.FromStream(ms);
+                        }
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"위반 증거 이미지 조회 실패: {ex.Message}");
                 return null;
             }
         }
@@ -804,8 +845,14 @@ namespace PPE_관제_시스템
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"구역 목록 로드 실패: {ex.Message}");
-                return new List<string>();
+                // 아예 네트워크 단절이거나 서버 포트가 닫힌 경우
+                System.Windows.Forms.MessageBox.Show(
+                    $"네트워크 연결 예외 발생:\n{ex.Message}",
+                    "통신 물리적 에러",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning
+                );
+                return null;
             }
         }
 

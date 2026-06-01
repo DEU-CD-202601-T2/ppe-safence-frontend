@@ -70,8 +70,13 @@ namespace PPE_관제_시스템
 
         private void btnResolve_Click(object sender, EventArgs e) // 해결 버튼 클릭 시 이벤트 발생
         {
-            OnResolveRequested?.Invoke(this);
-            
+            btnResolve.Enabled = false; // 버튼 비활성화
+
+            if(OnResolveRequested != null)
+            {
+                OnResolveRequested.Invoke(this);
+            }
+
         }
     }
 }

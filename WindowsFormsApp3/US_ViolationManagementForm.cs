@@ -107,7 +107,15 @@ namespace PPE_관제_시스템
             foreach (var data in pageData)
             {
                 var card = new US_AlertCard();
-                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, data.Img, true);
+
+                string displayType = string.IsNullOrEmpty(data.Type) ? "미지정 위반" : data.Type;
+                string displayTime = string.IsNullOrEmpty(data.Time) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : data.Time;
+                string displayUid = string.IsNullOrEmpty(data.Uid) ? "미지정" : data.Uid;
+                string displayZone = (data.Area != null && !string.IsNullOrEmpty(data.Area.AreaName)) ? data.Area.AreaName : "구역 미지정";
+                string displayCam = string.IsNullOrEmpty(data.Cam) ? " 카메라01" : data.Cam;
+                string displayStatus = string.IsNullOrEmpty(data.Status) ? "unresolved" : data.Status;
+
+                card.SetData(displayType, displayTime, displayZone, displayCam, data.Id, displayUid, displayStatus, data.Img, true);
                 card.Width = flpViolationList.Width - 25;
                 flpViolationList.Controls.Add(card);
 
@@ -117,12 +125,12 @@ namespace PPE_관제_시스템
                 {
                     _ = Task.Run(async () =>
                     {
-                        Image downloadImg = await ApiService.GetVioationImageAsync(data.Id);
+                        Image downloadImg = await ApiService.GetViolationImageAsync(data.Id);
                         if (downloadImg != null)
                         {
                             this.BeginInvoke(new Action(() =>
                             {
-                                card.SetData(data.Type, data.Time, data.Zone, data.Cam, data.Id, data.Uid, data.Status, downloadImg, true);
+                                card.SetData(displayType, displayTime, displayZone, displayCam, data.Id, displayUid, displayStatus, downloadImg, true);
                             }));
                         }
                     });
@@ -140,7 +148,12 @@ namespace PPE_관제_시스템
             try
             {
                 List<AlterDataClass> violations = await ApiService.GetViolationsAsync();
-
+                string debugJson = JsonConvert.SerializeObject(violations, Formatting.Indented);
+                MessageBox.Show(
+                    $"[C#이 수신한 위반 이력 데이터 카운트]: {violations?.Count ?? 0}개\n\n" +
+                    $"[역직렬화 데이터 스냅샷]:\n{(debugJson.Length > 800 ? debugJson.Substring(0, 800) + "..." : debugJson)}",
+                    "위반관리 프론트엔드 최종 수신 데이터 확인"
+                );
                 if (violations != null)
                 {
                     localViolations = violations;
@@ -179,7 +192,7 @@ namespace PPE_관제_시스템
             if (currentPage > 0)
             {
                 currentPage--;
-                UpdateCardVisibility();
+                RefreshCardList();
             }
         }
 
@@ -195,27 +208,38 @@ namespace PPE_관제_시스템
         }
         private List<AlterDataClass> GetFilteredList()
         {
-            string selectedState = cmbState.SelectedItem?.ToString() ?? "전체";
-            string selectedZone = cmbZone.SelectedItem?.ToString() ?? "전체";
-            string selectedTime = cmbTime.SelectedItem?.ToString() ?? "전체";
+            string selectedState = cmbState.SelectedItem?.ToString().Trim() ?? "전체";
+            string selectedZone = cmbZone.SelectedItem?.ToString().Trim() ?? "전체";
+            string selectedTime = cmbTime.SelectedItem?.ToString().Trim() ?? "전체";
             DateTime startDate = dtpDateStart.Value.Date;
             DateTime endDate = dtpDateEnd.Value.Date.AddDays(1).AddSeconds(-1);
 
             return localViolations.Where(data =>
             {
-                if (!DateTime.TryParse(data.Time, out DateTime recordTime)) return false;
-                if(recordTime < startDate || recordTime > endDate) return false;
-
-                if(selectedState != "전체" && (data.Status == null || data.Status.Trim() != selectedState)) return false;
-                if(selectedZone != "전체" && (data.Zone == null || data.Zone.Trim() != selectedZone)) return false;
-                if(selectedTime != "전체")
+                if(!string.IsNullOrEmpty(data.Time) && DateTime.TryParse(data.Time, out DateTime recordTime))
                 {
-                    int filterHour = int.Parse(selectedTime.Substring(0, 2));
-                    if (recordTime.Hour != filterHour) return false;
+                    if (recordTime < startDate || recordTime > endDate) return false;
+                    if(selectedTime != "전체")
+                    {
+                        int filterHour = int.Parse(selectedTime.Substring(0, 2));
+                        if (recordTime.Hour != filterHour) return false;
+                    }
+                }
+                else
+                {
+                    if(selectedTime != "전체") return false;
+                }
+                if (selectedState != "전체") {
+                    string status = data.Status?.Trim().ToLower() ?? "";
+                    if (selectedState == "미해결" && (data.Status == null || !data.Status.Contains("미해결") || !data.Status.Contains("unresolved"))) return false;
+                    if (selectedState == "해결" && (data.Status == null || !data.Status.Contains("해결") || !data.Status.Contains("resolved"))) return false;
+                }
+                if (selectedZone != "전체") {
+                    string areaName = data.Area?.AreaName ?? "";
+                    if(!areaName.Contains(selectedZone)) return false;
                 }
                 return true;
             }).ToList();
         }
-
     }
 }

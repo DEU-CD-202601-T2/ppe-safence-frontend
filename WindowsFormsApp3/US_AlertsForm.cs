@@ -44,19 +44,26 @@ namespace PPE_관제_시스템
 
         private void RegisterFilterEvents()
         {
-            cmbViolation.SelectedIndexChanged += async (s, e) => { currentPage = 0; await RefreshAlarmsFromServer(); };
-            cmbCamera.SelectedIndexChanged += async (s, e) => { currentPage = 0; await RefreshAlarmsFromServer(); };
-            cmbZone.SelectedIndexChanged += async (s, e) => { currentPage = 0; await RefreshAlarmsFromServer(); };
+            cmbViolation.SelectedIndexChanged += async (s, e) => { currentPage = 0; ApplyFilter(); };
+            cmbCamera.SelectedIndexChanged += async (s, e) => { currentPage = 0; ApplyFilter(); };
+            cmbZone.SelectedIndexChanged += async (s, e) => { currentPage = 0; ApplyFilter(); };
         }
 
         private async Task RefreshAlarmsFromServer()
         {
             try
             {
-                var serverData = await ApiService.GetViolationsAsync();
+                var serverData = await ApiService.GetAlarmsAsync();
+                //확인용
+                MessageBox.Show(
+                    $"[알람 수신 검증] 서버가 던져준 실시간 알람 개수: {serverData?.Count ?? 0}개",
+                    "알람 창 최종 데이터 디버깅"
+                );
                 if (serverData != null)
                 {
                     DataManager.AllAlerts = serverData;
+                    localAlerts = serverData;
+                    ApplyFilter();
                 }
                 if (serverData == null) // 통신 자체가 실패한 경우
                 {
@@ -97,8 +104,8 @@ namespace PPE_관제_시스템
         {
                 if (DataManager.CurrentPage > 0)
                 {
-                    DataManager.CurrentPage--;
-                await RefreshAlarmsFromServer();
+                DataManager.CurrentPage--;
+                ApplyFilter();
                 }
         }
 
@@ -112,7 +119,7 @@ namespace PPE_관제_시스템
             if((DataManager.CurrentPage + 1) < totalPages)
             {
                 DataManager.CurrentPage++;
-                await RefreshAlarmsFromServer();
+                ApplyFilter();
             }
         }
 
@@ -144,20 +151,26 @@ namespace PPE_관제_시스템
             {
                 var card = new US_AlertCard();
 
+                string displayType = string.IsNullOrEmpty(data.Type) ? "미지정 위반" : data.Type;
+                string displayTime = string.IsNullOrEmpty(data.Time) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : data.Time;
                 string displayUid = string.IsNullOrEmpty(data.Uid) ? "미지정" : data.Uid;
-                string displayZone = string.IsNullOrEmpty(data.Zone) ? "알 수 없음" : data.Zone;
-                card.SetData(data.Type, data.Time, displayZone, data.Cam, data.Id, displayUid, data.Status, data.Img, false);
+                string displayZone = (data.Area != null && !string.IsNullOrEmpty(data.Area.AreaName)) ? data.Area.AreaName : "구역 미지정";
+                string displayCam = string.IsNullOrEmpty(data.Cam) ? " 카메라01" : data.Cam;
+                string displayStatus = string.IsNullOrEmpty(data.Status) ? "미해결" : data.Status;
+                
+                card.SetData(displayType, displayTime, displayZone, displayCam, data.Id, displayUid, displayStatus, data.Img, false);
 
                 if (!string.IsNullOrEmpty(data.Id))
                 {
                     _ = Task.Run(async () =>
                     {
-                        Image serverImg = await ApiService.GetVioationImageAsync(data.Id);
+                        Image serverImg = await ApiService.GetViolationImageAsync(data.Id);
                         if (serverImg != null)
                         {
                             this.BeginInvoke(new Action(() =>
                             {
-                                card.SetData(data.Type, data.Time, displayZone, data.Cam, data.Id, displayUid, data.Status, serverImg, false);
+                                if(!card.IsDisposed)
+                                    card.SetData(displayType, displayTime, displayZone, displayCam, data.Id, displayUid, displayStatus, serverImg, false);
                             }));
                         }
                     });
@@ -179,31 +192,45 @@ namespace PPE_관제_시스템
                             else
                             {
                                 MessageBox.Show("서버 통신에 실패했습니다", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                targetCard.Controls["btnResolve"].Enabled = true;
                             }
+                        }
+                        else
+                        {
+                            targetCard.Controls["btnResolve"].Enabled = true;
                         }
                     }
                 };
-                card.Width = flpAlertsList.ClientSize.Width - 10;
+                card.Width = flpAlertsList.ClientSize.Width - 25;
                 flpAlertsList.Controls.Add(card);
             }
             flpAlertsList.ResumeLayout();
+            flpAlertsList.Refresh();
+            this.Refresh();
             UpdatePageLabel(filteredList.Count);
+            
         }
         private List<AlterDataClass> GetFilteredList()
         {
+            if(localAlerts == null || localAlerts.Count == 0)
+                return new List<AlterDataClass>();
+
             string typeFilter = cmbViolation.SelectedItem?.ToString() ?? "전체";
             string camFilter = cmbCamera.SelectedItem?.ToString() ?? "전체";
             string zoneFilter = cmbZone.SelectedItem?.ToString() ?? "전체";
 
+            string coreTypeFilter = typeFilter.Replace(" 미착용", "").Trim();
             var filterQuery = localAlerts.Where(d =>
-                d.IsChecked == 0 &&
-                (string.IsNullOrEmpty(d.Status) || d.Status.Trim() == "미해결") &&
-                (typeFilter == "전체" || (d.Type != null && d.Type.Contains(typeFilter))) &&
-                (camFilter == "전체" || (d.Cam != null && d.Cam.Contains(camFilter))) &&
-                (zoneFilter == "전체" || (d.Zone != null && d.Zone.Contains(zoneFilter)))
+                (d.IsChecked == 0) &&
+                (string.IsNullOrEmpty(d.Status) || d.Status.Trim() == "미해결" || d.Status.ToLower().Contains("unresolved")) &&
+                (typeFilter == "전체" || (d.Type != null && d.Type.Trim().Contains(coreTypeFilter))) &&
+                (camFilter == "전체" || (d.Cam != null && d.Cam.Trim().Contains(camFilter))) &&
+                (zoneFilter == "전체" || (d.Area != null && d.Area.AreaName != null && d.Area.AreaName.Trim().Contains(zoneFilter)))
             );
 
-            var distinctList = filterQuery.GroupBy(d => d.Id).Select(g => g.First()).ToList();
+            var distinctList = filterQuery.Any(d => !string.IsNullOrEmpty(d.Id)) 
+                ? filterQuery.GroupBy(d => d.Id).Select(g => g.First()).ToList()
+                : filterQuery.ToList();
 
             return distinctList;
         }

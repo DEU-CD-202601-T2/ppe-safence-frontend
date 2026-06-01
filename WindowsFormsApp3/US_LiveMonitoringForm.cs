@@ -627,7 +627,10 @@ namespace PPE_관제_시스템
                 }
 
                 var allData = DataManager.AllAlerts ?? new List<AlterDataClass>();
-                var zoneData = allData.Where(d => !string.IsNullOrWhiteSpace(selectedZone) && (d.Zone ?? "").Trim() == selectedZone.Trim()).ToList();
+                var zoneData = allData.Where(d =>
+                d.Area != null &&
+                !string.IsNullOrEmpty(d.Area.AreaName) &&
+                d.Area.AreaName.Trim() == selectedZone.Trim()).ToList();
 
                 int unresolvedCount = zoneData.Count(d => d.Status != null && d.Status.Trim() == "미해결");
                 lblNoPPECount.Text = unresolvedCount.ToString();
