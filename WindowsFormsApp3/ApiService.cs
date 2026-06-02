@@ -215,9 +215,14 @@ namespace PPE_관제_시스템
             try
             {
                 SetAuthHeader();
+                
                 string url = $"{BaseUrl}/api/violations";
                 HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
                 string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                MessageBox.Show(
+    jsonResponse.Substring(0, Math.Min(3000, jsonResponse.Length)),
+    "Violations Raw Data");
                 if (response.IsSuccessStatusCode)
                 {
                     var result = JsonConvert.DeserializeObject<List<AlterDataClass>>(jsonResponse);

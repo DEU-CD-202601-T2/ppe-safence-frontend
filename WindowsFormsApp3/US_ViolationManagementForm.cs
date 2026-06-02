@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Mysqlx;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -180,8 +181,8 @@ namespace PPE_관제_시스템
             dtpDateStart.Value = DateTime.Now.AddDays(-7).Date;
             dtpDateEnd.Value = DateTime.Now.Date;
 
-            cmbState.SelectedIndexChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
-            cmbZone.SelectedIndexChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
+            cmbState.SelectedIndexChanged += async (s, ev) => { currentPage = 0; RefreshCardList(); };
+            cmbZone.SelectedIndexChanged += async (s, ev) => { currentPage = 0; RefreshCardList(); };
             cmbTime.SelectedIndexChanged += (s, ev) => { currentPage = 0; RefreshCardList(); };
             dtpDateStart.ValueChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
             dtpDateEnd.ValueChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
@@ -269,24 +270,29 @@ namespace PPE_관제_시스템
 
             var pageData = groups.Skip(currentPage * pageSize).Take(pageSize).ToList();
 
-            foreach (var group in pageData)
+            foreach (var data in pageData)
             {
                 var card = new US_AlertCard();
+
                 card.Width = flpViolationList.ClientSize.Width - 28;
                 card.Height = CardHeight;
                 card.OuterBackColor = flpViolationList.BackColor;
 
                 Image cached = null;
-                string repId = group.RepresentativeId;
+                string repId = data.RepresentativeId;
                 if (!string.IsNullOrEmpty(repId)) _imageCache.TryGetValue(repId, out cached);
-                group.Image = cached;
+                data.Image = cached;
 
-                string displayType = string.IsNullOrEmpty(data.Type) ? "미지정 위반" : data.DisplayType;
-                string displayTime = string.IsNullOrEmpty(data.Time) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : data.Time;
-                string displayUid = string.IsNullOrEmpty(data.Uid) ? "미지정" : data.Uid;
-                string displayZone = (data.Area != null && !string.IsNullOrEmpty(data.Area.AreaName)) ? data.Area.AreaName : "구역 미지정";
-                string displayCam = string.IsNullOrEmpty(data.Cam) ? " 카메라01" : data.Cam;
-                string displayStatus = string.IsNullOrEmpty(data.Status) ? "unresolved" : data.Status;
+                card.SetGroup(data, cached);
+
+                card.OnResolveRequested -= HandleResolveRequested;
+                card.OnResolveRequested += HandleResolveRequested;
+
+                card.OnDetailRequested -= HandleDetailRequested;
+                card.OnDetailRequested += HandleDetailRequested;
+
+                card.OnDeleteRequested -= HandleDeleteRequested;
+                card.OnDeleteRequested += HandleDeleteRequested;
 
                 flpViolationList.Controls.Add(card);
                 alertCards.Add(card);
@@ -294,7 +300,7 @@ namespace PPE_관제_시스템
                 if (cached == null && !string.IsNullOrEmpty(repId))
                 {
                     var capturedCard = card;
-                    var capturedGroup = group;
+                    var capturedGroup = data;
                     _ = Task.Run(async () =>
                     {
                         Image downloadImg = await ApiService.GetViolationImageAsync(repId);
@@ -366,10 +372,29 @@ namespace PPE_관제_시스템
 
         private List<AlterDataClass> GetFilteredRows()
         {
-            string selectedTime = cmbTime.SelectedItem?.ToString().Trim() ?? "시간대 전체";
+            string selectedState = cmbState.SelectedItem?.ToString() ?? "상태 전체";
+            string selectedZone = cmbZone.SelectedItem?.ToString() ?? "구역 전체";
+            string selectedTime = cmbTime.SelectedItem?.ToString() ?? "시간대 전체";
+
 
             return localViolations.Where(data =>
             {
+                if(selectedState == "미해결")
+                {
+                    if (data.IsChecked != 0) return false;
+
+                }
+                else if (selectedState == "해결")
+                {
+                    if (data.IsChecked != 1) return false;
+                }
+
+                if(selectedZone != "구역 전체")
+                {
+                    string areaName = data.Area?.AreaName ?? "";
+                    if (areaName != selectedZone)
+                        return false;
+                }
                 if (selectedTime != "시간대 전체")
                 {
                     if (!string.IsNullOrEmpty(data.Time) && DateTime.TryParse(data.Time, out DateTime recordTime))
@@ -397,17 +422,19 @@ namespace PPE_관제_시스템
             foreach (var id in group.Ids)
             {
                 bool ok = await ApiService.UpdateViolationCheckedAsync(id, makeResolved);
+                MessageBox.Show($"ID={id}\n결과={ok}\n변경값={makeResolved}");
                 if (!ok) allOk = false;
             }
+            
 
             if (allOk)
             {
                 foreach (var row in localViolations.Where(r => group.Ids.Contains(r.Id)))
                 {
-                    row.IsChecked = makeResolved ? 1 : 0;
+                    //row.IsChecked = makeResolved ? 1 : 0;
                     row.Status = makeResolved ? "해결" : "미해결";
                 }
-                RefreshCardList();
+                await LoadViolationData();
             }
             else
             {
@@ -438,33 +465,49 @@ namespace PPE_관제_시스템
             {
                 result = dlg.ShowDialog(this.FindForm());
             }
+        }
 
-            return localViolations.Where(data =>
+        private void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (currentPage > 0)
             {
-                if(!string.IsNullOrEmpty(data.Time) && DateTime.TryParse(data.Time, out DateTime recordTime))
-                {
-                    if (recordTime < startDate || recordTime > endDate) return false;
-                    if(selectedTime != "전체")
-                    {
-                        int filterHour = int.Parse(selectedTime.Substring(0, 2));
-                        if (recordTime.Hour != filterHour) return false;
-                    }
-                }
-                else
-                {
-                    if(selectedTime != "전체") return false;
-                }
-                if (selectedState != "전체") {
-                    string status = data.Status?.Trim().ToLower() ?? "";
-                    if (selectedState == "미해결" && (data.Status == null || !data.Status.Contains("미해결") || !data.Status.Contains("unresolved"))) return false;
-                    if (selectedState == "해결" && (data.Status == null || !data.Status.Contains("해결") || !data.Status.Contains("resolved"))) return false;
-                }
-                if (selectedZone != "전체") {
-                    string areaName = data.Area?.AreaName ?? "";
-                    if(!areaName.Contains(selectedZone)) return false;
-                }
-                return true;
-            }).ToList();
+                currentPage--;
+                RefreshCardList();
+            }
+        }
+
+        private void lnkNext_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            int totalPages = (int)Math.Ceiling((double)groups.Count / pageSize);
+            if ((currentPage + 1) < totalPages)
+            {
+                currentPage++;
+                RefreshCardList();
+            }
+        }
+
+        private async void HandleDeleteRequested(US_AlertCard card)
+        {
+            var group = card?.Group;
+            if (group == null || group.Ids.Count == 0) return;
+            var confirm = MessageBox.Show("선택한 위반 이력을 삭제하시겠습니까?", "삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm != DialogResult.Yes) return;
+            bool allOk = true;
+            foreach (var id in group.Ids)
+            {
+                bool ok = await ApiService.DeleteViolationAsync(id);
+                if (!ok) allOk = false;
+            }
+            if (allOk)
+            {
+                localViolations.RemoveAll(r => group.Ids.Contains(r.Id));
+                RefreshCardList();
+            }
+            else
+            {
+                MessageBox.Show("일부 항목의 삭제에 실패했습니다. 새로고침 후 다시 시도해주세요.");
+                await LoadViolationData();
+            }
         }
     }
 }

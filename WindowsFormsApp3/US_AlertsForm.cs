@@ -194,28 +194,47 @@ namespace PPE_관제_시스템
 
         private List<AlterDataClass> GetFilteredList()
         {
-            if (localAlerts == null || localAlerts.Count == 0)
-                return new List<AlterDataClass>();
+            string selectedState = cmbViolation.SelectedItem?.ToString() ?? "상태 전체";
+            string selectedZone = cmbCamera.SelectedItem?.ToString() ?? "구역 전체";
+            string selectedTime = cmbZone.SelectedItem?.ToString() ?? "시간대 전체";
 
-            string typeFilter = cmbViolation.SelectedItem?.ToString() ?? "위반 전체";
-            string camFilter = cmbCamera.SelectedItem?.ToString() ?? "카메라 전체";
-            string zoneFilter = cmbZone.SelectedItem?.ToString() ?? "구역 전체";
+            return localAlerts.Where(data =>
+                {
+                    if (selectedState == "미해결")
+                    {
+                        if (data.IsChecked != 0)
+                            return false;
+                    }
+                    else if (selectedState == "해결")
+                    {
+                        if (data.IsChecked != 1)
+                            return true;
+                    }
 
-            string coreTypeFilter = typeFilter.Replace(" 미착용", "").Trim();
+                    if (selectedZone != "구역 전체")
+                    {
+                        string areaName = data.Area?.AreaName ?? "";
+                        if (areaName != selectedZone)
+                            return false;
+                    }
 
-            var filterQuery = localAlerts.Where(d =>
-                (d.IsChecked == 0) &&
-                (string.IsNullOrEmpty(d.Status) || d.Status.Trim() == "미해결" || d.Status.ToLower().Contains("unresolved")) &&
-                (typeFilter == "위반 전체" || (d.DisplayType != null && d.DisplayType.Contains(coreTypeFilter))) &&
-                (camFilter == "카메라 전체" || (d.Cam != null && d.Cam.Trim().Contains(camFilter))) &&
-                (zoneFilter == "구역 전체" || (d.Area != null && d.Area.AreaName != null && d.Area.AreaName.Trim().Contains(zoneFilter)))
-            );
-
-            var distinctList = filterQuery.Any(d => !string.IsNullOrEmpty(d.Id))
-                ? filterQuery.GroupBy(d => d.Id).Select(g => g.First()).ToList()
-                : filterQuery.ToList();
-
-            return distinctList;
+                    if (selectedTime != "시간대 전체")
+                    {
+                        if (!string.IsNullOrEmpty(data.Time) &&
+                        DateTime.TryParse(data.Time, out DateTime alertTime))
+                        {
+                            int filterHour = int.Parse(selectedTime.Substring(0, 2));
+                            if (alertTime.Hour != filterHour)
+                                return false;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }).ToList();
         }
-    }
+
+    }       
 }

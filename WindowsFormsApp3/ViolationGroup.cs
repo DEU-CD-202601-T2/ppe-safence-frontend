@@ -64,7 +64,7 @@ namespace PPE_관제_시스템
                 .Where(r => r != null)
                 .GroupBy(r => string.Join("|",
                     (r.Time ?? "").Trim(),
-                    (r.Area?.AreaId ?? "").Trim(),
+                    (r.Area?.AreaId?.ToString() ?? "").Trim(),
                     (r.Uid ?? "").Trim(),
                     r.IsChecked));
 
@@ -74,7 +74,7 @@ namespace PPE_관제_시스템
                 var vg = new ViolationGroup
                 {
                     DetectedAt = first.Time,
-                    AreaId = first.Area?.AreaId,
+                    AreaId = first.Area?.AreaId?.ToString(),
                     AreaName = first.Area?.AreaName,
                     CameraName = first.Cam,
                     PersonId = first.Uid,
