@@ -150,9 +150,9 @@ namespace PPE_관제_시스템
             {
                 //알람 카드 생성 및 설정
                 var card = new US_AlertCard();
-                
+
                 //크기 조정 
-                card.Width = flpAlertsList.ClientSize.Width  -25;
+                card.Width = flpAlertsList.ClientSize.Width - 25;
                 card.Height = 240;
                 card.OuterBackColor = flpAlertsList.BackColor;
 
@@ -161,39 +161,30 @@ namespace PPE_관제_시스템
                 card.HideDetailButton();
 
                 string repId = group.RepresentativeId;
-
                 if (!string.IsNullOrEmpty(repId))
                 {
-                    if(_ImageCache.TryGetValue(repId, out Image cached))
+                    if (_ImageCache.TryGetValue(repId, out Image cached))
                     {
                         group.Image = cached;
                         card.SetGroup(group, cached);
                     }
-                    else
+
+                    _ = Task.Run(async () =>
                     {
-                        var capturedCard = card;
-                        var capturedGroup = group;
-
-                        _ = Task.Run(async () =>
-                        {
                         Image img = await ApiService.GetViolationImageAsync(repId);
-                            if (img != null &&
-                            capturedCard != null &&
-                            !capturedCard.IsDisposed)
-                            {
-                                this.BeginInvoke(new Action(() =>
-                                {
-                                    _ImageCache[repId] = img;
-                                    capturedGroup.Image = img;
+                        if (img == null || card == null || card.IsDisposed)
+                            return;
 
-                                    if (!capturedCard.IsDisposed)
-                                        capturedCard.SetGroup(capturedGroup, img);
-                                }));
-                            }
-                        });
-                    }
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            _ImageCache[repId] = img;
+                            group.Image = img;
+
+                            if (!card.IsDisposed)
+                                card.SetGroup(group, img);
+                        }));
+                    });
                 }
-
                 card.OnResolveRequested += async (targetCard) =>
                 {
                     //해결 처리 폼 표시
@@ -224,8 +215,8 @@ namespace PPE_관제_시스템
                         }
                     }
                 };
-
                 flpAlertsList.Controls.Add(card);
+            
             }
             flpAlertsList.ResumeLayout();
             flpAlertsList.Refresh();
@@ -242,37 +233,33 @@ namespace PPE_관제_시스템
             string selectedZone = cmbZone.SelectedItem?.ToString() ?? "구역 전체";
 
             return localAlerts.Where(data =>
+            {
+                //위반 유형 필터 적용
+                if (selectedViolation != "위반 전체")
                 {
-                    //위반 유형 필터 적용
-                    if (selectedViolation != "위반 전체")
+                    switch (selectedViolation)
                     {
-                        switch (selectedViolation)
-                        {
-                            case "안전모 미착용":
-                                if (data.HelmetWorn) return false;
-                                break;
-
-                            case "마스크 미착용":
-                                if (data.MaskWorn) return false;
-                                break;
-
-                            case "왼쪽 장갑 미착용":
-                                if (data.GloveLWorn) return false;
-                                break;
-
-                            case "오른쪽 장갑 미착용":
-                                if (data.GloveRWorn) return false;
-                                break;
-                        }
+                        case "안전모 미착용":
+                            if (data.HelmetWorn) return false;
+                            break;
+                        case "마스크 미착용":
+                            if (data.MaskWorn) return false;
+                            break;
+                        case "왼쪽 장갑 미착용":
+                            if (data.GloveLWorn) return false;
+                            break;
+                        case "오른쪽 장갑 미착용":
+                            if (data.GloveRWorn) return false;
+                            break;
                     }
-                    //구역 필터 적용
-                    if (selectedZone != "구역 전체")
-                    {
-                        if ((data.AreaName ?? "") != selectedZone)
-                            return false;
-                    }
-                    return true;
-             }).ToList();
+                }
+                if (selectedZone != "구역 전체") 
+                {
+                    if ((data.AreaName ?? "") != selectedZone)
+                        return false;
+                }
+                return true;
+            }).ToList();
         }
     }       
 }

@@ -312,12 +312,12 @@ namespace PPE_관제_시스템
                 ("오른손", group.GloveRWorn),
             };
 
-            if (img != null)
-            {
                 picPPEImage.Image = null;
+            if(img != null)
                 picPPEImage.Image = img;
-                picPPEImage.SizeMode = PictureBoxSizeMode.Zoom;
-            }
+            
+            picPPEImage.SizeMode = PictureBoxSizeMode.Zoom;
+            
 
             bool isResolved = group.IsChecked;
             _stripColor = isResolved ? AppColors.Success : AppColors.Danger;
