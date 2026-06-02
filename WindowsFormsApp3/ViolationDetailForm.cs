@@ -62,12 +62,11 @@ namespace PPE_관제_시스템
 
             bool isResolved = group.IsChecked;
 
-            var lblTitle = new Label
+            var lblTitle = new MarqueeLabel
             {
                 Text = group.MissingSummary,
                 Font = new Font("맑은 고딕", 15F, FontStyle.Bold),
                 ForeColor = isResolved ? AppColors.Success : AppColors.Danger,
-                AutoSize = false,
                 Size = new Size(320, 34),
                 Location = new Point(26, 22),
                 BackColor = AppColors.Surface
@@ -161,12 +160,11 @@ namespace PPE_관제_시스템
                 Location = new Point(26, y),
                 BackColor = AppColors.Surface
             };
-            var val = new Label
+            var val = new MarqueeLabel
             {
                 Text = value,
                 Font = new Font("맑은 고딕", 10.5F, FontStyle.Bold),
                 ForeColor = AppColors.Text,
-                AutoSize = false,
                 Size = new Size(200, 24),
                 Location = new Point(160, y),
                 BackColor = AppColors.Surface

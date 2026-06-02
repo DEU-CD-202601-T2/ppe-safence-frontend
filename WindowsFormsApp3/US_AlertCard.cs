@@ -49,6 +49,9 @@ namespace PPE_관제_시스템
         // 장비 칩 데이터 (그리기용)
         private (string label, bool worn)[] _gearChips = new (string, bool)[0];
 
+        // 제목 마퀴 라벨 (Designer lblViolation 을 대체)
+        private MarqueeLabel mqTitle;
+
         private Color _outerBackColor = AppColors.Surface;
         public Color OuterBackColor
         {
@@ -164,7 +167,20 @@ namespace PPE_관제_시스템
             picPPEImage.SizeMode = PictureBoxSizeMode.Zoom;
             picPPEImage.Cursor = Cursors.Default;
 
-            lblViolation.BackColor = AppColors.Surface;
+            lblViolation.Visible = false;   // 마퀴로 대체
+
+            if (mqTitle == null)
+            {
+                mqTitle = new MarqueeLabel
+                {
+                    Font = lblViolation.Font,
+                    ForeColor = AppColors.Danger,
+                    BackColor = AppColors.Surface,
+                    Size = new Size(300, 34)
+                };
+                this.Controls.Add(mqTitle);
+                mqTitle.BringToFront();
+            }
             lblDate.BackColor = AppColors.Surface;
             lblCam.BackColor = AppColors.Surface;
             lblZone.BackColor = AppColors.Surface;
@@ -190,15 +206,23 @@ namespace PPE_관제_시스템
             ApplyControlRound(picPPEImage, 12);
 
             int textLeft = picPPEImage.Right + 24;
+            int rightEdge = Width - ShadowDepth - 16;
+            lblStatus.Location = new Point(rightEdge - lblStatus.Width, innerTop + 6);
+
             lblViolation.Location = new Point(textLeft, innerTop + 6);
+            if (mqTitle != null)
+            {
+                int titleRight = lblStatus.Left - 16;
+                int titleW = Math.Max(120, titleRight - textLeft);
+                mqTitle.Location = new Point(textLeft, innerTop + 4);
+                mqTitle.Size = new Size(titleW, 36);
+            }
             lblDate.Location = new Point(textLeft, innerTop + 48);
             lblCam.Location = new Point(textLeft, innerTop + 78);
             lblZone.Location = new Point(textLeft, innerTop + 108);
             lblTargetID.Location = new Point(textLeft, innerTop + 138);
             // 장비 칩은 innerTop+168 위치에 OnPaint 에서 그림
 
-            int rightEdge = Width - ShadowDepth - 16;
-            lblStatus.Location = new Point(rightEdge - lblStatus.Width, innerTop + 6);
             if (btnResolveRound != null)
                 btnResolveRound.Location = new Point(rightEdge - btnResolveRound.Width, innerTop + 50);
             if (btnDetail != null)
@@ -231,15 +255,15 @@ namespace PPE_관제_시스템
                 OnResolveRequested?.Invoke(this);
             };
 
-            btnDelete = new RoundedButton
-            {
-                Text = "삭제",
-                Size = new Size(120, 40),
-                Font = new Font("맑은 고딕", 10F, FontStyle.Bold),
-                Name = "btnDelete"
-            };
-            AppStyle.MakePrimaryButton(btnDelete, 12);
-            btnDelete.Click += (s, e) => OnDeleteRequested?.Invoke(this);
+            // btnDelete = new RoundedButton
+            // {
+            //     Text = "삭제",
+            //     Size = new Size(120, 40),
+            //     Font = new Font("맑은 고딕", 10F, FontStyle.Bold),
+            //     Name = "btnDelete"
+            // };
+            // AppStyle.MakePrimaryButton(btnDelete, 12);
+            // btnDelete.Click += (s, e) => OnDeleteRequested?.Invoke(this);
 
             btnDetail = new RoundedButton
             {
@@ -272,6 +296,7 @@ namespace PPE_관제_시스템
             this.Group = group;
 
             lblViolation.Text = group.MissingSummary;
+            if (mqTitle != null) { mqTitle.ForeColor = lblViolation.ForeColor; mqTitle.Text = group.MissingSummary; }
             lblDate.Text = "🕒 " + (group.DetectedAt ?? "-");
             lblCam.Text = "📷 " + (string.IsNullOrEmpty(group.CameraName) ? "카메라01" : group.CameraName);
             lblZone.Text = "📍 " + (string.IsNullOrEmpty(group.AreaName) ? "구역 미지정" : group.AreaName);
@@ -297,6 +322,7 @@ namespace PPE_관제_시스템
             bool isResolved = group.IsChecked;
             _stripColor = isResolved ? AppColors.Success : AppColors.Danger;
             lblStatus.ForeColor = isResolved ? AppColors.Success : AppColors.Danger;
+            if (mqTitle != null) mqTitle.ForeColor = isResolved ? AppColors.Success : AppColors.Danger;
 
             btnResolveRound.Visible = true;
             btnResolveRound.Enabled = true;
@@ -340,7 +366,7 @@ namespace PPE_관제_시스템
             SetGroup(group, img);
 
             // 제목은 넘겨받은 type 우선 (알림 화면은 단일 위반명이 자연스러움)
-            if (!string.IsNullOrEmpty(type)) lblViolation.Text = type;
+            if (!string.IsNullOrEmpty(type)) { lblViolation.Text = type; if (mqTitle != null) mqTitle.Text = type; }
 
             // 관리 모드 아니면(알림 화면) 상세 버튼 숨김, 해결 버튼은 미해결일 때만
             if (btnDetail != null) btnDetail.Visible = isManagementMode;
