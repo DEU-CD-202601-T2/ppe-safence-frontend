@@ -24,7 +24,9 @@ namespace PPE_관제_시스템
         public event Action<US_AlertCard> OnResolveRequested;
         public event Action<US_AlertCard> OnDetailRequested;
         public event Action<US_AlertCard> OnDeleteRequested;
+        public event Action<US_AlertCard> OnAckRequested;
         private RoundedButton btnDelete;
+        private RoundedButton btnAck;
 
         // 카드가 대표하는 그룹
         public ViolationGroup Group { get; private set; }
@@ -229,10 +231,12 @@ namespace PPE_관제_시스템
 
             if (btnResolveRound != null)
                 btnResolveRound.Location = new Point(rightEdge - btnResolveRound.Width, innerTop + 50);
+            if (btnAck != null)
+                btnAck.Location = new Point(rightEdge - btnAck.Width, innerTop + 98);
             if (btnDetail != null)
-                btnDetail.Location = new Point(rightEdge - btnDetail.Width, innerTop + 98);
+                btnDetail.Location = new Point(rightEdge - btnDetail.Width, innerTop + 146);
             if (btnDelete != null)
-                btnDelete.Location = new Point(rightEdge - btnDelete.Width, innerTop + 146);
+                btnDelete.Location = new Point(rightEdge - btnDelete.Width, innerTop + 194);
 
         }
 
@@ -279,11 +283,27 @@ namespace PPE_관제_시스템
             AppStyle.MakeOutlineButton(btnDetail, 12);
             btnDetail.Click += (s, e) => OnDetailRequested?.Invoke(this);
 
+            btnAck = new RoundedButton
+            {
+                Text = "확인",
+                Size = new Size(120, 38),
+                Font = new Font("맑은 고딕", 9.5F, FontStyle.Bold),
+                Name = "btnAck"
+            };
+            AppStyle.MakeOutlineButton(btnAck, 12);
+            btnAck.Click += (s, e) =>
+            {
+                btnAck.Enabled = false;
+                OnAckRequested?.Invoke(this);
+            };
+
             this.Controls.Add(btnResolveRound);
             this.Controls.Add(btnDelete);
             this.Controls.Add(btnDetail);
+            this.Controls.Add(btnAck);
             btnResolveRound.BringToFront();
             btnDetail.BringToFront();
+            btnAck.BringToFront();
             UpdateChildOuterBg();
         }
 
@@ -295,6 +315,43 @@ namespace PPE_관제_시스템
         }
 
         /// <summary>그룹 데이터로 카드 채우기</summary>
+        // 위험도 → 심각도 색 (높음=빨강 긴급 / 중간=주황 주의 / 낮음=파랑 일반)
+        private Color SeverityColor(string risk)
+        {
+            switch ((risk ?? "").Trim())
+            {
+                case "높음": return AppColors.Danger;
+                case "중간": return Color.FromArgb(245, 124, 0);   // 주황
+                case "낮음": return AppColors.Primary;
+                default: return AppColors.Danger;                  // 미지정 시 보수적으로 긴급
+            }
+        }
+
+        // 위험도 → 상태 라벨 (미해결·미확인일 때 표시)
+        private string SeverityLabel(string risk)
+        {
+            switch ((risk ?? "").Trim())
+            {
+                case "높음": return "긴급";
+                case "중간": return "주의";
+                case "낮음": return "일반";
+                default: return "미해결";
+            }
+        }
+
+        // 확인됨 카드 흐리게 처리
+        private void ApplyAckDim(bool dim)
+        {
+            Color textNormal = AppColors.Text;
+            Color textMuted = Color.FromArgb(160, 160, 160);
+            Color target = dim ? textMuted : textNormal;
+
+            lblDate.ForeColor = dim ? textMuted : AppColors.TextSecondary;
+            lblCam.ForeColor = dim ? textMuted : AppColors.TextSecondary;
+            lblZone.ForeColor = dim ? textMuted : AppColors.TextSecondary;
+            lblTargetID.ForeColor = dim ? textMuted : AppColors.TextSecondary;
+        }
+
         public void SetGroup(ViolationGroup group, Image img)
         {
             this.Group = group;
@@ -324,9 +381,18 @@ namespace PPE_관제_시스템
             
 
             bool isResolved = group.IsChecked;
-            _stripColor = isResolved ? AppColors.Success : AppColors.Danger;
-            lblStatus.ForeColor = isResolved ? AppColors.Success : AppColors.Danger;
-            if (mqTitle != null) mqTitle.ForeColor = isResolved ? AppColors.Success : AppColors.Danger;
+            bool isAcked = group.IsAcknowledged;
+
+            // 심각도(위험도) 색 — 미해결일 때만 위험도 색, 해결되면 초록
+            Color sevColor = SeverityColor(group.RiskLevel);
+            _stripColor = isResolved ? AppColors.Success : sevColor;
+            lblStatus.ForeColor = isResolved ? AppColors.Success : sevColor;
+            if (mqTitle != null) mqTitle.ForeColor = isResolved ? AppColors.Success : sevColor;
+
+            // 상태 텍스트: 확인됨이면 "확인됨" 병기
+            if (isResolved) lblStatus.Text = "해결";
+            else if (isAcked) lblStatus.Text = "확인됨";
+            else lblStatus.Text = SeverityLabel(group.RiskLevel);
 
             btnResolveRound.Visible = true;
             btnResolveRound.Enabled = true;
@@ -341,6 +407,26 @@ namespace PPE_관제_시스템
                 AppStyle.MakePrimaryButton(btnResolveRound, 12);
             }
             btnResolveRound.OuterBackColor = AppColors.Surface;
+
+            // 확인 버튼: 미해결 & 미확인일 때만 활성. 확인됨이면 "확인됨"으로 비활성
+            if (btnAck != null)
+            {
+                btnAck.Visible = !isResolved;
+                if (isAcked)
+                {
+                    btnAck.Text = "확인됨";
+                    btnAck.Enabled = false;
+                }
+                else
+                {
+                    btnAck.Text = "확인";
+                    btnAck.Enabled = true;
+                }
+                btnAck.OuterBackColor = AppColors.Surface;
+            }
+
+            // 확인됨이면 카드 전체를 살짝 흐리게 (해결 전까지 추적용으로 남김)
+            ApplyAckDim(isAcked && !isResolved);
 
             LayoutCard();
             Invalidate();
@@ -404,6 +490,7 @@ namespace PPE_관제_시스템
         {
             if (btnResolveRound != null) btnResolveRound.Enabled = enabled;
             if (btnDetail != null) btnDetail.Enabled = enabled;
+            if (btnAck != null) btnAck.Enabled = enabled;
         }
 
         private void btnResolve_Click(object sender, EventArgs e)

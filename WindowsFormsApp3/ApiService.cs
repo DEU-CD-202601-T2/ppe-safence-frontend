@@ -307,6 +307,60 @@ namespace PPE_관제_시스템
             }
         }
         
+        // ----- [2-1b] 위반 확인(ack) 처리 (PATCH /acknowledge) ----------------------
+        public static async Task<bool> AcknowledgeViolationAsync(string violationId, bool acknowledged = true)
+        {
+            try
+            {
+                SetAuthHeader();
+                string url = $"{BaseUrl}/api/violations/{violationId}/acknowledge";
+
+                var body = new { is_acknowledged = acknowledged };
+                var content = new StringContent(
+                    JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), url) { Content = content };
+                HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string err = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    Console.WriteLine($"위반 확인 처리 실패({(int)response.StatusCode}): {err}");
+                }
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"위반 확인 처리 오류: {ex.Message}");
+                return false;
+            }
+        }
+
+        // ----- [2-1c] 미확인 위반 개수 + 최대 id 조회 (뱃지/토스트 폴링용) -----------
+        public class UnackInfo
+        {
+            [JsonProperty("unack_count")] public int UnackCount { get; set; }
+            [JsonProperty("max_id")] public int MaxId { get; set; }
+        }
+
+        public static async Task<UnackInfo> GetUnackInfoAsync()
+        {
+            try
+            {
+                SetAuthHeader();
+                string url = $"{BaseUrl}/api/violations/unack-count";
+                HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode) return null;
+                string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return JsonConvert.DeserializeObject<UnackInfo>(json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"미확인 개수 조회 오류: {ex.Message}");
+                return null;
+            }
+        }
+
         // ----- [2-2] 위반 삭제 (DELETE) ---------------------------------------------
         public static async Task<bool> DeleteViolationAsync(string violationId)
         {

@@ -31,6 +31,11 @@ namespace PPE_관제_시스템
         public bool IsChecked { get; set; }
         public string Status => IsChecked ? "해결" : "미해결";
 
+        // 심각도 (구역 위험도: "높음"/"중간"/"낮음")
+        public string RiskLevel { get; set; }
+        // 확인(ack) 여부 — 그룹의 모든 row 가 확인됐을 때만 true
+        public bool IsAcknowledged { get; set; }
+
         public List<string> Ids { get; set; } = new List<string>();
         public string RepresentativeId => Ids.FirstOrDefault();
         public Image Image { get; set; }
@@ -124,6 +129,9 @@ namespace PPE_관제_시스템
                     CameraName = first.Cam,
                     PersonId = first.Uid,
                     IsChecked = first.IsChecked == 1,
+                    RiskLevel = first.RiskLevel ?? first.Area?.RiskLevel,
+                    // 그룹의 모든 row 가 확인됐을 때만 "확인됨"으로 간주
+                    IsAcknowledged = g.All(r => r.IsAcknowledged == 1),
                 };
 
                 // 스냅샷: 그룹 내 row 중 비어있지 않은 첫 스냅샷 사용

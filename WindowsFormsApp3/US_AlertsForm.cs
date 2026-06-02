@@ -71,6 +71,11 @@ namespace PPE_관제_시스템
                 //동일 작업자 및 시간대의 알람을 그룹화하여 표시
                 DataManager.AllAlerts = serverData;
                 ApplyFilter();
+
+                // 부모 MainForm 의 미확인 뱃지도 즉시 갱신
+                var main = this.FindForm() as MainForm;
+                if (main != null)
+                    await main.RefreshAlertBadgeAsync();
             }
             catch (Exception ex)
             {
@@ -185,6 +190,28 @@ namespace PPE_관제_시스템
                     });
 
 
+                    card.OnAckRequested += async (targetCard) =>
+                    {
+                        // 그룹에 속한 모든 위반 id 를 확인 처리
+                        var ids = targetCard.Group?.Ids ?? new List<string>();
+                        bool allOk = ids.Count > 0;
+                        foreach (var id in ids)
+                        {
+                            bool ok = await ApiService.AcknowledgeViolationAsync(id, true);
+                            if (!ok) allOk = false;
+                        }
+                        if (allOk)
+                        {
+                            // 서버에서 최신 데이터 다시 조회 → "확인됨" 흐리게로 다시 그려짐
+                            await RefreshAlarmsFromServer();
+                        }
+                        else
+                        {
+                            MessageBox.Show("확인 처리 중 일부가 실패했습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            targetCard.SetActionsEnabled(true);
+                        }
+                    };
+
                     card.OnResolveRequested += async (targetCard) =>
                     {
                         //해결 처리 폼 표시
@@ -260,7 +287,28 @@ namespace PPE_관제_시스템
                         return false;
                 }
                 return true;
-            }).ToList();
+            })
+            // 정렬: 미확인 먼저 → 위험도 높은 순 → 최신순
+            .OrderBy(d => d.IsAcknowledged ? 1 : 0)
+            .ThenBy(d => RiskRank(d.RiskLevel))
+            .ThenByDescending(d =>
+            {
+                DateTime dt;
+                return DateTime.TryParse(d.DetectedAt, out dt) ? dt : DateTime.MinValue;
+            })
+            .ToList();
+        }
+
+        // 위험도 정렬 순위 (높음=0 이 최상단)
+        private int RiskRank(string risk)
+        {
+            switch ((risk ?? "").Trim())
+            {
+                case "높음": return 0;
+                case "중간": return 1;
+                case "낮음": return 2;
+                default: return 1;
+            }
         }
     }       
 }

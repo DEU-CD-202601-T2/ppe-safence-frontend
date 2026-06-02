@@ -51,10 +51,14 @@ namespace PPE_관제_시스템
         public string Status { get; set; }
         [JsonProperty("is_checked")]
         public int? IsCheckedRaw { get; set; }
+        [JsonProperty("is_acknowledged")]
+        public int? IsAcknowledgedRaw { get; set; }
         [JsonProperty("image_url")]
         public string ImageUrl { get; set; }
         [JsonProperty("enforced_ppe")]
         public string EnforcedPpe { get; set; }
+        [JsonProperty("risk_level")]
+        public string RiskLevel { get; set; }
 
         [JsonProperty("admin_id")]
         public string AdminId { get; set; }
@@ -70,6 +74,8 @@ namespace PPE_관제_시스템
         public string PersonId => PersonIdRaw?.ToString();
         [JsonIgnore]
         public int IsChecked => IsCheckedRaw ?? 0;
+        [JsonIgnore]
+        public int IsAcknowledged => IsAcknowledgedRaw ?? 0;
         [JsonIgnore]
         public AreaInfo Area { get; set; }
         [JsonIgnore]
@@ -116,4 +122,3 @@ namespace PPE_관제_시스템
         }
     }
 }
-
