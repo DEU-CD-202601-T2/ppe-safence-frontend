@@ -20,7 +20,6 @@
             this.pnlFilterBar = new System.Windows.Forms.Panel();
             this.lblFilter = new System.Windows.Forms.Label();
             this.cmbViolation = new System.Windows.Forms.ComboBox();
-            this.cmbCamera = new System.Windows.Forms.ComboBox();
             this.cmbZone = new System.Windows.Forms.ComboBox();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.flpAlertsList = new System.Windows.Forms.FlowLayoutPanel();
@@ -40,10 +39,9 @@
             this.pnlFilterBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.pnlFilterBar.Controls.Add(this.lblFilter);
             this.pnlFilterBar.Controls.Add(this.cmbViolation);
-            this.pnlFilterBar.Controls.Add(this.cmbCamera);
             this.pnlFilterBar.Controls.Add(this.cmbZone);
             this.pnlFilterBar.Location = new System.Drawing.Point(25, 12);
-            this.pnlFilterBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlFilterBar.Margin = new System.Windows.Forms.Padding(4);
             this.pnlFilterBar.Name = "pnlFilterBar";
             this.pnlFilterBar.Size = new System.Drawing.Size(1485, 84);
             this.pnlFilterBar.TabIndex = 0;
@@ -71,30 +69,12 @@
             "전체",
             "안전모 미착용",
             "안전화 미착용"});
-            this.cmbViolation.Location = new System.Drawing.Point(963, 24);
-            this.cmbViolation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbViolation.Location = new System.Drawing.Point(1036, 27);
+            this.cmbViolation.Margin = new System.Windows.Forms.Padding(4);
             this.cmbViolation.Name = "cmbViolation";
             this.cmbViolation.Size = new System.Drawing.Size(162, 36);
             this.cmbViolation.TabIndex = 1;
             this.cmbViolation.Text = "위반 내용";
-            // 
-            // cmbCamera
-            // 
-            this.cmbCamera.BackColor = System.Drawing.Color.White;
-            this.cmbCamera.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbCamera.Font = new System.Drawing.Font("맑은 고딕", 10F);
-            this.cmbCamera.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.cmbCamera.FormattingEnabled = true;
-            this.cmbCamera.Items.AddRange(new object[] {
-            "전체",
-            "Camera 1",
-            "Camera 2"});
-            this.cmbCamera.Location = new System.Drawing.Point(1157, 24);
-            this.cmbCamera.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cmbCamera.Name = "cmbCamera";
-            this.cmbCamera.Size = new System.Drawing.Size(130, 36);
-            this.cmbCamera.TabIndex = 2;
-            this.cmbCamera.Text = "카메라";
             // 
             // cmbZone
             // 
@@ -107,8 +87,8 @@
             "전체",
             "A구역",
             "B구역"});
-            this.cmbZone.Location = new System.Drawing.Point(1312, 24);
-            this.cmbZone.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbZone.Location = new System.Drawing.Point(1251, 27);
+            this.cmbZone.Margin = new System.Windows.Forms.Padding(4);
             this.cmbZone.Name = "cmbZone";
             this.cmbZone.Size = new System.Drawing.Size(118, 36);
             this.cmbZone.TabIndex = 3;
@@ -123,7 +103,7 @@
             this.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlMain.Controls.Add(this.flpAlertsList);
             this.pnlMain.Location = new System.Drawing.Point(25, 108);
-            this.pnlMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(4);
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(1484, 684);
             this.pnlMain.TabIndex = 1;
@@ -134,9 +114,9 @@
             this.flpAlertsList.BackColor = System.Drawing.Color.White;
             this.flpAlertsList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpAlertsList.Location = new System.Drawing.Point(0, 0);
-            this.flpAlertsList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flpAlertsList.Margin = new System.Windows.Forms.Padding(4);
             this.flpAlertsList.Name = "flpAlertsList";
-            this.flpAlertsList.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.flpAlertsList.Padding = new System.Windows.Forms.Padding(12);
             this.flpAlertsList.Size = new System.Drawing.Size(1482, 682);
             this.flpAlertsList.TabIndex = 0;
             // 
@@ -149,7 +129,7 @@
             this.pnlFooter.Controls.Add(this.lblPage);
             this.pnlFooter.Controls.Add(this.lnkNext);
             this.pnlFooter.Location = new System.Drawing.Point(25, 804);
-            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(1485, 72);
             this.pnlFooter.TabIndex = 2;
@@ -211,7 +191,7 @@
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlFilterBar);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "US_AlertsForm";
             this.Size = new System.Drawing.Size(1535, 914);
             this.Load += new System.EventHandler(this.US_AlertsForm_Load);
@@ -229,7 +209,6 @@
         private System.Windows.Forms.Panel pnlFilterBar;
         private System.Windows.Forms.Label lblFilter;
         private System.Windows.Forms.ComboBox cmbViolation;
-        private System.Windows.Forms.ComboBox cmbCamera;
         private System.Windows.Forms.ComboBox cmbZone;
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.FlowLayoutPanel flpAlertsList;

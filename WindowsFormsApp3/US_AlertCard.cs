@@ -227,9 +227,9 @@ namespace PPE_관제_시스템
                 btnResolveRound.Location = new Point(rightEdge - btnResolveRound.Width, innerTop + 50);
             if (btnDetail != null)
                 btnDetail.Location = new Point(rightEdge - btnDetail.Width, innerTop + 98);
-            if(btnDelete != null)
+            if (btnDelete != null)
                 btnDelete.Location = new Point(rightEdge - btnDelete.Width, innerTop + 146);
-        
+
         }
 
         private void ApplyControlRound(Control c, int radius)
@@ -370,8 +370,14 @@ namespace PPE_관제_시스템
 
             // 관리 모드 아니면(알림 화면) 상세 버튼 숨김, 해결 버튼은 미해결일 때만
             if (btnDetail != null) btnDetail.Visible = isManagementMode;
-            if (!isManagementMode && btnResolveRound != null)
-                btnResolveRound.Visible = (status != "해결");
+            if (btnResolveRound != null)
+            {
+                if (isManagementMode)
+                    btnResolveRound.Visible = false;
+                else
+                    btnResolveRound.Visible = (status != "해결");
+            }
+
 
             LayoutCard();
             Invalidate();
@@ -399,6 +405,28 @@ namespace PPE_관제_시스템
         private void btnResolve_Click(object sender, EventArgs e)
         {
             OnResolveRequested?.Invoke(this);
+        }
+
+        public void HideDetailButton()
+        {
+            if (btnDetail != null)
+                btnDetail.Visible = false;
+        }
+        public void HideResolveButton()
+        {
+            if (btnResolveRound != null)
+                btnResolveRound.Visible = false;
+        }
+
+        public void ShowDetailButton()
+        {
+            if (btnDetail != null)
+                btnDetail.Visible = true;
+        }
+        public void ShowResolveButton()
+        {
+            if (btnResolveRound != null)
+                btnResolveRound.Visible = true;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace PPE_관제_시스템
 {
     public partial class US_AlertSettings : UserControl
     {
+        //서버에서 조회한 알림 설정 목록
         private List<AlertSettingDto> alertSettings;
         public US_AlertSettings()
         {
@@ -29,6 +30,7 @@ namespace PPE_관제_시스템
             if (setting == null)
                 return;
 
+            //UI에 설정값 반영
             chkUseAlert.Checked =
                 setting.IsEnabled;
 
@@ -45,6 +47,7 @@ namespace PPE_관제_시스템
                 setting.RepeatInterval?.ToString() ?? "";
         }
 
+        //알람 설정 초기화
         private async void btnAlertReset_Click(object sender, EventArgs e)
         {
             try
@@ -52,7 +55,7 @@ namespace PPE_관제_시스템
                 ResetAlertSettingResponse result = await ApiService.ResetAlertSettingsAsync();
 
                 alertSettings = result.Settings;
-
+                //초기화된 설정값으로 UI 업데이트
                 LoadCurrentAlertSetting();
 
                 MessageBox.Show(
@@ -70,7 +73,7 @@ namespace PPE_관제_시스템
                     MessageBoxIcon.Error);
             }
         }
-
+        //현재 알람 설정 저장
         private async void btnAlertSave_Click(object sender, EventArgs e)
         {
             try
@@ -111,12 +114,13 @@ namespace PPE_관제_시스템
                 MessageBox.Show($"저장 실패: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        //알람 유형 변경 시 해당 유형의 설정값 로드
         private void cmbAlertType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadCurrentAlertSetting();
         }
 
+        //알람 사용 여부 변경 시 상태 표시 업데이트
         private void chkUseAlert_CheckedChanged(object sender, EventArgs e)
         {
             if (chkUseAlert.Checked)
@@ -131,7 +135,7 @@ namespace PPE_관제_시스템
             }
 
         }
-
+        //알람 설정 정보 조회
         private async void US_AlertSettings_Load(object sender, EventArgs e)
         {
             try
