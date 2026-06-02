@@ -1,5 +1,4 @@
-﻿using Mysqlx;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -351,13 +350,21 @@ namespace PPE_관제_시스템
         {
             try
             {
-                List<AlterDataClass> violations = await ApiService.GetViolationsAsync();
-                string debugJson = JsonConvert.SerializeObject(violations, Formatting.Indented);
-                MessageBox.Show(
-                    $"[C#이 수신한 위반 이력 데이터 카운트]: {violations?.Count ?? 0}개\n\n" +
-                    $"[역직렬화 데이터 스냅샷]:\n{(debugJson.Length > 800 ? debugJson.Substring(0, 800) + "..." : debugJson)}",
-                    "위반관리 프론트엔드 최종 수신 데이터 확인"
-                );
+                string startDate = dtpDateStart.Value.ToString("yyyy-MM-dd");
+                string endDate = dtpDateEnd.Value.ToString("yyyy-MM-dd");
+
+                string statusSel = cmbState.SelectedItem?.ToString() ?? "상태 전체";
+                if (statusSel == "상태 전체") statusSel = null;
+
+                string zoneSel = cmbZone.SelectedItem?.ToString() ?? "구역 전체";
+                string areaId = null;
+                if (zoneSel != "구역 전체" && _zoneNameToId.TryGetValue(zoneSel, out string mappedId))
+                    areaId = mappedId;
+
+                var violations = await ApiService.GetViolationsAsync(
+                    startDate: startDate, endDate: endDate,
+                    areaId: areaId, violationType: null, status: statusSel);
+
                 if (violations != null)
                 {
                     localViolations = violations;
@@ -403,7 +410,6 @@ namespace PPE_관제_시스템
             foreach (var id in group.Ids)
             {
                 bool ok = await ApiService.UpdateViolationCheckedAsync(id, makeResolved);
-                MessageBox.Show($"ID={id}\n결과={ok}\n변경값={makeResolved}");
                 if (!ok) allOk = false;
             }
             
@@ -445,6 +451,28 @@ namespace PPE_관제_시스템
             using (var dlg = new ViolationDetailForm(group, img))
             {
                 result = dlg.ShowDialog(this.FindForm());
+            }
+
+            // 팝업에서 삭제 확정(Yes) → 그룹 전체 삭제 후 새로고침
+            if (result == DialogResult.Yes)
+            {
+                bool allOk = true;
+                foreach (var id in group.Ids)
+                {
+                    bool ok = await ApiService.DeleteViolationAsync(id);
+                    if (!ok) allOk = false;
+                }
+
+                if (allOk)
+                {
+                    localViolations.RemoveAll(r => group.Ids.Contains(r.Id));
+                    if (!string.IsNullOrEmpty(repId)) _imageCache.Remove(repId);
+                }
+                else
+                {
+                    MessageBox.Show("일부 항목 삭제에 실패했습니다. 목록을 새로고침합니다.");
+                }
+                await LoadViolationData();   // 서버 기준 새로고침
             }
         }
 
