@@ -179,51 +179,52 @@ namespace PPE_관제_시스템
                         {
                             _ImageCache[repId] = img;
                             group.Image = img;
-
                             if (!card.IsDisposed)
                                 card.SetGroup(group, img);
                         }));
                     });
-                }
-                card.OnResolveRequested += async (targetCard) =>
-                {
-                    //해결 처리 폼 표시
-                    using (var frm = new AlertResolution(targetCard.WorkerId))
+
+
+                    card.OnResolveRequested += async (targetCard) =>
                     {
-                        if (frm.ShowDialog() == DialogResult.OK)
+                        //해결 처리 폼 표시
+                        using (var frm = new AlertResolution(targetCard.WorkerId))
                         {
-                            bool success = await ApiService.UpdateViolationCheckedAsync(
-                                targetCard.AlertId, true);
-                            if (success)
-                            {//서버 상태 변경 성공 시 UI 갱신
-                                MessageBox.Show("해결 처리가 완료되었습니다", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                //데이터 동기화
-                                DataManager.ResolveAlert(targetCard.AlertId, frm.AdminId, frm.Memo);
-                                DataManager.NotifyDataChanged();
-                                //서버에서 최신 데이터 다시 조회
-                                await RefreshAlarmsFromServer();
+                            if (frm.ShowDialog() == DialogResult.OK)
+                            {
+                                bool success = await ApiService.UpdateViolationCheckedAsync(
+                                    targetCard.AlertId, true);
+                                if (success)
+                                {//서버 상태 변경 성공 시 UI 갱신
+                                    MessageBox.Show("해결 처리가 완료되었습니다", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    //데이터 동기화
+                                    DataManager.ResolveAlert(targetCard.AlertId, frm.AdminId, frm.Memo);
+                                    DataManager.NotifyDataChanged();
+                                    //서버에서 최신 데이터 다시 조회
+                                    await RefreshAlarmsFromServer();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("서버 통신에 실패했습니다", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    targetCard.SetActionsEnabled(true);
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("서버 통신에 실패했습니다", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 targetCard.SetActionsEnabled(true);
                             }
                         }
-                        else
-                        {
-                            targetCard.SetActionsEnabled(true);
-                        }
-                    }
-                };
-                flpAlertsList.Controls.Add(card);
-            
+                    };
+                    flpAlertsList.Controls.Add(card);
+
+                }
+                flpAlertsList.ResumeLayout();
+                flpAlertsList.Refresh();
+                UpdatePageLabel(filteredList.Count);
+                lblPage.Text = $"{currentPage + 1} / {totalPages}";
+                lnkPrev.Enabled = (currentPage > 0);
+                lnkNext.Enabled = (currentPage + 1 < totalPages);
             }
-            flpAlertsList.ResumeLayout();
-            flpAlertsList.Refresh();
-            UpdatePageLabel(filteredList.Count);
-            lblPage.Text = $"{currentPage + 1} / {totalPages}";
-            lnkPrev.Enabled = (currentPage > 0);
-            lnkNext.Enabled = (currentPage + 1 < totalPages);
         }
 
         private List<ViolationGroup> GetFilteredList()
