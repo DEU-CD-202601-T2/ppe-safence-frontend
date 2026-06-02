@@ -161,7 +161,7 @@ namespace PPE_관제_시스템
                 card.HideDetailButton();
 
                 string repId = group.RepresentativeId;
-
+                string displayStatus = string.IsNullOrEmpty(data.Status) ? "미해결" : data.Status;
                 if (!string.IsNullOrEmpty(repId))
                 {
                     if(_ImageCache.TryGetValue(repId, out Image cached))
@@ -192,6 +192,9 @@ namespace PPE_관제_시스템
                             }
                         });
                     }
+                }
+                        }
+                    });
                 }
 
                 card.OnResolveRequested += async (targetCard) =>
