@@ -88,28 +88,6 @@ namespace PPE_관제_시스템
                 };
             }
         }
-
-        public string DisplayType
-        {
-            get
-            {
-                var t = Type?.Trim().ToLower();
-                switch (t)
-                {
-                    case "no_helmet":
-                        return "안전모 미착용";
-                    case "no_mask":
-                        return "마스크 미착용";
-                    case "no_glove_left":
-                        return "왼쪽 장갑 미착용";
-                    case "no_glove_right":
-                        return "오른쪽 장갑 미착용";
-                    default:
-                        return Type;
-                }
-
-            }
-        }
     }
 }
 

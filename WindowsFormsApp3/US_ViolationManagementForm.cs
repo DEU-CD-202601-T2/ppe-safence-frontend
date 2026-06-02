@@ -1,5 +1,4 @@
-﻿using Mysqlx;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -181,8 +180,8 @@ namespace PPE_관제_시스템
             dtpDateStart.Value = DateTime.Now.AddDays(-7).Date;
             dtpDateEnd.Value = DateTime.Now.Date;
 
-            cmbState.SelectedIndexChanged += async (s, ev) => { currentPage = 0; RefreshCardList(); };
-            cmbZone.SelectedIndexChanged += async (s, ev) => { currentPage = 0; RefreshCardList(); };
+            cmbState.SelectedIndexChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
+            cmbZone.SelectedIndexChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
             cmbTime.SelectedIndexChanged += (s, ev) => { currentPage = 0; RefreshCardList(); };
             dtpDateStart.ValueChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
             dtpDateEnd.ValueChanged += async (s, ev) => { currentPage = 0; await LoadViolationData(); };
@@ -282,8 +281,18 @@ namespace PPE_관제_시스템
                 string repId = data.RepresentativeId;
                 if (!string.IsNullOrEmpty(repId)) _imageCache.TryGetValue(repId, out cached);
                 data.Image = cached;
-
+ // 관리 모드에서는 해결 버튼 숨김
                 card.SetGroup(data, cached);
+                card.ShowDetailButton();
+
+                if (data.IsChecked)
+                {
+                    card.ShowResolveButton();
+                }
+                else
+                {
+                    card.HideResolveButton();
+                }
 
                 card.OnResolveRequested -= HandleResolveRequested;
                 card.OnResolveRequested += HandleResolveRequested;
@@ -380,29 +389,10 @@ namespace PPE_관제_시스템
 
         private List<AlterDataClass> GetFilteredRows()
         {
-            string selectedState = cmbState.SelectedItem?.ToString() ?? "상태 전체";
-            string selectedZone = cmbZone.SelectedItem?.ToString() ?? "구역 전체";
-            string selectedTime = cmbTime.SelectedItem?.ToString() ?? "시간대 전체";
-
+            string selectedTime = cmbTime.SelectedItem?.ToString().Trim() ?? "시간대 전체";
 
             return localViolations.Where(data =>
             {
-                if(selectedState == "미해결")
-                {
-                    if (data.IsChecked != 0) return false;
-
-                }
-                else if (selectedState == "해결")
-                {
-                    if (data.IsChecked != 1) return false;
-                }
-
-                if(selectedZone != "구역 전체")
-                {
-                    string areaName = data.Area?.AreaName ?? "";
-                    if (areaName != selectedZone)
-                        return false;
-                }
                 if (selectedTime != "시간대 전체")
                 {
                     if (!string.IsNullOrEmpty(data.Time) && DateTime.TryParse(data.Time, out DateTime recordTime))
@@ -430,10 +420,9 @@ namespace PPE_관제_시스템
             foreach (var id in group.Ids)
             {
                 bool ok = await ApiService.UpdateViolationCheckedAsync(id, makeResolved);
-                MessageBox.Show($"ID={id}\n결과={ok}\n변경값={makeResolved}");
                 if (!ok) allOk = false;
             }
-            
+
 
             if (allOk)
             {
@@ -473,7 +462,6 @@ namespace PPE_관제_시스템
             {
                 result = dlg.ShowDialog(this.FindForm());
             }
-        }
 
             // 팝업에서 삭제 확정(Yes) → 그룹 전체 삭제 후 새로고침
             if (result == DialogResult.Yes)

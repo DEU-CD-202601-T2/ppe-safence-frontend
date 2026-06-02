@@ -373,7 +373,10 @@ namespace PPE_관제_시스템
                     {
                         using (MemoryStream ms = new MemoryStream(imageBytes))
                         {
-                            return Image.FromStream(ms);
+                            using(Image temp = Image.FromStream(ms))
+                            {
+                                return new Bitmap(temp);
+                            }
                         }
                     }
                 }

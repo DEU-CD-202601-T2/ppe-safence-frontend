@@ -1,4 +1,5 @@
-﻿using PPE_관제_시스템.Properties;
+﻿using Org.BouncyCastle.Tls;
+using PPE_관제_시스템.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +14,13 @@ namespace PPE_관제_시스템
 {
     public partial class US_AlertsForm : UserControl
     {
-        private List<AlterDataClass> localAlerts = new List<AlterDataClass>();
+        //미해결 알람 목록
+        private List<ViolationGroup> localAlerts = new List<ViolationGroup>();
+        //페이지네이션 상태
         private int currentPage = 0;
         private int pageSize = 10;
+        private readonly Dictionary<string, Image> _ImageCache
+            = new Dictionary<string, Image>();
 
         public US_AlertsForm()
         {
@@ -26,17 +31,16 @@ namespace PPE_관제_시스템
         {
             InitializeFilterItems();
             RegisterFilterEvents();
+            //서버 알람 데이터 조회
             await RefreshAlarmsFromServer();
         }
 
         private void InitializeFilterItems()
         {
+            //위반 유형 및 구역 필터
             cmbViolation.Items.Clear();
             cmbViolation.Items.AddRange(new object[] { "위반 전체", "마스크 미착용", "안전모 미착용", "왼쪽 장갑 미착용", "오른쪽 장갑 미착용" });
             cmbViolation.SelectedIndex = 0;
-            cmbCamera.Items.Clear();
-            cmbCamera.Items.AddRange(new object[] { "카메라 전체", "Camera01", "Camera02", "Camera03" });
-            cmbCamera.SelectedIndex = 0;
             cmbZone.Items.Clear();
             cmbZone.Items.AddRange(new object[] { "구역 전체", "A구역", "B구역", "C구역" });
             cmbZone.SelectedIndex = 0;
@@ -44,8 +48,8 @@ namespace PPE_관제_시스템
 
         private void RegisterFilterEvents()
         {
+            //필터 변경시 목록 갱신
             cmbViolation.SelectedIndexChanged += (s, e) => { currentPage = 0; ApplyFilter(); };
-            cmbCamera.SelectedIndexChanged += (s, e) => { currentPage = 0; ApplyFilter(); };
             cmbZone.SelectedIndexChanged += (s, e) => { currentPage = 0; ApplyFilter(); };
         }
 
@@ -53,15 +57,19 @@ namespace PPE_관제_시스템
         {
             try
             {
-                var serverData = await ApiService.GetAlarmsAsync();
-                if (serverData == null)
+                //위반 이력 조회
+                var serverData = await ApiService.GetViolationsAsync();
+
+                if (serverData != null)
                 {
-                    MessageBox.Show("백엔드 서버와 통신 연결에 실패했습니다. (서버 다운 또는 주소 오류)");
-                    return;
+                    //미해결 알람만 알람으로 표시
+                    var unresolved = serverData.Where(
+                        v => v.IsChecked == 0).ToList();
+                    localAlerts = ViolationGroup.BuildGroups(unresolved);
                 }
 
+                //동일 작업자 및 시간대의 알람을 그룹화하여 표시
                 DataManager.AllAlerts = serverData;
-                localAlerts = serverData;
                 ApplyFilter();
             }
             catch (Exception ex)
@@ -72,38 +80,42 @@ namespace PPE_관제_시스템
 
         private void UpdatePageLabel(int totalCount)
         {
-            int totalPages = (int)Math.Ceiling((double)totalCount / DataManager.PageSize);
+            //페이지 계산
+            int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
             if (totalPages == 0) totalPages = 1;
-            if (DataManager.CurrentPage >= totalPages) DataManager.CurrentPage = totalPages - 1;
-            if (DataManager.CurrentPage < 0) DataManager.CurrentPage = 0;
+            if (currentPage >= totalPages) currentPage = totalPages - 1;
+            if (currentPage < 0) currentPage = 0;
 
-            lblPage.Text = $"{DataManager.CurrentPage + 1} / {totalPages}";
-            lnkPrev.Enabled = (DataManager.CurrentPage > 0);
-            lnkNext.Enabled = (DataManager.CurrentPage + 1 < totalPages);
+            lblPage.Text = $"{currentPage + 1} / {totalPages}";
+            lnkPrev.Enabled = (currentPage > 0);
+            lnkNext.Enabled = (currentPage + 1 < totalPages);
         }
 
         private void lnkPrev_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (DataManager.CurrentPage > 0)
+            //이전 페이지로 이동
+            if (currentPage > 0)
             {
-                DataManager.CurrentPage--;
+                currentPage--;
                 ApplyFilter();
             }
         }
 
         private void lnkNext_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            //다음 페이지로 이동
             var filteredList = GetFilteredList();
-            int totalPages = (int)Math.Ceiling((double)filteredList.Count / DataManager.PageSize);
-            if ((DataManager.CurrentPage + 1) < totalPages)
+            int totalPages = (int)Math.Ceiling((double)filteredList.Count / pageSize);
+            if ((currentPage + 1) < totalPages)
             {
-                DataManager.CurrentPage++;
+                currentPage++;
                 ApplyFilter();
             }
         }
 
         private void ApplyFilter()
         {
+            //UI 스레드에서 실행 보장
             if (this.InvokeRequired)
             {
                 this.Invoke(new Action(ApplyFilter));
@@ -118,56 +130,86 @@ namespace PPE_관제_시스템
                 ctrl.Dispose();
             }
 
+            //필터 적용된 데이터 조회
             var filteredList = GetFilteredList();
+            int totalPages = (int)Math.Ceiling((double)filteredList.Count / pageSize);
+            if (totalPages == 0) totalPages = 1;
+
+            if (currentPage >= totalPages)
+                currentPage = totalPages - 1;
+
+            if (currentPage < 0)
+                currentPage = 0;
+
             var pageItems = filteredList
-                .Skip(DataManager.CurrentPage * DataManager.PageSize)
-                .Take(DataManager.PageSize)
+                .Skip(currentPage * pageSize)
+                .Take(pageSize)
                 .ToList();
 
-            foreach (var data in pageItems)
+            foreach (var group in pageItems)
             {
+                //알람 카드 생성 및 설정
                 var card = new US_AlertCard();
+                
+                //크기 조정 
+                card.Width = flpAlertsList.ClientSize.Width  -25;
+                card.Height = 240;
                 card.OuterBackColor = flpAlertsList.BackColor;
 
-                string displayType = string.IsNullOrEmpty(data.DisplayType) ? "미지정 위반" : data.DisplayType;
-                string displayTime = string.IsNullOrEmpty(data.Time) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : data.Time;
-                string displayUid = string.IsNullOrEmpty(data.Uid) ? "미지정" : data.Uid;
-                string displayZone = (data.Area != null && !string.IsNullOrEmpty(data.Area.AreaName)) ? data.Area.AreaName : "구역 미지정";
-                string displayCam = string.IsNullOrEmpty(data.Cam) ? "카메라01" : data.Cam;
-                string displayStatus = string.IsNullOrEmpty(data.Status) ? "미해결" : data.Status;
+                //그룹 정보로 카드 설정
+                card.SetGroup(group, group.Image);
+                card.HideDetailButton();
 
-                card.SetData(displayType, displayTime, displayZone, displayCam, data.Id, displayUid, displayStatus, data.Img, false);
+                string repId = group.RepresentativeId;
 
-                if (!string.IsNullOrEmpty(data.Id))
+                if (!string.IsNullOrEmpty(repId))
                 {
-                    var capturedCard = card;
-                    string vid = data.Id;
-                    _ = Task.Run(async () =>
+                    if(_ImageCache.TryGetValue(repId, out Image cached))
                     {
-                        Image serverImg = await ApiService.GetViolationImageAsync(vid);
-                        if (serverImg != null)
+                        group.Image = cached;
+                        card.SetGroup(group, cached);
+                    }
+                    else
+                    {
+                        var capturedCard = card;
+                        var capturedGroup = group;
+
+                        _ = Task.Run(async () =>
                         {
-                            this.BeginInvoke(new Action(() =>
+                        Image img = await ApiService.GetViolationImageAsync(repId);
+                            if (img != null &&
+                            capturedCard != null &&
+                            !capturedCard.IsDisposed)
                             {
-                                if (!capturedCard.IsDisposed)
-                                    capturedCard.SetData(displayType, displayTime, displayZone, displayCam, vid, displayUid, displayStatus, serverImg, false);
-                            }));
-                        }
-                    });
+                                this.BeginInvoke(new Action(() =>
+                                {
+                                    _ImageCache[repId] = img;
+                                    capturedGroup.Image = img;
+
+                                    if (!capturedCard.IsDisposed)
+                                        capturedCard.SetGroup(capturedGroup, img);
+                                }));
+                            }
+                        });
+                    }
                 }
 
                 card.OnResolveRequested += async (targetCard) =>
                 {
+                    //해결 처리 폼 표시
                     using (var frm = new AlertResolution(targetCard.WorkerId))
                     {
                         if (frm.ShowDialog() == DialogResult.OK)
                         {
-                            bool success = await ApiService.ResolveViolationAsync(targetCard.AlertId, frm.AdminId, frm.Memo, 1);
+                            bool success = await ApiService.UpdateViolationCheckedAsync(
+                                targetCard.AlertId, true);
                             if (success)
-                            {
+                            {//서버 상태 변경 성공 시 UI 갱신
                                 MessageBox.Show("해결 처리가 완료되었습니다", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                //데이터 동기화
                                 DataManager.ResolveAlert(targetCard.AlertId, frm.AdminId, frm.Memo);
                                 DataManager.NotifyDataChanged();
+                                //서버에서 최신 데이터 다시 조회
                                 await RefreshAlarmsFromServer();
                             }
                             else
@@ -183,58 +225,54 @@ namespace PPE_관제_시스템
                     }
                 };
 
-                card.Width = flpAlertsList.ClientSize.Width - 25;
-                card.Height = 240;
                 flpAlertsList.Controls.Add(card);
             }
             flpAlertsList.ResumeLayout();
             flpAlertsList.Refresh();
             UpdatePageLabel(filteredList.Count);
+            lblPage.Text = $"{currentPage + 1} / {totalPages}";
+            lnkPrev.Enabled = (currentPage > 0);
+            lnkNext.Enabled = (currentPage + 1 < totalPages);
         }
 
-        private List<AlterDataClass> GetFilteredList()
+        private List<ViolationGroup> GetFilteredList()
         {
-            string selectedState = cmbViolation.SelectedItem?.ToString() ?? "상태 전체";
-            string selectedZone = cmbCamera.SelectedItem?.ToString() ?? "구역 전체";
-            string selectedTime = cmbZone.SelectedItem?.ToString() ?? "시간대 전체";
+            //선택된 필터 값 가져오기
+            string selectedViolation = cmbViolation.SelectedItem?.ToString() ?? "위반 전체";
+            string selectedZone = cmbZone.SelectedItem?.ToString() ?? "구역 전체";
 
             return localAlerts.Where(data =>
                 {
-                    if (selectedState == "미해결")
+                    //위반 유형 필터 적용
+                    if (selectedViolation != "위반 전체")
                     {
-                        if (data.IsChecked != 0)
-                            return false;
-                    }
-                    else if (selectedState == "해결")
-                    {
-                        if (data.IsChecked != 1)
-                            return true;
-                    }
+                        switch (selectedViolation)
+                        {
+                            case "안전모 미착용":
+                                if (data.HelmetWorn) return false;
+                                break;
 
+                            case "마스크 미착용":
+                                if (data.MaskWorn) return false;
+                                break;
+
+                            case "왼쪽 장갑 미착용":
+                                if (data.GloveLWorn) return false;
+                                break;
+
+                            case "오른쪽 장갑 미착용":
+                                if (data.GloveRWorn) return false;
+                                break;
+                        }
+                    }
+                    //구역 필터 적용
                     if (selectedZone != "구역 전체")
                     {
-                        string areaName = data.Area?.AreaName ?? "";
-                        if (areaName != selectedZone)
+                        if ((data.AreaName ?? "") != selectedZone)
                             return false;
-                    }
-
-                    if (selectedTime != "시간대 전체")
-                    {
-                        if (!string.IsNullOrEmpty(data.Time) &&
-                        DateTime.TryParse(data.Time, out DateTime alertTime))
-                        {
-                            int filterHour = int.Parse(selectedTime.Substring(0, 2));
-                            if (alertTime.Hour != filterHour)
-                                return false;
-                        }
-                        else
-                        {
-                            return false;
-                        }
                     }
                     return true;
-                }).ToList();
+             }).ToList();
         }
-
     }       
 }
