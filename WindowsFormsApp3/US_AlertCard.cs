@@ -23,6 +23,8 @@ namespace PPE_관제_시스템
 
         public event Action<US_AlertCard> OnResolveRequested;
         public event Action<US_AlertCard> OnDetailRequested;
+        public event Action<US_AlertCard> OnDeleteRequested;
+        private RoundedButton btnDelete;
 
         // 카드가 대표하는 그룹
         public ViolationGroup Group { get; private set; }
@@ -201,6 +203,9 @@ namespace PPE_관제_시스템
                 btnResolveRound.Location = new Point(rightEdge - btnResolveRound.Width, innerTop + 50);
             if (btnDetail != null)
                 btnDetail.Location = new Point(rightEdge - btnDetail.Width, innerTop + 98);
+            if(btnDelete != null)
+                btnDelete.Location = new Point(rightEdge - btnDelete.Width, innerTop + 146);
+        
         }
 
         private void ApplyControlRound(Control c, int radius)
@@ -226,6 +231,16 @@ namespace PPE_관제_시스템
                 OnResolveRequested?.Invoke(this);
             };
 
+            btnDelete = new RoundedButton
+            {
+                Text = "삭제",
+                Size = new Size(120, 40),
+                Font = new Font("맑은 고딕", 10F, FontStyle.Bold),
+                Name = "btnDelete"
+            };
+            AppStyle.MakePrimaryButton(btnDelete, 12);
+            btnDelete.Click += (s, e) => OnDeleteRequested?.Invoke(this);
+
             btnDetail = new RoundedButton
             {
                 Text = "상세 보기",
@@ -237,6 +252,7 @@ namespace PPE_관제_시스템
             btnDetail.Click += (s, e) => OnDetailRequested?.Invoke(this);
 
             this.Controls.Add(btnResolveRound);
+            this.Controls.Add(btnDelete);
             this.Controls.Add(btnDetail);
             btnResolveRound.BringToFront();
             btnDetail.BringToFront();
@@ -246,6 +262,7 @@ namespace PPE_관제_시스템
         private void UpdateChildOuterBg()
         {
             if (btnResolveRound != null) btnResolveRound.OuterBackColor = AppColors.Surface;
+            if (btnDelete != null) btnDelete.OuterBackColor = AppColors.Surface;
             if (btnDetail != null) btnDetail.OuterBackColor = AppColors.Surface;
         }
 

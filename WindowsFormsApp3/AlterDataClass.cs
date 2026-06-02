@@ -31,9 +31,9 @@ namespace PPE_관제_시스템
     {
         [JsonProperty("id")]
         public int? IdRaw { get; set; }
-        [JsonProperty("violation_type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
-        [JsonProperty("detected_at")]
+        [JsonProperty("time")]
         public string Time { get; set; }
         [JsonProperty("area_name")]
         public string AreaNameFlat { get; set; }

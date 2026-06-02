@@ -158,7 +158,9 @@
     <Compile Include="DataManager.cs" />
     <Compile Include="Globaldata.cs" />
     <Compile Include="HistoryDto.cs" />
-    <Compile Include="ImageViewerForm.cs" />
+    <Compile Include="ImageViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -259,7 +261,9 @@
       <DependentUpon>US_ZoneSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Violation.cs" />
-    <Compile Include="ViolationDetailForm.cs" />
+    <Compile Include="ViolationDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ViolationGroup.cs" />
     <Compile Include="WorkerInfo.cs" />
     <Compile Include="ZoneData.cs" />
