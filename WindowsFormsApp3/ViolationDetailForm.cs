@@ -103,11 +103,57 @@ namespace PPE_관제_시스템
             };
             infoCard.Controls.Add(lblGearTitle);
 
+            // 도움말 아이콘 (제목 오른쪽) — 클릭 시 ✓/✕/− 의미 설명 토글
+            var picHelp = new PictureBox
+            {
+                Size = new Size(20, 20),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BackColor = AppColors.Surface,
+                Cursor = Cursors.Hand,
+                Location = new Point(lblGearTitle.Right + 6, 245)
+            };
+            picHelp.Image = LoadHelpIcon();
+            var helpTip = new ToolTip();
+            helpTip.SetToolTip(picHelp, "표시 기호 설명 보기");
+            infoCard.Controls.Add(picHelp);
+            picHelp.BringToFront();
+
+            // 설명 토글 패널 (기본 숨김) — 아이콘 클릭 시 표시/숨김
+            var pnlLegend = new Panel
+            {
+                Size = new Size(320, 78),
+                Location = new Point(26, 268),
+                BackColor = Color.FromArgb(248, 249, 250),
+                BorderStyle = BorderStyle.FixedSingle,
+                Visible = false
+            };
+            var lblLegend = new Label
+            {
+                AutoSize = false,
+                Dock = DockStyle.Fill,
+                Font = new Font("맑은 고딕", 9F),
+                ForeColor = AppColors.Text,
+                BackColor = Color.Transparent,
+                Padding = new Padding(8, 6, 8, 6),
+                Text = "✓  착용  —  단속 대상이며 착용함\n" +
+                       "✕  미착용  —  단속 대상이나 미착용\n" +
+                       "−  해당 없음  —  이 구역에서 단속하지 않음"
+            };
+            pnlLegend.Controls.Add(lblLegend);
+            infoCard.Controls.Add(pnlLegend);
+            pnlLegend.BringToFront();
+
+            picHelp.Click += (s, e) =>
+            {
+                pnlLegend.Visible = !pnlLegend.Visible;
+                if (pnlLegend.Visible) pnlLegend.BringToFront();
+            };
+
             // 장비 4종 칩 (2x2)
-            AddGearChip(infoCard, "안전모", group.HelmetWorn, 26, 276);
-            AddGearChip(infoCard, "마스크", group.MaskWorn, 188, 276);
-            AddGearChip(infoCard, "왼손 장갑", group.GloveLWorn, 26, 314);
-            AddGearChip(infoCard, "오른손 장갑", group.GloveRWorn, 188, 314);
+            AddGearChip(infoCard, "안전모", group.HelmetState, 26, 276);
+            AddGearChip(infoCard, "마스크", group.MaskState, 188, 276);
+            AddGearChip(infoCard, "왼손 장갑", group.GloveLState, 26, 314);
+            AddGearChip(infoCard, "오른손 장갑", group.GloveRState, 188, 314);
 
             // ===== 하단 버튼 (위 간격 충분히) =====
             int btnY = this.ClientSize.Height - 36 - 44;
@@ -148,6 +194,35 @@ namespace PPE_관제_시스템
             this.AcceptButton = btnClose;
         }
 
+        private Image LoadHelpIcon()
+        {
+            try
+            {
+                string path = System.IO.Path.Combine(Application.StartupPath, "Resources", "help.png");
+                if (System.IO.File.Exists(path))
+                {
+                    var src = new Bitmap(path);
+                    // 검은(어두운) 배경을 투명 처리 — 흰 카드 위에서 네모가 안 보이게
+                    src.MakeTransparent(Color.Black);
+                    return src;
+                }
+            }
+            catch { }
+            // 폴백: 코드로 그린 물음표(?) 원형 아이콘
+            var bmp = new Bitmap(20, 20);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.Clear(Color.Transparent);
+                using (var b = new SolidBrush(AppColors.Primary))
+                    g.FillEllipse(b, 1, 1, 18, 18);
+                using (var f = new Font("맑은 고딕", 10F, FontStyle.Bold))
+                    TextRenderer.DrawText(g, "?", f, new Rectangle(0, 0, 20, 20), Color.White,
+                        TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            }
+            return bmp;
+        }
+
         private void AddInfoRow(Control parent, string label, string value, int y)
         {
             var lbl = new Label
@@ -173,14 +248,23 @@ namespace PPE_관제_시스템
             parent.Controls.Add(val);
         }
 
-        private void AddGearChip(Control parent, string name, bool worn, int x, int y)
+        private void AddGearChip(Control parent, string name, GearState state, int x, int y)
         {
+            string mark = state == GearState.Worn ? "✓ "
+                        : state == GearState.Missing ? "✕ " : "− ";
+            Color fore, back;
+            if (state == GearState.Worn) { fore = AppColors.Success; back = AppColors.SuccessTint; }
+            else if (state == GearState.Missing) { fore = AppColors.Danger; back = AppColors.DangerTint; }
+            else { fore = Color.FromArgb(140, 140, 140); back = Color.FromArgb(238, 238, 238); }
+
+            string label = name;
+
             var chip = new Label
             {
-                Text = (worn ? "✓ " : "✕ ") + name,
+                Text = mark + label,
                 Font = new Font("맑은 고딕", 9.5F, FontStyle.Bold),
-                ForeColor = worn ? AppColors.Success : AppColors.Danger,
-                BackColor = worn ? AppColors.SuccessTint : AppColors.DangerTint,
+                ForeColor = fore,
+                BackColor = back,
                 AutoSize = false,
                 Size = new Size(150, 30),
                 Location = new Point(x, y),

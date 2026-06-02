@@ -229,6 +229,14 @@ namespace PPE_관제_시스템
                 {
                     _ = liveForm.RefreshPageAsync();
                 }
+                else if (formName == "ViolationManagementForm" && userControls[formName] is US_ViolationManagementForm vmForm)
+                {
+                    _ = vmForm.ManualRefreshAsync();
+                }
+                else if (formName == "SettingsForm" && userControls[formName] is US_SettingsForm setForm)
+                {
+                    setForm.RefreshCurrentMenu();
+                }
             }
             else
             {

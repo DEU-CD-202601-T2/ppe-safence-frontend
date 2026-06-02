@@ -24,6 +24,12 @@ namespace PPE_관제_시스템
             await RefreshAllAsync();
         }
 
+        /// <summary>페이지 재진입 시 외부(설정 폼)에서 호출하는 새로고침.</summary>
+        public async Task RefreshPageAsync()
+        {
+            await RefreshAllAsync();
+        }
+
         // 카메라 + 구역 정보 모두 새로 불러옴
         private async Task RefreshAllAsync()
         {

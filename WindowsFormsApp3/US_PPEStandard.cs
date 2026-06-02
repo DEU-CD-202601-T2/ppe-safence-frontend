@@ -53,6 +53,12 @@ namespace PPE_관제_시스템
             await LoadPPE_ZoneList();
         }
 
+        /// <summary>페이지 재진입 시 외부(설정 폼)에서 호출하는 새로고침.</summary>
+        public async Task RefreshPageAsync()
+        {
+            await LoadPPE_ZoneList();
+        }
+
         private async void lstPPE_ZoneList_SelectedIndexChanged(object sender, EventArgs e) // 리스트에서 선택된 구역의 PPE 기준을 UI에 반영
         {
             if (lstPPE_ZoneList.SelectedIndex < 0)

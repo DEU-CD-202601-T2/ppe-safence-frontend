@@ -47,7 +47,7 @@ namespace PPE_관제_시스템
         private Color _stripColor = AppColors.Danger;
 
         // 장비 칩 데이터 (그리기용)
-        private (string label, bool worn)[] _gearChips = new (string, bool)[0];
+        private (string label, GearState state)[] _gearChips = new (string, GearState)[0];
 
         // 제목 마퀴 라벨 (Designer lblViolation 을 대체)
         private MarqueeLabel mqTitle;
@@ -124,15 +124,19 @@ namespace PPE_관제_시스템
 
             using (var font = new Font("맑은 고딕", 9.5F, FontStyle.Bold))
             {
-                foreach (var (label, worn) in _gearChips)
+                foreach (var (label, state) in _gearChips)
                 {
-                    string text = (worn ? "✓ " : "✕ ") + label;
+                    string mark = state == GearState.Worn ? "✓ "
+                                : state == GearState.Missing ? "✕ " : "− ";
+                    string text = mark + label;
                     Size sz = TextRenderer.MeasureText(text, font);
                     int chipW = sz.Width + 24;
 
                     var rect = new Rectangle(x, chipY, chipW, chipH);
-                    Color back = worn ? AppColors.SuccessTint : AppColors.DangerTint;
-                    Color fore = worn ? AppColors.Success : AppColors.Danger;
+                    Color back, fore;
+                    if (state == GearState.Worn) { back = AppColors.SuccessTint; fore = AppColors.Success; }
+                    else if (state == GearState.Missing) { back = AppColors.DangerTint; fore = AppColors.Danger; }
+                    else { back = Color.FromArgb(238, 238, 238); fore = Color.FromArgb(140, 140, 140); }
 
                     using (var path = RoundedRect(rect, chipH / 2))
                     using (var b = new SolidBrush(back))
@@ -304,12 +308,12 @@ namespace PPE_관제_시스템
             lblStatus.Text = group.Status;
 
             // 장비 칩 4개
-            _gearChips = new (string, bool)[]
+            _gearChips = new (string, GearState)[]
             {
-                ("안전모", group.HelmetWorn),
-                ("마스크", group.MaskWorn),
-                ("왼손", group.GloveLWorn),
-                ("오른손", group.GloveRWorn),
+                ("안전모", group.HelmetState),
+                ("마스크", group.MaskState),
+                ("왼손", group.GloveLState),
+                ("오른손", group.GloveRState),
             };
 
                 picPPEImage.Image = null;

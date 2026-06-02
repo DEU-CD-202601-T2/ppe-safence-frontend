@@ -23,6 +23,20 @@ namespace PPE_관제_시스템
             ShowMenu("PPEStandard"); // 초기 화면으로 PPE 기준 메뉴 보여주기
         }
 
+        /// <summary>설정 화면 재진입 시 현재 보이는 내부 메뉴를 새로고침.</summary>
+        public void RefreshCurrentMenu()
+        {
+            foreach (var kv in userControls)
+            {
+                if (kv.Value.Visible)
+                {
+                    if (kv.Value is US_PPEStandard ppeForm) _ = ppeForm.RefreshPageAsync();
+                    else if (kv.Value is US_ZoneSetting zoneForm) _ = zoneForm.RefreshPageAsync();
+                    break;
+                }
+            }
+        }
+
         private void ShowMenu(string formName)
         {
             // 폼을 이미 생성했으면 그냥 보여주기
@@ -36,6 +50,12 @@ namespace PPE_관제_시스템
 
                 // 선택한 폼만 보이게 하기
                 userControls[formName].Show();
+
+                // 재진입 시 최신 데이터로 새로고침
+                if (formName == "PPEStandard" && userControls[formName] is US_PPEStandard ppeForm)
+                    _ = ppeForm.RefreshPageAsync();
+                else if (formName == "ZoneSettings" && userControls[formName] is US_ZoneSetting zoneForm)
+                    _ = zoneForm.RefreshPageAsync();
             }
             else
             {
