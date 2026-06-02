@@ -108,7 +108,7 @@ namespace PPE_관제_시스템
             {
                 var card = new US_AlertCard();
 
-                string displayType = string.IsNullOrEmpty(data.Type) ? "미지정 위반" : data.Type;
+                string displayType = string.IsNullOrEmpty(data.Type) ? "미지정 위반" : data.DisplayType;
                 string displayTime = string.IsNullOrEmpty(data.Time) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : data.Time;
                 string displayUid = string.IsNullOrEmpty(data.Uid) ? "미지정" : data.Uid;
                 string displayZone = (data.Area != null && !string.IsNullOrEmpty(data.Area.AreaName)) ? data.Area.AreaName : "구역 미지정";
@@ -148,12 +148,20 @@ namespace PPE_관제_시스템
             try
             {
                 List<AlterDataClass> violations = await ApiService.GetViolationsAsync();
+
                 string debugJson = JsonConvert.SerializeObject(violations, Formatting.Indented);
                 MessageBox.Show(
-                    $"[C#이 수신한 위반 이력 데이터 카운트]: {violations?.Count ?? 0}개\n\n" +
-                    $"[역직렬화 데이터 스냅샷]:\n{(debugJson.Length > 800 ? debugJson.Substring(0, 800) + "..." : debugJson)}",
-                    "위반관리 프론트엔드 최종 수신 데이터 확인"
-                );
+            $"[C#이 수신한 위반 이력 데이터 카운트]: {violations?.Count ?? 0}개\n\n" +
+            $"[역직렬화 데이터 스냅샷]:\n{(debugJson.Length > 800 ? debugJson.Substring(0, 800) + "..." : debugJson)}",
+            "위반관리 프론트엔드 최종 수신 데이터 확인"
+        );
+                var statusList = string.Join("\n",
+    violations.Select(v =>
+        $"ID={v.Id}, STATUS={v.Status}"));
+
+                MessageBox.Show(statusList, "상태 확인");
+
+
                 if (violations != null)
                 {
                     localViolations = violations;
@@ -214,6 +222,11 @@ namespace PPE_관제_시스템
             DateTime startDate = dtpDateStart.Value.Date;
             DateTime endDate = dtpDateEnd.Value.Date.AddDays(1).AddSeconds(-1);
 
+            /*
+             후에 삭제 예정
+             */
+            var distinctStatuses = string.Join(", ", localViolations.Select(d => $"\"{d.Status}\"").Distinct());
+            MessageBox.Show($"실제 status 값들: {distinctStatuses}", "디버그");
             return localViolations.Where(data =>
             {
                 if(!string.IsNullOrEmpty(data.Time) && DateTime.TryParse(data.Time, out DateTime recordTime))
@@ -230,9 +243,15 @@ namespace PPE_관제_시스템
                     if(selectedTime != "전체") return false;
                 }
                 if (selectedState != "전체") {
-                    string status = data.Status?.Trim().ToLower() ?? "";
-                    if (selectedState == "미해결" && (data.Status == null || !data.Status.Contains("미해결") || !data.Status.Contains("unresolved"))) return false;
-                    if (selectedState == "해결" && (data.Status == null || !data.Status.Contains("해결") || !data.Status.Contains("resolved"))) return false;
+                    string status = (data.Status ?? "").Normalize(System.Text.NormalizationForm.FormC).Trim().ToLower() ?? "";
+
+
+                    bool isResolved = status.Contains("resolved") && !status.Contains("unresolved")
+                                    || status.Contains("해결") && !status.Contains("미해결");
+                    bool isUnresolved = status.Contains("unresolved") || status.Contains("미해결") || string.IsNullOrEmpty(status);
+                   
+                    if (selectedState == "미해결" && !isUnresolved) return false;
+                    if (selectedState == "해결" && !isResolved) return false;
                 }
                 if (selectedZone != "전체") {
                     string areaName = data.Area?.AreaName ?? "";

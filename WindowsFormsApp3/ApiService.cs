@@ -26,9 +26,12 @@ namespace PPE_관제_시스템
 
         private static void SetAuthHeader()
         {
+            if(string.IsNullOrEmpty(UserContext.JwtToken))
+            {
+                throw new InvalidOperationException("JWT 토큰이 설정되지 않았습니다. 로그인 후 다시 시도해주세요.");
+            }
             client.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue(
-                    "Bearer",
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer",
                     UserContext.JwtToken
                 );
         }
@@ -235,6 +238,7 @@ namespace PPE_관제_시스템
             try
             {
                 SetAuthHeader();
+
                 string url = $"{BaseUrl}/api/violations";
                 List<string> queryParams = new List<string>();
                 if (!string.IsNullOrEmpty(startDate)) queryParams.Add($"start_date={startDate}");

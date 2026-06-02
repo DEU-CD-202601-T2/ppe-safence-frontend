@@ -151,7 +151,7 @@ namespace PPE_관제_시스템
             {
                 var card = new US_AlertCard();
 
-                string displayType = string.IsNullOrEmpty(data.Type) ? "미지정 위반" : data.Type;
+                string displayType = string.IsNullOrEmpty(data.Type) ? "미지정 위반" : data.DisplayType;
                 string displayTime = string.IsNullOrEmpty(data.Time) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : data.Time;
                 string displayUid = string.IsNullOrEmpty(data.Uid) ? "미지정" : data.Uid;
                 string displayZone = (data.Area != null && !string.IsNullOrEmpty(data.Area.AreaName)) ? data.Area.AreaName : "구역 미지정";
