@@ -11,8 +11,10 @@ namespace PPE_관제_시스템
     {
         public string Id { get; set; }
         public string Type { get; set; }
-        public string Area { get; set; }
         public string Timestamp { get; set; }
+        public string Cam { get; set; }
+        public string Zone { get; set; }
+        public string Uid { get; set; }
         public string Status { get; set; }
         public string ImagePath { get; set; }
     }

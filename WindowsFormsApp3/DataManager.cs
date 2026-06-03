@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,8 @@ namespace PPE_관제_시스템
 {
     public class DataManager
     {
-        public static List<AlertData> AllAlerts = new List<AlertData>();
+        private static readonly object _lock = new object();
+        public static List<AlterDataClass> AllAlerts = new List<AlterDataClass>();
         public static event Action OnDataChanged;
         public static int CurrentPage = 0;
         public static int PageSize = 10;
@@ -16,60 +18,58 @@ namespace PPE_관제_시스템
         {
             OnDataChanged?.Invoke();
         }
-        public static void AddAlert(string type, string location)
+        public static async Task UpdateAlertsFromServer()
         {
-            AllAlerts.Add(new AlertData{
-                    ID = $"ID-{100 + AllAlerts.Count + 1}",
-                    Type = type,
-                    Location = location,
-                    Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                    Status = "미해결"
-                });
-                OnDataChanged?.Invoke();
-                NotifyDataChanged();
-            }
-
-            public static void ResolveAlert(string alertId)
+            try
             {
-                var target = AllAlerts.FirstOrDefault(a => a.ID == alertId);
+                List<AlterDataClass> serverData = await ApiService.GetViolationsAsync();
+                if (serverData != null)
+                {
+                    lock (_lock)
+                    {
+
+                        AllAlerts = serverData;
+                    }
+                    NotifyDataChanged();
+                }   
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("서버 데이터 동기화 중 오류 발생");
+            }
+        }
+        public static void AddAlert(string type, string zone, string cam, string uid)
+        {
+            Task.Run(async () => await UpdateAlertsFromServer());
+        }
+
+        public static void AddAlert(string alertId)
+        {
+            ResolveAlert(alertId, "admin", "빠른 해결 조치");
+        }
+
+        public static void ResolveAlert(string alertId, string adminId, string memo)
+        {
+            lock (_lock)
+            {
+                var target = AllAlerts.FirstOrDefault(a => a.Id?.Trim() == alertId.Trim());
                 if (target != null)
                 {
                     target.Status = "해결";
+                    target.AdminId = adminId;
+                    target.Memo = memo;
                     NotifyDataChanged();
                 }
             }
+        }
             public static void InitTestData()
             {
-                if (AllAlerts.Count == 0)
-                {
-                    string[] violationTypes = { "방진마스크 미착용", "안전화 미착용", "장갑 미착용", "보호구 미착용" };
-
-                    for (int i = 0; i < 25; i++)
-                    {
-                        AllAlerts.Add(new AlertData
-                        {
-                            ID = $"ID-{100 + i + 1}",
-                            Type = violationTypes[i % 4],
-                            Location = $"Camera {i % 3 + 1} / {(char)('A' + i % 3)}구역",
-                            Time = DateTime.Now.AddMinutes(-i * 5).ToString("yyyy-MM-dd HH:mm:ss"),
-                            Status = "미해결"
-                        });
-                    }
-                    NotifyDataChanged();
-                }
+                _ = UpdateAlertsFromServer();
             }
 
-
-
-            public class AlertData
-            {
-                public string Type { get; set; }
-                public string Time { get; set; }
-                public string Location { get; set; }
-                public string ID { get; set; }
-
-                public string Status { get; set; }
-                public System.Drawing.Image Img { get; set; }
-            }
+        public class AlertSettingsData
+        {
+            public string AlertType { get; set; }
+        }
     }
 }
