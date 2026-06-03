@@ -184,7 +184,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ToastNotification.cs" />
+    <Compile Include="ToastNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UserData.cs" />
     <Compile Include="UserEditForm.cs">
       <SubType>Form</SubType>
