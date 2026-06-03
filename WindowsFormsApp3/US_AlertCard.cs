@@ -394,7 +394,8 @@ namespace PPE_관제_시스템
             else if (isAcked) lblStatus.Text = "확인됨";
             else lblStatus.Text = SeverityLabel(group.RiskLevel);
 
-            btnResolveRound.Visible = true;
+            // 해결 버튼: 표시 여부(Visible)는 각 화면이 Show/HideResolveButton 으로 결정한다.
+            // 여기서는 상태에 따른 텍스트/색/활성만 갱신 (미해결="해결 처리", 해결="미해결로").
             btnResolveRound.Enabled = true;
             if (isResolved)
             {
@@ -408,10 +409,10 @@ namespace PPE_관제_시스템
             }
             btnResolveRound.OuterBackColor = AppColors.Surface;
 
-            // 확인 버튼: 미해결 & 미확인일 때만 활성. 확인됨이면 "확인됨"으로 비활성
+            // 확인 버튼: 표시 여부(Visible)는 각 화면이 Show/HideAckButton 으로 결정한다.
+            // 여기서는 확인 상태(미확인="확인" 활성 / 확인됨="확인됨" 비활성)만 갱신.
             if (btnAck != null)
             {
-                btnAck.Visible = !isResolved;
                 if (isAcked)
                 {
                     btnAck.Text = "확인됨";
@@ -518,6 +519,17 @@ namespace PPE_관제_시스템
         {
             if (btnResolveRound != null)
                 btnResolveRound.Visible = true;
+        }
+
+        public void ShowAckButton()
+        {
+            if (btnAck != null)
+                btnAck.Visible = true;
+        }
+        public void HideAckButton()
+        {
+            if (btnAck != null)
+                btnAck.Visible = false;
         }
     }
 }

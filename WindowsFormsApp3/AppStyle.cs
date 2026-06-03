@@ -229,4 +229,75 @@ namespace PPE_관제_시스템
             }
         }
     }
+
+    /// <summary>
+    /// 일괄 처리 중 화면을 덮는 반투명 로딩 오버레이 (중앙 회전 스피너).
+    /// 알림/위반관리 화면이 공유한다. 표시 직전 호출 측에서 SetSnapshot 으로
+    /// 현재 화면 캡처를 넣어주면 어둡게 비치는 배경 효과가 난다.
+    /// </summary>
+    public sealed class LoadingOverlay : Panel
+    {
+        private readonly System.Windows.Forms.Timer _spin;
+        private float _angle;
+        private readonly string _message;
+        private Image _snapshot;
+
+        public LoadingOverlay(string message)
+        {
+            _message = string.IsNullOrEmpty(message) ? "처리 중..." : message;
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint |
+                     ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+            Dock = DockStyle.Fill;
+            BackColor = Color.White;
+            _spin = new System.Windows.Forms.Timer { Interval = 16 };
+            _spin.Tick += (s, e) => { _angle = (_angle + 9f) % 360f; Invalidate(); };
+        }
+
+        public void SetSnapshot(Image img) { _snapshot = img; Invalidate(); }
+        public void Start() { _spin.Start(); }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            if (_snapshot != null)
+            {
+                g.DrawImage(_snapshot, 0, 0, Width, Height);
+            }
+            else
+            {
+                using (var bg = new SolidBrush(Color.White)) g.FillRectangle(bg, ClientRectangle);
+            }
+
+            using (var dim = new SolidBrush(Color.FromArgb(140, 70, 70, 70)))
+                g.FillRectangle(dim, ClientRectangle);
+
+            int cx = Width / 2;
+            int cy = Height / 2;
+            int r = 26;
+            using (var track = new Pen(Color.FromArgb(70, 255, 255, 255), 5f))
+                g.DrawEllipse(track, cx - r, cy - r, r * 2, r * 2);
+            using (var pen = new Pen(Color.White, 5f) { StartCap = LineCap.Round, EndCap = LineCap.Round })
+                g.DrawArc(pen, cx - r, cy - r, r * 2, r * 2, _angle, 300f);
+
+            using (var font = new Font("맑은 고딕", 11F, FontStyle.Bold))
+            {
+                Size sz = TextRenderer.MeasureText(_message, font);
+                TextRenderer.DrawText(g, _message, font,
+                    new Point(cx - sz.Width / 2, cy + r + 14), Color.White);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _spin.Stop();
+                _spin.Dispose();
+                if (_snapshot != null) { _snapshot.Dispose(); _snapshot = null; }
+            }
+            base.Dispose(disposing);
+        }
+    }
 }

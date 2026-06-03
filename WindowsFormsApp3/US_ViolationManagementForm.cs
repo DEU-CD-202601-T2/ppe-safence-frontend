@@ -35,6 +35,10 @@ namespace PPE_관제_시스템
         // 조회 결과가 없을 때 표시하는 안내 라벨
         private Label lblEmptyState;
 
+        // 필터바 오른쪽 일괄 작업 버튼
+        private RoundedButton btnResolveAll;
+        private RoundedButton btnDeleteAll;
+
         public US_ViolationManagementForm()
         {
             InitializeComponent();
@@ -122,8 +126,45 @@ namespace PPE_관제_시스템
             // "기간" → "검색"
             lblFilterDate.Text = "검색";
 
+            BuildBulkButtons();
+
             LayoutFilterBar();
             pnlFilterBar.Resize += (s, e) => LayoutFilterBar();
+        }
+
+        // 필터바 오른쪽 "일괄 해결" / "일괄 삭제" 버튼 생성
+        private void BuildBulkButtons()
+        {
+            if (btnResolveAll == null)
+            {
+                btnResolveAll = new RoundedButton
+                {
+                    Text = "일괄 해결",
+                    Size = new Size(100, 36),
+                    Font = new Font("맑은 고딕", 10F, FontStyle.Bold),
+                    Name = "btnResolveAll"
+                };
+                AppStyle.MakePrimaryButton(btnResolveAll, 10);
+                btnResolveAll.OuterBackColor = AppColors.Surface;
+                btnResolveAll.Click += btnResolveAll_Click;
+                pnlFilterBar.Controls.Add(btnResolveAll);
+                btnResolveAll.BringToFront();
+            }
+            if (btnDeleteAll == null)
+            {
+                btnDeleteAll = new RoundedButton
+                {
+                    Text = "일괄 삭제",
+                    Size = new Size(100, 36),
+                    Font = new Font("맑은 고딕", 10F, FontStyle.Bold),
+                    Name = "btnDeleteAll"
+                };
+                AppStyle.MakeDangerOutlineButton(btnDeleteAll, 10);
+                btnDeleteAll.OuterBackColor = AppColors.Surface;
+                btnDeleteAll.Click += btnDeleteAll_Click;
+                pnlFilterBar.Controls.Add(btnDeleteAll);
+                btnDeleteAll.BringToFront();
+            }
         }
 
         private void LayoutFilterBar()
@@ -139,8 +180,24 @@ namespace PPE_관제_시스템
             dtpDateEnd.Location = new Point(lblTilde.Right + 8, topY);
 
             int dropW = 130, gap = 12, rightPad = 20;
+
+            // 오른쪽부터 [일괄 삭제][일괄 해결][구역][상태][시간대]
+            int rightCursor = barW - rightPad;
+            int btnTop = topY + (cmbZone.Height - 36) / 2;   // 드롭다운과 세로 중앙 정렬
+
+            if (btnDeleteAll != null)
+            {
+                btnDeleteAll.Location = new Point(rightCursor - btnDeleteAll.Width, btnTop);
+                rightCursor = btnDeleteAll.Left - gap;
+            }
+            if (btnResolveAll != null)
+            {
+                btnResolveAll.Location = new Point(rightCursor - btnResolveAll.Width, btnTop);
+                rightCursor = btnResolveAll.Left - gap;
+            }
+
             cmbZone.Width = dropW;
-            cmbZone.Location = new Point(barW - rightPad - dropW, topY);
+            cmbZone.Location = new Point(rightCursor - dropW, topY);
             cmbState.Width = dropW;
             cmbState.Location = new Point(cmbZone.Left - gap - dropW, topY);
             cmbTime.Width = dropW;
@@ -283,16 +340,10 @@ namespace PPE_관제_시스템
                 data.Image = cached;
  // 관리 모드에서는 해결 버튼 숨김
                 card.SetGroup(data, cached);
+                // 위반관리: 해결 처리(미해결↔해결 토글) + 상세 보기 표시. 확인 버튼은 사용하지 않음.
+                card.ShowResolveButton();
                 card.ShowDetailButton();
-
-                if (data.IsChecked)
-                {
-                    card.ShowResolveButton();
-                }
-                else
-                {
-                    card.HideResolveButton();
-                }
+                card.HideAckButton();
 
                 card.OnResolveRequested -= HandleResolveRequested;
                 card.OnResolveRequested += HandleResolveRequested;
@@ -407,6 +458,135 @@ namespace PPE_관제_시스템
         }
 
         // ===== 액션 =====
+
+        // 일괄 해결: 현재 목록(필터 적용)의 미해결 위반을 모두 해결 처리
+        private async void btnResolveAll_Click(object sender, EventArgs e)
+        {
+            var ids = (groups ?? new List<ViolationGroup>())
+                .Where(g => g != null && !g.IsChecked)
+                .SelectMany(g => g.Ids ?? new List<string>())
+                .Where(id => !string.IsNullOrEmpty(id))
+                .Distinct()
+                .ToList();
+
+            if (ids.Count == 0)
+            {
+                MessageBox.Show("해결 처리할 미해결 위반이 없습니다.", "일괄 해결", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var confirm = MessageBox.Show(
+                $"현재 목록의 미해결 위반 {ids.Count}건을 모두 해결 처리하시겠습니까?",
+                "일괄 해결", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm != DialogResult.Yes) return;
+
+            SetBulkButtonsEnabled(false);
+            var overlay = ShowLoadingOverlay("해결 처리 중...");
+            try
+            {
+                bool allOk = true;
+                foreach (var id in ids)
+                {
+                    bool ok = await ApiService.UpdateViolationCheckedAsync(id, true);
+                    if (!ok) allOk = false;
+                }
+
+                foreach (var row in localViolations.Where(r => ids.Contains(r.Id)))
+                    row.Status = "해결";
+
+                await LoadViolationData();
+
+                if (!allOk)
+                    MessageBox.Show("일부 항목의 해결 처리에 실패했습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                HideLoadingOverlay(overlay);
+                SetBulkButtonsEnabled(true);
+            }
+        }
+
+        // 일괄 삭제: 현재 목록(필터 적용)의 위반을 모두 삭제 (해결/미해결 무관)
+        private async void btnDeleteAll_Click(object sender, EventArgs e)
+        {
+            var ids = (groups ?? new List<ViolationGroup>())
+                .SelectMany(g => g.Ids ?? new List<string>())
+                .Where(id => !string.IsNullOrEmpty(id))
+                .Distinct()
+                .ToList();
+
+            if (ids.Count == 0)
+            {
+                MessageBox.Show("삭제할 위반이 없습니다.", "일괄 삭제", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var confirm = MessageBox.Show(
+                $"현재 목록의 위반 {ids.Count}건을 모두 삭제하시겠습니까?\n삭제된 데이터는 되돌릴 수 없습니다.",
+                "일괄 삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm != DialogResult.Yes) return;
+
+            SetBulkButtonsEnabled(false);
+            var overlay = ShowLoadingOverlay("삭제 처리 중...");
+            try
+            {
+                bool allOk = true;
+                foreach (var id in ids)
+                {
+                    bool ok = await ApiService.DeleteViolationAsync(id);
+                    if (!ok) allOk = false;
+                }
+
+                localViolations.RemoveAll(r => ids.Contains(r.Id));
+                foreach (var g in groups)
+                {
+                    var rep = g?.RepresentativeId;
+                    if (!string.IsNullOrEmpty(rep)) _imageCache.Remove(rep);
+                }
+
+                await LoadViolationData();
+
+                if (!allOk)
+                    MessageBox.Show("일부 항목의 삭제에 실패했습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                HideLoadingOverlay(overlay);
+                SetBulkButtonsEnabled(true);
+            }
+        }
+
+        private void SetBulkButtonsEnabled(bool enabled)
+        {
+            if (btnResolveAll != null) btnResolveAll.Enabled = enabled;
+            if (btnDeleteAll != null) btnDeleteAll.Enabled = enabled;
+        }
+
+        // 일괄 처리 중 화면을 덮는 반투명 로딩 오버레이 (공통 LoadingOverlay 사용)
+        private LoadingOverlay ShowLoadingOverlay(string message)
+        {
+            var overlay = new LoadingOverlay(message);
+            try
+            {
+                var bmp = new Bitmap(Math.Max(1, this.Width), Math.Max(1, this.Height));
+                this.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+                overlay.SetSnapshot(bmp);
+            }
+            catch { }
+
+            this.Controls.Add(overlay);
+            overlay.BringToFront();
+            overlay.Start();
+            overlay.Refresh();
+            return overlay;
+        }
+
+        private void HideLoadingOverlay(LoadingOverlay overlay)
+        {
+            if (overlay == null) return;
+            this.Controls.Remove(overlay);
+            overlay.Dispose();
+        }
 
         private async void HandleResolveRequested(US_AlertCard card)
         {

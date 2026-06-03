@@ -184,6 +184,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SidebarShadow.cs" />
     <Compile Include="ToastNotification.cs" />
     <Compile Include="UserData.cs" />
     <Compile Include="UserEditForm.cs">

@@ -25,6 +25,9 @@ namespace PPE_관제_시스템
         private PictureBox picHeaderRefresh;
         private System.Windows.Forms.Timer headerClockTimer;
         private US_ViolationManagementForm _violationFormRef;
+        private US_AlertsForm _alertsFormRef;
+        // 헤더 새로고침 아이콘이 실행할 동작 (현재 화면에 따라 위반관리/알림으로 교체됨)
+        private Func<System.Threading.Tasks.Task> _headerRefreshAction;
 
         // 새로고침 아이콘 회전 애니메이션
         private System.Windows.Forms.Timer _refreshSpinTimer;
@@ -45,6 +48,9 @@ namespace PPE_관제_시스템
         private bool _sidebarExpanding = false;
         private readonly Dictionary<Button, Image> _menuIcons = new Dictionary<Button, Image>();
         private bool _sidebarReady = false;
+        private PictureBox _titleIcon;
+        private Label _titleText;
+        private SidebarShadow _sidebarShadow;
 
         public MainForm()
         {
@@ -68,6 +74,11 @@ namespace PPE_관제_시스템
             this.Load += MainForm_Load;
         }
 
+        // 페이지 제목(lblMenuName)을 카드(콘텐츠) 왼쪽에 맞추기 위한 공통 좌측 보정값.
+        // 기준선 = pnlMain 콘텐츠 왼쪽(= 사이드바 너비 + pnlMain.Padding.Left).
+        // 카드가 제목보다 오른쪽이면 값을 키우고, 왼쪽이면 줄이면 모든 페이지에 한 번에 적용됨.
+        private const int HeaderTitleExtraLeft = 0;
+
         // pnlMain 을 (메뉴 우측, 헤더 아래) 영역에 맞춤
         private void LayoutContentArea()
         {
@@ -80,6 +91,22 @@ namespace PPE_관제_시스템
             if (h < 0) h = 0;
             pnlMain.Location = new Point(left, top);
             pnlMain.Size = new Size(w, h);
+
+            // 헤더 라벨(페이지명)도 카드(콘텐츠) 왼쪽 기준선에 맞춰 이동
+            // 기준 = pnlMain 콘텐츠 왼쪽(= left + pnlMain.Padding.Left) + 공통 보정값
+            if (lblMenuName != null)
+            {
+                lblMenuName.Left = pnlMain.Left + pnlMain.Padding.Left + HeaderTitleExtraLeft;
+                RepositionHeaderExtras();   // 통계/시계/새로고침은 lblMenuName 기준으로 따라옴
+            }
+
+            // 사이드바 우측 그림자 위치/높이 갱신
+            if (_sidebarShadow != null)
+            {
+                _sidebarShadow.Location = new Point(left, 0);
+                _sidebarShadow.Height = this.ClientSize.Height;
+                _sidebarShadow.BringToFront();
+            }
         }
 
         // 사이드바를 코드로 재구성: 아이콘+왼쪽정렬, 도킹, 호버 펼침/접힘
@@ -118,28 +145,81 @@ namespace PPE_관제_시스템
                 btn.UseCompatibleTextRendering = false;
             }
 
-            // 도킹은 역순으로 쌓이므로, 원하는 시각 순서(위→아래)의 역으로 SendToBack
-            // 순서: 실시간 → 알림 → 위반관리 → 이력 → 분석 → 설정
+            // (도킹 z-order 정리는 구분선 생성 후 ArrangeMenuOrder() 에서 일괄 처리)
+
+
+            // 타이틀 영역: 아이콘(PictureBox) + 텍스트(Label) 를 분리 배치 (겹침 원천 차단)
+            if (lblPPESystem != null)
+            {
+                lblPPESystem.AutoSize = false;
+                lblPPESystem.Dock = DockStyle.Top;
+                lblPPESystem.Height = 56;
+                lblPPESystem.Image = null;     // 라벨엔 아이콘 안 넣음 (텍스트 전용)
+                lblPPESystem.Text = "";
+                lblPPESystem.TextAlign = ContentAlignment.MiddleLeft;
+                lblPPESystem.Padding = new Padding(0);
+
+                // 아이콘: 라벨 위에 얹는 PictureBox (좌측 고정)
+                _titleIcon = new PictureBox
+                {
+                    Size = new Size(30, 30),
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    BackColor = Color.Transparent,
+                    Image = LoadMenuIcon("PPE_Icon.ico"),
+                    Location = new Point(17, (lblPPESystem.Height - 30) / 2)
+                };
+                lblPPESystem.Controls.Add(_titleIcon);
+
+                // 텍스트: 아이콘 우측에 별도 라벨
+                _titleText = new Label
+                {
+                    AutoSize = false,
+                    Text = "PPE 관제시스템",
+                    Font = lblPPESystem.Font,
+                    ForeColor = lblPPESystem.ForeColor,
+                    BackColor = Color.Transparent,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Location = new Point(_titleIcon.Right + 8, 0),
+                    Size = new Size(160, lblPPESystem.Height)
+                };
+                lblPPESystem.Controls.Add(_titleText);
+                _titleText.BringToFront();
+            }
+
+            // 타이틀 아래 가로 구분선 (메뉴 버튼들은 이 아래부터)
+            var titleDivider = new Panel
+            {
+                Name = "pnlTitleDivider",
+                Dock = DockStyle.Top,
+                Height = 1,
+                BackColor = Color.FromArgb(224, 224, 224)
+            };
+            pnlMenu.Controls.Add(titleDivider);
+
+            // 기존 짧은 회색선(lblBar) 숨김 — 새 titleDivider 와 중복되므로
+            if (lblBar != null) lblBar.Visible = false;
+
+            // 사이드바 우측 경계: 실선(pnlMenuDivider) 대신 그림자(그라데이션)로 입체감
+            if (pnlMenuDivider != null) pnlMenuDivider.Visible = false;
+            _sidebarShadow = new SidebarShadow
+            {
+                Width = 8,
+                Height = this.ClientSize.Height
+            };
+            this.Controls.Add(_sidebarShadow);
+            _sidebarShadow.BringToFront();
+
+            // 도킹 z-order 정리 (Dock.Top: 나중에 SendToBack 한 것이 최상단)
+            // 원하는 순서(위→아래): 타이틀 → 구분선 → 실시간 → 알림 → 위반관리 → 이력 → 분석 → 설정
+            // → 역순으로 SendToBack
             btnSettings?.SendToBack();
             btnAnalysis?.SendToBack();
             btnDetectionLog?.SendToBack();
             btnViolationManagement?.SendToBack();
             btnAlerts?.SendToBack();
             btnLiveMonitoring?.SendToBack();
-            // 타이틀 라벨이 가장 위
-            if (lblPPESystem != null) { lblPPESystem.Dock = DockStyle.Top; lblPPESystem.SendToBack(); }
-
-            // 타이틀 라벨: 아이콘 + 왼쪽 정렬
-            if (lblPPESystem != null)
-            {
-                lblPPESystem.AutoSize = false;
-                lblPPESystem.Height = 56;
-                lblPPESystem.TextAlign = ContentAlignment.MiddleLeft;
-                lblPPESystem.Padding = new Padding(16, 0, 0, 0);
-                lblPPESystem.Image = LoadMenuIcon("PPE_Icon.ico");
-                lblPPESystem.ImageAlign = ContentAlignment.MiddleLeft;
-                lblPPESystem.TextAlign = ContentAlignment.MiddleLeft;
-            }
+            titleDivider.SendToBack();
+            lblPPESystem?.SendToBack();
 
             // pnlMain 을 헤더 아래 + 메뉴 우측에 맞춤 (메뉴 폭 변화/리사이즈 시 갱신)
             pnlMain.Dock = DockStyle.None;
@@ -271,9 +351,30 @@ namespace PPE_관제_시스템
             foreach (var btn in _menuIcons.Keys)
             {
                 btn.Text = showText ? GetMenuText(btn) : "";
+                if (showText)
+                {
+                    // 펼침: 아이콘 왼쪽 + 텍스트
+                    btn.ImageAlign = ContentAlignment.MiddleLeft;
+                    btn.Padding = new Padding(20, 0, 0, 0);
+                }
+                else
+                {
+                    // 접힘: 아이콘만 가운데
+                    btn.ImageAlign = ContentAlignment.MiddleCenter;
+                    btn.Padding = new Padding(0);
+                }
             }
-            if (lblPPESystem != null)
-                lblPPESystem.Text = showText ? "PPE 관제시스템" : "";
+            if (_titleText != null)
+                _titleText.Visible = showText;
+
+            // 타이틀 아이콘도 접힘/펼침에 따라 위치 조정
+            if (_titleIcon != null && lblPPESystem != null)
+            {
+                if (showText)
+                    _titleIcon.Left = 17;
+                else
+                    _titleIcon.Left = (pnlMenu.Width - _titleIcon.Width) / 2;
+            }
 
             // 알림 뱃지 위치도 폭 따라 재배치
             RepositionAlertBadge();
@@ -496,11 +597,11 @@ namespace PPE_관제_시스템
             _refreshBaseIcon = picHeaderRefresh.Image;
             picHeaderRefresh.Click += async (s, e) =>
             {
-                if (_violationFormRef != null && picHeaderRefresh.Enabled)
+                if (_headerRefreshAction != null && picHeaderRefresh.Enabled)
                 {
                     picHeaderRefresh.Enabled = false;
                     StartRefreshSpin();
-                    try { await _violationFormRef.ManualRefreshAsync(); }
+                    try { await _headerRefreshAction(); }
                     finally { StopRefreshSpin(); picHeaderRefresh.Enabled = true; }
                 }
             };
@@ -593,15 +694,19 @@ namespace PPE_관제_시스템
             return bmp;
         }
 
-        // 위반관리 화면이면 헤더 부가요소 켜고 폼과 연동, 아니면 끔
-        private void SetHeaderExtrasForViolation(bool on)
+        // 헤더 부가요소(통계/시계/새로고침) 공통 토글.
+        // statsText 가 null 이면 통계 라벨 텍스트는 유지(위반관리는 ShowForm 에서 채움).
+        // refreshAction 은 새로고침 아이콘 클릭 시 실행할 동작.
+        private void SetHeaderExtras(bool on, string statsText, Func<System.Threading.Tasks.Task> refreshAction)
         {
             lblHeaderStats.Visible = on;
             lblHeaderClock.Visible = on;
             picHeaderRefresh.Visible = on;
+            _headerRefreshAction = on ? refreshAction : null;
 
             if (on)
             {
+                if (statsText != null) lblHeaderStats.Text = statsText;
                 lblHeaderClock.Text = $"({DateTime.Now:yyyy.MM.dd HH:mm:ss})";
                 headerClockTimer.Start();
             }
@@ -611,6 +716,16 @@ namespace PPE_관제_시스템
             }
             RepositionHeaderExtras();
         }
+
+        // 위반관리 화면: 통계는 폼의 StatsChanged 로 채워지므로 텍스트는 유지(null)
+        private void SetHeaderExtrasForViolation(bool on)
+            => SetHeaderExtras(on, null,
+                () => _violationFormRef != null ? _violationFormRef.ManualRefreshAsync() : System.Threading.Tasks.Task.CompletedTask);
+
+        // 알림 화면: 고정 텍스트 "실시간 위반 알림 목록" + 알림 폼 수동 새로고침
+        private void SetHeaderExtrasForAlerts(bool on)
+            => SetHeaderExtras(on, on ? "실시간 위반 알림 목록" : null,
+                () => _alertsFormRef != null ? _alertsFormRef.ManualRefreshAsync() : System.Threading.Tasks.Task.CompletedTask);
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -688,6 +803,13 @@ namespace PPE_관제_시스템
                 // 현재 통계 즉시 반영
                 lblHeaderStats.Text = _violationFormRef.CurrentStatsText;
             }
+
+            // 알림 폼이면 참조 보관 (헤더 새로고침 아이콘이 알림 새로고침을 호출하도록)
+            if (formName == "AlertsForm" &&
+                userControls[formName] is US_AlertsForm aForm)
+            {
+                _alertsFormRef = aForm;
+            }
         }
 
         private void OnViolationStatsChanged(string statsText)
@@ -734,7 +856,7 @@ namespace PPE_관제_시스템
             lblMenuName.Text = "알림";
             SelectMenuButton(btnAlerts);
             MoveSideBar(btnAlerts);
-            SetHeaderExtrasForViolation(false);
+            SetHeaderExtrasForAlerts(true);   // 알림: "실시간 위반 알림 목록" + 시각 + 새로고침
 
             _ = PollAlertCountAsync();   // 알림 화면 진입 시 뱃지 즉시 갱신
         }
