@@ -17,7 +17,6 @@
 
         private void InitializeComponent()
         {
-            this.lblTitle = new System.Windows.Forms.Label();
             this.pnlFilterBar = new System.Windows.Forms.Panel();
             this.lblFilterDate = new System.Windows.Forms.Label();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
@@ -29,24 +28,13 @@
             this.dgvLog = new System.Windows.Forms.DataGridView();
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.위치 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlFilterBar.SuspendLayout();
             this.pnlGird.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.SuspendLayout();
             // 
-            // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = AppColors.Text;
-            this.lblTitle.Location = new System.Drawing.Point(20, 10);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(141, 31);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "이력 / 로그";
             // 
             // pnlFilterBar
             // 
@@ -164,8 +152,6 @@
             this.dgvLog.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Date,
             this.Event,
-            this.위치,
-            this.Status,
             this.Detail});
             this.dgvLog.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.dgvLog.DefaultCellStyle.BackColor = AppColors.Surface;
@@ -201,20 +187,6 @@
             this.Event.Name = "Event";
             this.Event.ReadOnly = true;
             // 
-            // 위치
-            // 
-            this.위치.HeaderText = "위치";
-            this.위치.MinimumWidth = 6;
-            this.위치.Name = "위치";
-            this.위치.ReadOnly = true;
-            // 
-            // Status
-            // 
-            this.Status.HeaderText = "상태";
-            this.Status.MinimumWidth = 6;
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
-            // 
             // Detail
             // 
             this.Detail.HeaderText = "상세";
@@ -229,7 +201,6 @@
             this.BackColor = AppColors.Background;
             this.Controls.Add(this.pnlGird);
             this.Controls.Add(this.pnlFilterBar);
-            this.Controls.Add(this.lblTitle);
             this.Name = "US_DetectionLogForm";
             this.Size = new System.Drawing.Size(1228, 762);
             this.Load += new System.EventHandler(this.US_DetectionLogForm_Load);
@@ -243,7 +214,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel pnlFilterBar;
         private System.Windows.Forms.Label lblFilterDate;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
@@ -255,8 +225,6 @@
         private System.Windows.Forms.DataGridView dgvLog;
         private System.Windows.Forms.DataGridViewTextBoxColumn Date;
         private System.Windows.Forms.DataGridViewTextBoxColumn Event;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 위치;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn Detail;
     }
 }

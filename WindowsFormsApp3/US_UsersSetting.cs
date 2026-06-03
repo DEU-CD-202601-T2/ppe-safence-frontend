@@ -29,7 +29,7 @@ namespace PPE_관제_시스템
 
                 foreach (var user in users)
                 {
-                    dgvUsersSetting.Rows.Add(user.userID, user.name, user.login_id, user.role, user.department, user.status);
+                    dgvUsersSetting.Rows.Add(user.userID, user.name, user.login_id, user.role, user.status);
                 }
             }
             catch (Exception ex)
@@ -49,7 +49,6 @@ namespace PPE_관제_시스템
             dgvUsersSetting.Columns.Add("name", "이름");
             dgvUsersSetting.Columns.Add("login_id", "ID");
             dgvUsersSetting.Columns.Add("role", "역할");
-            dgvUsersSetting.Columns.Add("department", "소속(구역)");
             dgvUsersSetting.Columns.Add("status", "상태");
 
             DataGridViewButtonColumn manageColumn = new DataGridViewButtonColumn();
@@ -79,7 +78,6 @@ namespace PPE_관제_시스템
                     name = dgvUsersSetting.Rows[e.RowIndex].Cells["name"].Value?.ToString(),
                     login_id = dgvUsersSetting.Rows[e.RowIndex].Cells["login_id"].Value?.ToString(),
                     role = dgvUsersSetting.Rows[e.RowIndex].Cells["role"].Value?.ToString(),
-                    department = dgvUsersSetting.Rows[e.RowIndex].Cells["department"].Value?.ToString(),
                     status = dgvUsersSetting.Rows[e.RowIndex].Cells["status"].Value?.ToString()
                 };
 

@@ -8,7 +8,7 @@
     <ProjectGuid>{C8737E12-5924-43EB-B57A-023565397592}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>PPE_관제_시스템</RootNamespace>
-    <AssemblyName>PPE 관제 시스템</AssemblyName>
+    <AssemblyName>PPE_관제_시스템</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <ApplicationIcon>Resources\PPE_Icon.ico</ApplicationIcon>
     <FileAlignment>512</FileAlignment>
@@ -184,6 +184,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ServerConfig.cs" />
     <Compile Include="SidebarShadow.cs" />
     <Compile Include="ToastNotification.cs" />
     <Compile Include="UserData.cs" />

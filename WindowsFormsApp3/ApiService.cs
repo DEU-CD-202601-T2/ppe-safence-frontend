@@ -22,7 +22,7 @@ namespace PPE_관제_시스템
     public static class ApiService
     {
         private static readonly HttpClient client = new HttpClient();
-        private const string BaseUrl = "http://43.200.27.117:5002";
+        private static readonly string BaseUrl = ServerConfig.BaseUrl;
 
         private static void SetAuthHeader()
         {

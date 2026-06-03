@@ -18,6 +18,7 @@ namespace PPE_관제_시스템
         public UserEditForm() // 추가 모드로 폼을 열 때 사용하는 기본 생성자
         {
             InitializeComponent();
+            cmbStatus.SelectedIndex = 0; // 추가 시 기본 "활성"
         }
 
         public UserEditForm(UserData user) // 수정 모드로 폼을 열 때 사용자 데이터를 전달받는 생성자
@@ -38,10 +39,15 @@ namespace PPE_관제_시스템
             txtId.Text = editUser.login_id;
 
             txtPwd.Text = "";
-            txtPwd.Enabled = false;
 
-            txtRole.Text = editUser.role;
-            txtDepartment.Text = editUser.department;
+            if (!cmbRole.Items.Contains(editUser.role))
+                cmbRole.Items.Add(editUser.role);
+            cmbRole.SelectedItem = editUser.role;
+
+            cmbStatus.SelectedItem = editUser.status;
+            // 현재 로그인한 계정은 활성화 여부를 변경할 수 없음
+            if (editUser.login_id == UserContext.CurrentLoginId)
+                cmbStatus.Enabled = false;
 
             txtId.Enabled = false;
         }
@@ -58,9 +64,8 @@ namespace PPE_관제_시스템
                         name = txtName.Text,
                         login_id = txtId.Text,
                         password = txtPwd.Text,
-                        role = txtRole.Text,
-                        department = txtDepartment.Text,
-                        status = "활성"
+                        role = cmbRole.SelectedItem?.ToString(),
+                        status = cmbStatus.SelectedItem?.ToString()
                     };
 
                     bool success =
@@ -86,9 +91,9 @@ namespace PPE_관제_시스템
                         userID = editUser.userID,
                         name = txtName.Text,
                         login_id = editUser.login_id,
-                        role = txtRole.Text,
-                        department = txtDepartment.Text,
-                        status = editUser.status
+                        role = cmbRole.SelectedItem?.ToString(),
+                        password = txtPwd.Text,
+                        status = cmbStatus.SelectedItem?.ToString()
                     };
 
                     bool success =

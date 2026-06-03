@@ -37,8 +37,7 @@ namespace PPE_관제_시스템
 
             dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "날짜", DataPropertyName = "Timestamp", Width = 150 });
             dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "발생 내용", DataPropertyName = "LogType", Width = 100 });
-            dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "위치", DataPropertyName = "ZoneName", Width = 100 });
-            dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "상태", DataPropertyName = "StatusText", Width = 100 });
+            dgvLog.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "이름", DataPropertyName = "UserName", Width = 120 });
 
             DataGridViewButtonColumn btnDetail = new DataGridViewButtonColumn
             {
@@ -104,11 +103,8 @@ namespace PPE_관제_시스템
                         $"로그 ID : {row.LogID}\n\n" +
                         $"사용자 ID : {row.User?.UserID}\n\n" +
                         $"이름 : {row.UserName}\n\n" +
-                        $"카메라 : {row.CameraName}\n\n" +
                         $"날짜 : {row.Timestamp}\n\n" +
                         $"발생 내용 : {row.LogType}\n\n" +
-                        $"위치 : {row.ZoneName}\n\n" +
-                        $"상태 : {row.StatusText}\n\n" +
                         $"상세 : {row.Detail}",
                         "상세 정보",
                         MessageBoxButtons.OK

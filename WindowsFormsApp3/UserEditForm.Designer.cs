@@ -22,12 +22,12 @@
             this.lblId = new System.Windows.Forms.Label();
             this.lblPwd = new System.Windows.Forms.Label();
             this.lblRole = new System.Windows.Forms.Label();
-            this.lblDepartment = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtId = new System.Windows.Forms.TextBox();
             this.txtPwd = new System.Windows.Forms.TextBox();
-            this.txtRole = new System.Windows.Forms.TextBox();
-            this.txtDepartment = new System.Windows.Forms.TextBox();
+            this.cmbRole = new System.Windows.Forms.ComboBox();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -117,36 +117,45 @@
             this.lblRole.TabIndex = 3;
             this.lblRole.Text = "역할";
             // 
-            // txtRole
+            // cmbRole
             // 
-            this.txtRole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtRole.Font = new System.Drawing.Font("맑은 고딕", 10F);
-            this.txtRole.ForeColor = AppColors.Text;
-            this.txtRole.Location = new System.Drawing.Point(330, 188);
-            this.txtRole.Name = "txtRole";
-            this.txtRole.Size = new System.Drawing.Size(280, 30);
-            this.txtRole.TabIndex = 8;
+            this.cmbRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRole.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.cmbRole.ForeColor = AppColors.Text;
+            this.cmbRole.FormattingEnabled = true;
+            this.cmbRole.Items.AddRange(new object[] {
+            "최고 관리자",
+            "보안 팀장",
+            "구역 매니저"});
+            this.cmbRole.Location = new System.Drawing.Point(330, 188);
+            this.cmbRole.Name = "cmbRole";
+            this.cmbRole.Size = new System.Drawing.Size(280, 30);
+            this.cmbRole.TabIndex = 8;
             // 
-            // lblDepartment
+            // lblStatus
             // 
-            this.lblDepartment.AutoSize = true;
-            this.lblDepartment.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblDepartment.ForeColor = AppColors.Text;
-            this.lblDepartment.Location = new System.Drawing.Point(30, 240);
-            this.lblDepartment.Name = "lblDepartment";
-            this.lblDepartment.Size = new System.Drawing.Size(90, 23);
-            this.lblDepartment.TabIndex = 4;
-            this.lblDepartment.Text = "소속(구역)";
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblStatus.ForeColor = AppColors.Text;
+            this.lblStatus.Location = new System.Drawing.Point(30, 240);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(90, 23);
+            this.lblStatus.TabIndex = 12;
+            this.lblStatus.Text = "활성화 여부";
             // 
-            // txtDepartment
+            // cmbStatus
             // 
-            this.txtDepartment.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtDepartment.Font = new System.Drawing.Font("맑은 고딕", 10F);
-            this.txtDepartment.ForeColor = AppColors.Text;
-            this.txtDepartment.Location = new System.Drawing.Point(30, 268);
-            this.txtDepartment.Name = "txtDepartment";
-            this.txtDepartment.Size = new System.Drawing.Size(580, 30);
-            this.txtDepartment.TabIndex = 9;
+            this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStatus.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.cmbStatus.ForeColor = AppColors.Text;
+            this.cmbStatus.FormattingEnabled = true;
+            this.cmbStatus.Items.AddRange(new object[] {
+            "활성",
+            "비활성"});
+            this.cmbStatus.Location = new System.Drawing.Point(30, 268);
+            this.cmbStatus.Name = "cmbStatus";
+            this.cmbStatus.Size = new System.Drawing.Size(280, 30);
+            this.cmbStatus.TabIndex = 13;
             // 
             // btnSave
             // 
@@ -171,13 +180,13 @@
             this.BackColor = AppColors.Background;
             this.ClientSize = new System.Drawing.Size(640, 400);
             this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.cmbStatus);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.txtDepartment);
-            this.Controls.Add(this.txtRole);
+            this.Controls.Add(this.cmbRole);
             this.Controls.Add(this.txtPwd);
             this.Controls.Add(this.txtId);
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.lblDepartment);
             this.Controls.Add(this.lblRole);
             this.Controls.Add(this.lblPwd);
             this.Controls.Add(this.lblId);
@@ -199,12 +208,12 @@
         private System.Windows.Forms.Label lblId;
         private System.Windows.Forms.Label lblPwd;
         private System.Windows.Forms.Label lblRole;
-        private System.Windows.Forms.Label lblDepartment;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.TextBox txtPwd;
-        private System.Windows.Forms.TextBox txtRole;
-        private System.Windows.Forms.TextBox txtDepartment;
+        private System.Windows.Forms.ComboBox cmbRole;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.ComboBox cmbStatus;
         private System.Windows.Forms.Button btnSave;
     }
 }
