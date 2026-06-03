@@ -37,8 +37,7 @@ namespace PPE_관제_시스템
 
         private async void btnLogin_Click(object sender, EventArgs e)
         {
-            try
-            {
+
                 var loginData = new { login_id = txtId.Text, password = txtPwd.Text };
                 var json = JsonConvert.SerializeObject(loginData);
                 var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
@@ -57,13 +56,6 @@ namespace PPE_관제_시스템
                     string errorBody = await response.Content.ReadAsStringAsync();
                     MessageBox.Show($"아이디 또는 비밀번호가 일치하지 않습니다.\n({(int)response.StatusCode}: {errorBody})");
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("서버 오류가 발생하였습니다: 테스트 모드 진입합니다");
-                UserContext.JwtToken = "dumy_token_for_testing";
-                ProceedToMain();
-            }
         }
 
         private void ProceedToMain()

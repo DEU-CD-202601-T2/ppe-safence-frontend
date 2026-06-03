@@ -133,19 +133,6 @@ namespace PPE_관제_시스템
             }
         }
 
-        private async void US_UserSetting_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                InitGrid();
-                await LoadUserList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"사용자 데이터를 불러오는 중 오류가 발생했습니다.\n{ex.Message}");
-            }
-        }
-
         private async void btnUserAdd_Click(object sender, EventArgs e)
         {
             try
