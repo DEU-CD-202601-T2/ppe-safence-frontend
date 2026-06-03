@@ -40,11 +40,8 @@ namespace PPE_관제_시스템
                 lblPPEComplianceRate.Text =
                     stats.PPEComplianceRate.ToString();
 
-                lblAccidentCount.Text =
-                    stats.TotalAccidentCount.ToString();
-
-                lblWarningCount.Text =
-                    stats.TotalWarningCount.ToString();
+                lblViolationCount.Text =
+                    stats.TotalViolationCount.ToString();
             }
             catch (Exception ex)
             {
